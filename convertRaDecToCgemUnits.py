@@ -1,11 +1,11 @@
 
-raHr   =   1.0
-raMin  =   1.0
-raSec  =   1.0
+raHr   = input ('raHr   : ')
+raMin  = input ('raMin  : ')
+raSec  = input ('raSec  : ')
 
-decDeg = -45.0
-decMin =  30.0
-decSec =   0.0
+decDeg = input ('decDeg : ')
+decMin = input ('decMin : ')
+decSec = input ('decSec : ')
 
 # Algorith doesn't handle negavite degrees. Negative angle much be translated
 # to be between 270 and 360 degrees.
