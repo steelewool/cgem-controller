@@ -17,17 +17,10 @@ class RaDecToCgem:
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
         
         self.raInSeconds  = (raHr   * 60.0 * 60.0 + raSec  * 60.0 + raSec) * 15.0
-#        self.decGotoValue = self.decInSeconds * 12.0 * RaDecToCgem.conversionFactor
-#        self.raGotoValue  = self.raInSeconds  * 12.0 * RaDecToCgem.conversionFactor
+        
         self.decGotoValue = self.convertSeconds(self.decInSeconds)
         self.raGotoValue  = self.convertSeconds(self.raInSeconds)
         
-#        self.decHighByte = int (self.decGotoValue / 256 / 256)
-#        self.decMidByte  = int ((self.decGotoValue - (self.decHighByte * 256 * 256)) / 256)
-#        self.decLowByte  = int (self.decGotoValue - (self.decHighByte * 256 * 256) - (self.decMidByte * 256))
-#        self.raHighByte  = int (self.raGotoValue  / 256 / 256)
-#        self.raMidByte   = int ((self.raGotoValue -  (self.raHighByte  * 256 * 256)) / 256)
-#        self.raLowByte   = int (self.raGotoValue  - (self.raHighByte  * 256 * 256) - (self.raMidByte  * 256))
         self.decHighByte, self.decMidByte, self.decLowByte = self.highMidLow(self.decGotoValue)
         self.raHighByte, self.raMidByte, self.raLowByte = self.highMidLow(self.raGotoValue)
     
