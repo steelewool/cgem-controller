@@ -19,8 +19,8 @@ class RaDecToCgem:
         self.raInSeconds  = (raHr   * 60.0 * 60.0 + raSec  * 60.0 + raSec) * 15.0
 #        self.decGotoValue = self.decInSeconds * 12.0 * RaDecToCgem.conversionFactor
 #        self.raGotoValue  = self.raInSeconds  * 12.0 * RaDecToCgem.conversionFactor
-        self.decGotoValue = convertSeconds(self.decInSeconds)
-        self.raGotoValue  = convertSeconds(self.raInSeconds)
+        self.decGotoValue = self.convertSeconds(self.decInSeconds)
+        self.raGotoValue  = self.convertSeconds(self.raInSeconds)
         
 #        self.decHighByte = int (self.decGotoValue / 256 / 256)
 #        self.decMidByte  = int ((self.decGotoValue - (self.decHighByte * 256 * 256)) / 256)
@@ -28,13 +28,13 @@ class RaDecToCgem:
 #        self.raHighByte  = int (self.raGotoValue  / 256 / 256)
 #        self.raMidByte   = int ((self.raGotoValue -  (self.raHighByte  * 256 * 256)) / 256)
 #        self.raLowByte   = int (self.raGotoValue  - (self.raHighByte  * 256 * 256) - (self.raMidByte  * 256))
-        self.decHighByte, self.decMidByte, self.decLowByte = highMidLow(self.decGotoValue)
-        self.raHighByte, self.raMidByte, self.raLowByte = highMidLow(self.raGotoValue)
+        self.decHighByte, self.decMidByte, self.decLowByte = self.highMidLow(self.decGotoValue)
+        self.raHighByte, self.raMidByte, self.raLowByte = self.highMidLow(self.raGotoValue)
     
-    def convertSeconds(seconds):
+    def convertSeconds(self, seconds):
         return seconds * 12.0 * RaDecToCgem.conversionFactor
     
-    def highMidLow(gotoValue):
+    def highMidLow(self, gotoValue):
         highByte = int (gotoValue  / 256 / 256)
         midByte  = int ((gotoValue - (highByte  * 256 * 256)) / 256)
         lowByte  = int (gotoValue  - (highByte  * 256 * 256) - (midByte  * 256))
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     decMin = input ('decMin : ')
     decSec = input ('decSec : ')
     
-    conversion = RaDecToCgem(decDec, decMin, decSec)
+    conversion = RaDecToCgem(decDeg, decMin, decSec)
     
     print 'RA   hr min sec      : ', raHr,   ' ', raMin,  ' ', raSec
     print 'Dec deg min sec      : ', decDeg, ' ', decMin, ' ', decSec
