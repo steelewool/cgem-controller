@@ -27,6 +27,13 @@ raInSeconds  = (raHr   * 60.0 * 60.0 + raSec  * 60.0 + raSec) * 15.0
 decGotoValue = decInSeconds * 12.0 * conversionFactor
 raGotoValue  = raInSeconds  * 12.0 * conversionFactor
 
+hexDecGotoValue = hex(int(decGotoValue))
+hexRaGotoValue  = hex(int(raGotoValue))
+
+# strDecGotoValue = hexDecGotoValue[2:]
+strDecGotoValue = hex(int(decGotoValue))[2:]
+strRaGotoValue  = hex(int(raGotoValue))[2:]
+
 decHighByte = int (decGotoValue / 256 / 256)
 decMidByte  = int ((decGotoValue - (decHighByte * 256 * 256)) / 256)
 decLowByte  = int (decGotoValue - (decHighByte * 256 * 256) - (decMidByte * 256))
@@ -44,7 +51,7 @@ print 'conversionFactor     : ', conversionFactor
 print 'decInSeconds         : ', decInSeconds
 print 'raInSeconds          : ', raInSeconds
 print 'hex-int decGotoValue : ', hex(int(decGotoValue))
-print 'hex-int raGotValuie  : ', hex(int(raGotoValue))
+print 'hex-int raGotoValuie : ', hex(int(raGotoValue))
 print 'hex decHighByte      : ', hex(decHighByte)
 print 'hex decMidByte       : ', hex(decMidByte)
 print 'hex decLowByte       : ', hex(decLowByte)
@@ -52,4 +59,18 @@ print 'hex raHighByte       : ', hex(raHighByte)
 print 'hex raMidByte        : ', hex(raMidByte)
 print 'hex raLowByte        : ', hex(raLowByte)
 
+
+import serial
+
+ser = serial.Serial('/dev/ttyUSB0', timeout=1)
+
+print 'ser name : ', ser.name
+
+ser.write ('r' + strRaGotoValue + ',' + strDecGotoValue)
+
+char = ser.read(100)
+
+print 'char     : ', char
+
+ser.close()
 
