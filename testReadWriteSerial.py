@@ -1,10 +1,12 @@
 import serial
 
-ser = serial.Serial('/dev/ttyUSB0', timeout=2)  # open serial port
-print(ser.name)         # check which port was really used
-ser.write(b'hello')     # write a string
+ser = serial.Serial('/dev/ttyUSB0', timeout=2) # open serial port
+print 'ser.name : ', ser.name    # check which port was really used
+print 'write hello'
 
-char = ser.read()       # read a character
-print 'char: ', char    # print the output
+ser.write(b'hello')             # write a string
 
-ser.close()             # close port
+char = ser.read(20)             # read a character
+print 'char     : ', char       # print the output
+
+ser.close()                     # close port
