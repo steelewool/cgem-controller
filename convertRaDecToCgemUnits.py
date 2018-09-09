@@ -16,10 +16,17 @@ class RaDecToCgem:
         if (decDeg < 0):
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
         
-        self.raInSeconds  = (raHr   * 60.0 * 60.0 + raSec  * 60.0 + raSec) * 15.0
+        self.raInSeconds  = (raHr * 60.0 * 60.0 + raSec  * 60.0 + raSec) * 15.0
         
         self.decGotoValue = self.convertSeconds(self.decInSeconds)
         self.raGotoValue  = self.convertSeconds(self.raInSeconds)
+        
+        self.hexDecGotoValue = hex(int(self.decGotoValue))
+        self.hexRaGotoValue  = hex(int(self.raGotoValue))
+        
+        # strDecGotoValue = hexDecGotoValue[2:]
+        self.strDecGotoValue = hex(int(self.decGotoValue))[2:]
+        self.strRaGotoValue  = hex(int(self.raGotoValue))[2:]
         
         self.decHighByte, self.decMidByte, self.decLowByte = self.highMidLow(self.decGotoValue)
         self.raHighByte, self.raMidByte, self.raLowByte = self.highMidLow(self.raGotoValue)
@@ -60,4 +67,18 @@ if __name__ == '__main__':
     print 'hex raHighByte       : ', hex(conversion.raHighByte)
     print 'hex raMidByte        : ', hex(conversion.raMidByte)
     print 'hex raLowByte        : ', hex(conversion.raLowByte)
+    
+    import serial
+    
+    ser = serial.Serial('/dev/ttyUSB0', timeout=1)
+    
+    print 'ser name : ', ser.name
+    
+    ser.write ('r' + conversion.strRaGotoValue + ',' + conversion.strDecGotoValue)
+    
+    char = ser.read(100)
+    
+    print 'char     : ', char
+    
+    ser.close()
 
