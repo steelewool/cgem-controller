@@ -1,16 +1,37 @@
 import convertRaDecToCgemUnits
 
-raHr   = input ('raHr   : ')
-raMin  = input ('raMin  : ')
-raSec  = input ('raSec  : ')
+ra  = convertRaDecToCgemUnits.Ra()
+dec = convertRaDecToCgemUnits.Dec()
+
+# Zach, is there a cleaner way to do this?
+
+x = convertRaDecToCgemUnits.RaDecToCgem()
+
+loopControl = True
+while loopControl:
+    ra.hr   = input ('raHr   : ')
+
+    if ra.hr <= -1:
+        print 'User specified time to quit'
+        loopControl = False
+    else:
+        ra.min  = input ('raMin  : ')
+        ra.sec  = input ('raSec  : ')
     
-decDeg = input ('decDeg : ')
-decMin = input ('decMin : ')
-decSec = input ('decSec : ')
+        dec.deg = input ('decDeg : ')
+        dec.min = input ('decMin : ')
+        dec.sec = input ('decSec : ')
 
-x= convertRaDecToCgemUnits.RaDecToCgem (raHr, raMin, raSec,
-                                        decDeg, decMin, decSec)
+        print 'ra  : ', ra.hr, ra.min, ra.sec
+        print 'dec : ', dec.deg, dec.min, dec.sec
+        print
 
-print x.strRaGotoValue
+        print 'r'+x.raToCgemUnits(ra)+','+x.decToCgemUnits(dec)+'#'
+
+
+
+
+
+
 
 
