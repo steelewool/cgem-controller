@@ -3,7 +3,21 @@ import serial
 # Algorith doesn't handle negavite degrees. Negative angle much be translated
 # to be between 270 and 360 degrees.
 
+class Ra:
+    hr  = 0.0
+    min = 0.0
+    sec = 0.0
+
+class Dec:
+    deg = 0.0
+    min = 0.0
+    sec = 0.0
+
+
 class RaDecToCgem:
+
+    ra  = Ra()
+    dec = Dec()
 
 # This is setting up constants for the conversion process:
 
@@ -42,7 +56,25 @@ class RaDecToCgem:
 
         print self.strRaGotoValue, ',', self.strDecGotoValue
 
+    def raToCgemUnits (self, ra):
+        self.raInSeconds  = (ra.hr * 60.0 * 60.0 + ra.min  * 60.0 + ra.sec) * 15.0
+        
+        self.raGotoValue  = self.convertSeconds(self.raInSeconds)
+        self.hexRaGotoValue  = hex(int(self.raGotoValue))
+        self.strRaGotoValue  = hex(int(self.raGotoValue))[2:]
+        return self.strRaGotoValue
     
+    def decToCgemUnits (self, dec):
+        self.decInSeconds =  abs(dec.deg) * 60.0 * 60.0 + dec.min * 60.0 + dec.sec
+        
+        if (dec.deg < 0):
+            self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
+        
+        self.decGotoValue    = self.convertSeconds(self.decInSeconds)
+        self.hexDecGotoValue = hex(int(self.decGotoValue))
+        self.strDecGotoValue = hex(int(self.decGotoValue))[2:]
+        return self.strDecGotoValue
+
     def convertSeconds(self, seconds):
         return seconds * 12.0 * RaDecToCgem.conversionFactor
 
@@ -54,6 +86,7 @@ class RaDecToCgem:
         lowByte  = int (gotoValue  - (highByte  * 256 * 256) - (midByte  * 256))
         return [highByte, midByte, lowByte]
 
+        
 if __name__ == '__main__':
     raHr   = input ('raHr   : ')
     raMin  = input ('raMin  : ')
@@ -81,16 +114,33 @@ if __name__ == '__main__':
     print 'hex raHighByte       : ', hex(conversion.raHighByte)
     print 'hex raMidByte        : ', hex(conversion.raMidByte)
     print 'hex raLowByte        : ', hex(conversion.raLowByte)
+
+# This fails if there is no serial device. Need someway to test without the
+# hardware being present. Until then I'll put a #@ in front of serial
+# commands until I get this resolved
+
+#@    ser = serial.Serial('/dev/ttyUSB0', timeout=1)
     
-    ser = serial.Serial('/dev/ttyUSB0', timeout=1)
+#@    print 'ser name : ', ser.name
+
+    print 'write to the serial: ', 'r' + conversion.strRaGotoValue + ',' + conversion.strDecGotoValue
     
-    print 'ser name : ', ser.name
+#@    ser.write ('r' + conversion.strRaGotoValue + ',' + conversion.strDecGotoValue)
     
-    ser.write ('r' + conversion.strRaGotoValue + ',' + conversion.strDecGotoValue)
+#@    char = ser.read(100)
     
-    char = ser.read(100)
+#@    print 'char     : ', char
+
+    ra  = Ra()
+    dec = Dec()
     
-    print 'char     : ', char
+    ra.hr = 12
+
+    raCgemUnits  = conversion.raToCgemUnits(ra)
+    decCgemUnits = conversion.decToCgemUnits(dec)
     
-    ser.close()
+    print 'raCgemUnits  : ', raCgemUnits
+    print 'decCgemUnits : ', decCgemUnits
+    
+#@    ser.close()
 

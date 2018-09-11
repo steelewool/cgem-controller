@@ -1,16 +1,29 @@
 import convertRaDecToCgemUnits
 
-raHr   = input ('raHr   : ')
-raMin  = input ('raMin  : ')
-raSec  = input ('raSec  : ')
+ra  = convertRaDecToCgemUnits.Ra()
+dec = convertRaDecToCgemUnits.Dec()
+
+ra.hr   = input ('raHr   : ')
+ra.min  = input ('raMin  : ')
+ra.sec  = input ('raSec  : ')
     
-decDeg = input ('decDeg : ')
-decMin = input ('decMin : ')
-decSec = input ('decSec : ')
+dec.deg = input ('decDeg : ')
+dec.min = input ('decMin : ')
+dec.sec = input ('decSec : ')
 
-x= convertRaDecToCgemUnits.RaDecToCgem (raHr, raMin, raSec,
-                                        decDeg, decMin, decSec)
+x= convertRaDecToCgemUnits.RaDecToCgem (ra.hr,   ra.min,  ra.sec,
+                                        dec.deg, dec.min, dec.sec)
 
-print x.strRaGotoValue
+print 'ra  : ', ra.hr, ra.min, ra.sec
+print 'dec : ', dec.deg, dec.min, dec.sec
+
+# print 'x.strRaGotoValue : ', x.strRaGotoValue
+
+print x.raToCgemUnits (ra)
+print x.decToCgemUnits (dec)
+
+print 'r'+x.raToCgemUnits(ra)+','+x.decToCgemUnits(dec)+'#'
+
+
 
 
