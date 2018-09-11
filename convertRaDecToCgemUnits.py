@@ -1,4 +1,5 @@
 import serial
+
     
 # Algorith doesn't handle negavite degrees. Negative angle much be translated
 # to be between 270 and 360 degrees.
@@ -31,20 +32,22 @@ class RaDecToCgem:
 # This function is doing the conversion of RA and Declination to
 # cgem units.
 
-    def __init__(self,ra,dec):
-        self.raToCgemUnits(ra)
-        self.decToCgemUnits(dec)
+# Zach - this __init__ just, in my understanding keeps this python code runable as a standalone unit.
+#        Is that correct?
+
+    def __init__(self):
+        self.raToCgemUnits(self.ra)
+        self.decToCgemUnits(self.dec)
         
     def raToCgemUnits (self, ra):
-        self.raInSeconds  = (ra.hr * 60.0 * 60.0 + ra.min  * 60.0 + ra.sec) * 15.0
-        
-        self.raGotoValue  = self.convertSeconds(self.raInSeconds)
+        self.raInSeconds     = (ra.hr * 60.0 * 60.0 + ra.min  * 60.0 + ra.sec) * 15.0
+        self.raGotoValue     = self.convertSeconds(self.raInSeconds)
         self.hexRaGotoValue  = hex(int(self.raGotoValue))
         self.strRaGotoValue  = hex(int(self.raGotoValue))[2:]
         return self.strRaGotoValue
     
     def decToCgemUnits (self, dec):
-        self.decInSeconds =  abs(dec.deg) * 60.0 * 60.0 + dec.min * 60.0 + dec.sec
+        self.decInSeconds    =  abs(dec.deg) * 60.0 * 60.0 + dec.min * 60.0 + dec.sec
         
         if (dec.deg < 0):
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
@@ -67,21 +70,21 @@ class RaDecToCgem:
 
         
 if __name__ == '__main__':
-    raHr   = input ('raHr   : ')
-    raMin  = input ('raMin  : ')
-    raSec  = input ('raSec  : ')
-    
-    decDeg = input ('decDeg : ')
-    decMin = input ('decMin : ')
-    decSec = input ('decSec : ')
-
     ra = Ra()
     dec = Dec()
     
-    conversion = RaDecToCgem(ra,dec)
+    ra.hr   = input ('raHr   : ')
+    ra.min  = input ('raMin  : ')
+    ra.sec  = input ('raSec  : ')
     
-    print 'RA   hr min sec      : ', raHr,   ' ', raMin,  ' ', raSec
-    print 'Dec deg min sec      : ', decDeg, ' ', decMin, ' ', decSec
+    dec.deg = input ('decDeg : ')
+    dec.min = input ('decMin : ')
+    dec.sec = input ('decSec : ')
+
+    conversion = RaDecToCgem()
+    
+    print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
+    print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec
     print 'softwareResolution   : ', RaDecToCgem.softwareResolution
     print 'fullCircleSec        : ', RaDecToCgem.fullCircleSec
     print 'oneTwelthArcSeconds  : ', RaDecToCgem.oneTwelthArcSeconds
@@ -112,11 +115,6 @@ if __name__ == '__main__':
 #@    char = ser.read(100)
     
 #@    print 'char     : ', char
-
-    ra  = Ra()
-    dec = Dec()
-    
-    ra.hr = 12
 
     raCgemUnits  = conversion.raToCgemUnits(ra)
     decCgemUnits = conversion.decToCgemUnits(dec)
