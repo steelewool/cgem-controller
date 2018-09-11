@@ -3,14 +3,20 @@
 # to be between 270 and 360 degrees.
 
 class RaDecToCgem:
+
+# This is setting up constants for the conversion process:
+
     softwareResolution = 2**24;
     fullCircleDeg      = 360
     fullCircleSec      = fullCircleDeg * 60.0 * 60.0
     
     oneTwelthArcSeconds = fullCircleSec * 12.0
     conversionFactor    = softwareResolution / oneTwelthArcSeconds
-    
-    def __init__(self, decDeg, decMin, decSec):
+
+# This function is doing the conversion of RA and Declination to
+# cgem units.
+
+    def __init__(self, raHr, raMin, raSec, decDeg, decMin, decSec):
         self.decInSeconds =  abs(decDeg) * 60.0 * 60.0 + decMin * 60.0 + decSec
         
         if (decDeg < 0):
@@ -24,16 +30,23 @@ class RaDecToCgem:
         self.hexDecGotoValue = hex(int(self.decGotoValue))
         self.hexRaGotoValue  = hex(int(self.raGotoValue))
         
-        # strDecGotoValue = hexDecGotoValue[2:]
         self.strDecGotoValue = hex(int(self.decGotoValue))[2:]
         self.strRaGotoValue  = hex(int(self.raGotoValue))[2:]
-        
+
+# the function highMidLow isn't really necessary any longer and should
+# be depricated after I'm sure everthing is working correctly.
+
         self.decHighByte, self.decMidByte, self.decLowByte = self.highMidLow(self.decGotoValue)
         self.raHighByte, self.raMidByte, self.raLowByte = self.highMidLow(self.raGotoValue)
+
+        print self.strRaGotoValue, ',', self.strDecGotoValue
+
     
     def convertSeconds(self, seconds):
         return seconds * 12.0 * RaDecToCgem.conversionFactor
-    
+
+# Function may be depricated after things are working.
+
     def highMidLow(self, gotoValue):
         highByte = int (gotoValue  / 256 / 256)
         midByte  = int ((gotoValue - (highByte  * 256 * 256)) / 256)
