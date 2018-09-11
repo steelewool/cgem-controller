@@ -31,31 +31,10 @@ class RaDecToCgem:
 # This function is doing the conversion of RA and Declination to
 # cgem units.
 
-    def __init__(self, raHr, raMin, raSec, decDeg, decMin, decSec):
-        self.decInSeconds =  abs(decDeg) * 60.0 * 60.0 + decMin * 60.0 + decSec
+    def __init__(self,ra,dec):
+        self.raToCgemUnits(ra)
+        self.decToCgemUnits(dec)
         
-        if (decDeg < 0):
-            self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
-        
-        self.raInSeconds  = (raHr * 60.0 * 60.0 + raSec  * 60.0 + raSec) * 15.0
-        
-        self.decGotoValue = self.convertSeconds(self.decInSeconds)
-        self.raGotoValue  = self.convertSeconds(self.raInSeconds)
-        
-        self.hexDecGotoValue = hex(int(self.decGotoValue))
-        self.hexRaGotoValue  = hex(int(self.raGotoValue))
-        
-        self.strDecGotoValue = hex(int(self.decGotoValue))[2:]
-        self.strRaGotoValue  = hex(int(self.raGotoValue))[2:]
-
-# the function highMidLow isn't really necessary any longer and should
-# be depricated after I'm sure everthing is working correctly.
-
-        self.decHighByte, self.decMidByte, self.decLowByte = self.highMidLow(self.decGotoValue)
-        self.raHighByte, self.raMidByte, self.raLowByte = self.highMidLow(self.raGotoValue)
-
-        print self.strRaGotoValue, ',', self.strDecGotoValue
-
     def raToCgemUnits (self, ra):
         self.raInSeconds  = (ra.hr * 60.0 * 60.0 + ra.min  * 60.0 + ra.sec) * 15.0
         
@@ -95,8 +74,11 @@ if __name__ == '__main__':
     decDeg = input ('decDeg : ')
     decMin = input ('decMin : ')
     decSec = input ('decSec : ')
+
+    ra = Ra()
+    dec = Dec()
     
-    conversion = RaDecToCgem(raHr, raMin, raSec, decDeg, decMin, decSec)
+    conversion = RaDecToCgem(ra,dec)
     
     print 'RA   hr min sec      : ', raHr,   ' ', raMin,  ' ', raSec
     print 'Dec deg min sec      : ', decDeg, ' ', decMin, ' ', decSec
@@ -104,16 +86,16 @@ if __name__ == '__main__':
     print 'fullCircleSec        : ', RaDecToCgem.fullCircleSec
     print 'oneTwelthArcSeconds  : ', RaDecToCgem.oneTwelthArcSeconds
     print 'conversionFactor     : ', RaDecToCgem.conversionFactor
-    print 'decInSeconds         : ', conversion.decInSeconds
-    print 'raInSeconds          : ', conversion.raInSeconds
-    print 'hex-int decGotoValue : ', hex(int(conversion.decGotoValue))
-    print 'hex-int raGotValuie  : ', hex(int(conversion.raGotoValue))
-    print 'hex decHighByte      : ', hex(conversion.decHighByte)
-    print 'hex decMidByte       : ', hex(conversion.decMidByte)
-    print 'hex decLowByte       : ', hex(conversion.decLowByte)
-    print 'hex raHighByte       : ', hex(conversion.raHighByte)
-    print 'hex raMidByte        : ', hex(conversion.raMidByte)
-    print 'hex raLowByte        : ', hex(conversion.raLowByte)
+#    print 'decInSeconds         : ', self.decInSeconds
+#    print 'raInSeconds          : ', self.raInSeconds
+#    print 'hex-int decGotoValue : ', hex(int(conversion.decGotoValue))
+#    print 'hex-int raGotValuie  : ', hex(int(conversion.raGotoValue))
+#    print 'hex decHighByte      : ', hex(conversion.decHighByte)
+#    print 'hex decMidByte       : ', hex(conversion.decMidByte)
+#    print 'hex decLowByte       : ', hex(conversion.decLowByte)
+#    print 'hex raHighByte       : ', hex(conversion.raHighByte)
+#    print 'hex raMidByte        : ', hex(conversion.raMidByte)
+#    print 'hex raLowByte        : ', hex(conversion.raLowByte)
 
 # This fails if there is no serial device. Need someway to test without the
 # hardware being present. Until then I'll put a #@ in front of serial
@@ -123,7 +105,7 @@ if __name__ == '__main__':
     
 #@    print 'ser name : ', ser.name
 
-    print 'write to the serial: ', 'r' + conversion.strRaGotoValue + ',' + conversion.strDecGotoValue
+    print 'write to the serial: ', 'r' + conversion.raToCgemUnits(ra) + ',' + conversion.decToCgemUnits(dec)
     
 #@    ser.write ('r' + conversion.strRaGotoValue + ',' + conversion.strDecGotoValue)
     

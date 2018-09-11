@@ -11,13 +11,10 @@ dec.deg = input ('decDeg : ')
 dec.min = input ('decMin : ')
 dec.sec = input ('decSec : ')
 
-x= convertRaDecToCgemUnits.RaDecToCgem (ra.hr,   ra.min,  ra.sec,
-                                        dec.deg, dec.min, dec.sec)
+x = convertRaDecToCgemUnits.RaDecToCgem(ra,dec)
 
 print 'ra  : ', ra.hr, ra.min, ra.sec
 print 'dec : ', dec.deg, dec.min, dec.sec
-
-# print 'x.strRaGotoValue : ', x.strRaGotoValue
 
 print x.raToCgemUnits (ra)
 print x.decToCgemUnits (dec)
