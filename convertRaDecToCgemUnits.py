@@ -1,6 +1,5 @@
 import serial
     
-
 # Algorith doesn't handle negavite degrees. Negative angle much be translated
 # to be between 270 and 360 degrees.
 
