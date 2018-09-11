@@ -8,7 +8,9 @@ decDeg = input ('decDeg : ')
 decMin = input ('decMin : ')
 decSec = input ('decSec : ')
 
-convertRaDecToCgemUnits.RaDecToCgem (raHr, raMin, raSec,
-                                     decDeg, decMin, decSec)
+x= convertRaDecToCgemUnits.RaDecToCgem (raHr, raMin, raSec,
+                                        decDeg, decMin, decSec)
+
+print x.strRaGotoValue
 
 

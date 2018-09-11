@@ -1,3 +1,5 @@
+import serial
+    
 
 # Algorith doesn't handle negavite degrees. Negative angle much be translated
 # to be between 270 and 360 degrees.
@@ -62,7 +64,7 @@ if __name__ == '__main__':
     decMin = input ('decMin : ')
     decSec = input ('decSec : ')
     
-    conversion = RaDecToCgem(decDeg, decMin, decSec)
+    conversion = RaDecToCgem(raHr, raMin, raSec, decDeg, decMin, decSec)
     
     print 'RA   hr min sec      : ', raHr,   ' ', raMin,  ' ', raSec
     print 'Dec deg min sec      : ', decDeg, ' ', decMin, ' ', decSec
@@ -80,8 +82,6 @@ if __name__ == '__main__':
     print 'hex raHighByte       : ', hex(conversion.raHighByte)
     print 'hex raMidByte        : ', hex(conversion.raMidByte)
     print 'hex raLowByte        : ', hex(conversion.raLowByte)
-    
-    import serial
     
     ser = serial.Serial('/dev/ttyUSB0', timeout=1)
     
