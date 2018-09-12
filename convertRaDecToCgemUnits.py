@@ -19,7 +19,7 @@ class CgemConverter:
     def __init__(self):
         self.toCgem()
 
-    # Compute the ra/hex value
+    # Compute the ra/hex value, store as hex but return as string
     def convertSeconds(self, seconds):
         self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor
         self.hexGotoValue = hex(int(self.gotoValue))
