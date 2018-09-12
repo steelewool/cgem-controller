@@ -1,9 +1,14 @@
 import convertRaDecToCgemUnits
+import serial
 
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
 
+ser = serial.Serial('/dev/ttyUSB0', timeout=1)
+print 'ser name : ', ser.name
+
 loopControl = True
+
 while loopControl:
     ra.hr   = input ('raHr   : ')
 
@@ -23,7 +28,11 @@ while loopControl:
         print
 
         print 'r'+ra.toCgem()+','+dec.toCgem()+'#'
-        print 'hex values: ', ra.hexGotoValue, dec.hexGotoValue
+        ser.write ('r'+ra.toCgem()+','+dec.toCgem()+'#')
 
+        data = ser.read(50)
+        print 'data : ', data
+        print
+        
 
 
