@@ -15,10 +15,11 @@ class CgemConverter:
     oneTwelthArcSeconds = fullCircleSec * 12.0
     conversionFactor    = softwareResolution / oneTwelthArcSeconds
 
-# Using the default __init__ method for now
-#    def __init__(self):
+    # This only works when instantiating child classes (Ra and Dec)
+    def __init__(self):
+        self.toCgem()
 
-    # Compute the ra/hex value, store as hex but return as string
+    # Compute the ra/hex value
     def convertSeconds(self, seconds):
         self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor
         self.hexGotoValue = hex(int(self.gotoValue))
