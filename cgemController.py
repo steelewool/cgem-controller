@@ -1,13 +1,14 @@
 import convertRaDecToCgemUnits
+import serial
 
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
 
-# Zach, is there a cleaner way to do this?
-
-x = convertRaDecToCgemUnits.RaDecToCgem()
+ser = serial.Serial('/dev/ttyUSB0', timeout=1)
+print 'ser name : ', ser.name
 
 loopControl = True
+
 while loopControl:
     ra.hr   = input ('raHr   : ')
 
@@ -26,12 +27,12 @@ while loopControl:
         print 'dec : ', dec.deg, dec.min, dec.sec
         print
 
-        print 'r'+x.raToCgemUnits(ra)+','+x.decToCgemUnits(dec)+'#'
+        print 'r'+ra.toCgem()+','+dec.toCgem()+'#'
+        ser.write ('r'+ra.toCgem()+','+dec.toCgem()+'#')
 
-
-
-
-
-
+        data = ser.read(50)
+        print 'data : ', data
+        print
+        
 
 
