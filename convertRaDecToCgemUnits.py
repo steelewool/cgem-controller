@@ -4,21 +4,7 @@ import serial
 # Algorith doesn't handle negavite degrees. Negative angle much be translated
 # to be between 270 and 360 degrees.
 
-class Ra:
-    hr  = 0.0
-    min = 0.0
-    sec = 0.0
-
-class Dec:
-    deg = 0.0
-    min = 0.0
-    sec = 0.0
-
-
-class RaDecToCgem:
-
-    ra  = Ra()
-    dec = Dec()
+class CgemConverter:
 
 # This is setting up constants for the conversion process:
 
@@ -29,38 +15,17 @@ class RaDecToCgem:
     oneTwelthArcSeconds = fullCircleSec * 12.0
     conversionFactor    = softwareResolution / oneTwelthArcSeconds
 
-# This function is doing the conversion of RA and Declination to
-# cgem units.
+# Using the default __init__ method for now
+#    def __init__(self):
 
-# Zach - this __init__ just, in my understanding keeps this python code runable as a standalone unit.
-#        Is that correct?
-
-    def __init__(self):
-        self.raToCgemUnits(self.ra)
-        self.decToCgemUnits(self.dec)
-        
-    def raToCgemUnits (self, ra):
-        self.raInSeconds     = (ra.hr * 60.0 * 60.0 + ra.min  * 60.0 + ra.sec) * 15.0
-        self.raGotoValue     = self.convertSeconds(self.raInSeconds)
-        self.hexRaGotoValue  = hex(int(self.raGotoValue))
-        self.strRaGotoValue  = hex(int(self.raGotoValue))[2:]
-        return self.strRaGotoValue
-    
-    def decToCgemUnits (self, dec):
-        self.decInSeconds    =  abs(dec.deg) * 60.0 * 60.0 + dec.min * 60.0 + dec.sec
-        
-        if (dec.deg < 0):
-            self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
-        
-        self.decGotoValue    = self.convertSeconds(self.decInSeconds)
-        self.hexDecGotoValue = hex(int(self.decGotoValue))
-        self.strDecGotoValue = hex(int(self.decGotoValue))[2:]
-        return self.strDecGotoValue
-
+    # Compute the ra/hex value, store as hex but return as string
     def convertSeconds(self, seconds):
-        return seconds * 12.0 * RaDecToCgem.conversionFactor
+        self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor
+        self.hexGotoValue = hex(int(self.gotoValue))
+        self.strGotoValue = hex(int(self.gotoValue))[2:]
+        return self.strGotoValue
 
-# Function may be depricated after things are working.
+# Function may be deprecated after things are working.
 
     def highMidLow(self, gotoValue):
         highByte = int (gotoValue  / 256 / 256)
@@ -68,7 +33,28 @@ class RaDecToCgem:
         lowByte  = int (gotoValue  - (highByte  * 256 * 256) - (midByte  * 256))
         return [highByte, midByte, lowByte]
 
+class Ra(CgemConverter):
+    hr  = 0.0
+    min = 0.0
+    sec = 0.0
+    
+    def toCgem(self):
+        self.raInSeconds     = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
+        return self.convertSeconds(self.raInSeconds)
+
+class Dec(CgemConverter):
+    deg = 0.0
+    min = 0.0
+    sec = 0.0
+    
+    def toCgem(self):
+        self.decInSeconds    =  abs(self.deg) * 60.0 * 60.0 + self.min * 60.0 + self.sec
         
+        if (self.deg < 0):
+            self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
+        
+        return self.convertSeconds(self.decInSeconds)
+
 if __name__ == '__main__':
     ra = Ra()
     dec = Dec()
@@ -81,14 +67,14 @@ if __name__ == '__main__':
     dec.min = input ('decMin : ')
     dec.sec = input ('decSec : ')
 
-    conversion = RaDecToCgem()
+    conversion = CgemConverter()
     
     print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
     print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec
-    print 'softwareResolution   : ', RaDecToCgem.softwareResolution
-    print 'fullCircleSec        : ', RaDecToCgem.fullCircleSec
-    print 'oneTwelthArcSeconds  : ', RaDecToCgem.oneTwelthArcSeconds
-    print 'conversionFactor     : ', RaDecToCgem.conversionFactor
+    print 'softwareResolution   : ', CgemConverter.softwareResolution
+    print 'fullCircleSec        : ', CgemConverter.fullCircleSec
+    print 'oneTwelthArcSeconds  : ', CgemConverter.oneTwelthArcSeconds
+    print 'conversionFactor     : ', CgemConverter.conversionFactor
 #    print 'decInSeconds         : ', self.decInSeconds
 #    print 'raInSeconds          : ', self.raInSeconds
 #    print 'hex-int decGotoValue : ', hex(int(conversion.decGotoValue))
@@ -108,7 +94,7 @@ if __name__ == '__main__':
     
 #@    print 'ser name : ', ser.name
 
-    print 'write to the serial: ', 'r' + conversion.raToCgemUnits(ra) + ',' + conversion.decToCgemUnits(dec)
+    print 'write to the serial: ', 'r' + ra.toCgem() + ',' + dec.toCgem()
     
 #@    ser.write ('r' + conversion.strRaGotoValue + ',' + conversion.strDecGotoValue)
     
@@ -116,8 +102,8 @@ if __name__ == '__main__':
     
 #@    print 'char     : ', char
 
-    raCgemUnits  = conversion.raToCgemUnits(ra)
-    decCgemUnits = conversion.decToCgemUnits(dec)
+    raCgemUnits  = ra.toCgem()
+    decCgemUnits = dec.toCgem()
     
     print 'raCgemUnits  : ', raCgemUnits
     print 'decCgemUnits : ', decCgemUnits
