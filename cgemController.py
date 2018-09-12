@@ -3,10 +3,6 @@ import convertRaDecToCgemUnits
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
 
-# Zach, is there a cleaner way to do this?
-
-x = convertRaDecToCgemUnits.RaDecToCgem()
-
 loopControl = True
 while loopControl:
     ra.hr   = input ('raHr   : ')
@@ -26,12 +22,8 @@ while loopControl:
         print 'dec : ', dec.deg, dec.min, dec.sec
         print
 
-        print 'r'+x.raToCgemUnits(ra)+','+x.decToCgemUnits(dec)+'#'
-
-
-
-
-
+        print 'r'+ra.toCgem()+','+dec.toCgem()+'#'
+        print 'hex values: ', ra.hexGotoValue, dec.hexGotoValue
 
 
 
