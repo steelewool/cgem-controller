@@ -1,5 +1,4 @@
 import serial
-
     
 # Algorith doesn't handle negavite degrees. Negative angle much be translated
 # to be between 270 and 360 degrees.
@@ -56,9 +55,21 @@ class Dec(CgemConverter):
         
         return self.convertSeconds(self.decInSeconds)
 
+# Zach, how would I structure this object to be able to be initialized with
+#       a RA and Declination.
+
 class ObjectRaDec():
     ra  = Ra()
     dec = Dec()
+
+#   lst = Ra(12.0,15.0,3.0)
+    lst = Ra()
+    lst.hr  = 15
+    lst.min = 10
+    lst.sec = 0
+
+# First determine which bin the two objects are in which is based on the LST.
+
     def __eq__ (x,y):
         if ((x.ra == y.ra) and (x.dec == y.dec)):
             return 0
@@ -66,24 +77,30 @@ class ObjectRaDec():
             return -1;
 
     def __lt__ (x,y):
+
         xRaInSeconds  = ((x.ra.hr   * 60.0 * 60.0) + (x.ra.min  * 60.0) + x.ra.sec) * 15.0
         yRaInSeconds  = ((y.ra.hr   * 60.0 * 60.0) + (y.ra.min  * 60.0) + y.ra.sec) * 15.0
         xDecInSeconds =  (x.dec.deg * 60.0 * 60.0) + (x.dec.min * 60.0) + x.dec.sec
         yDecInSeconds =  (y.dec.deg * 60.0 * 60.0) + (y.dec.min * 60.0) + y.dec.sec
 
+        if (x.dec.deg > 70):
+            xBin = 1
+        else:
+            print 'need code to computer xBin'
+            
         return 0
 
 if __name__ == '__main__':
-    ra = Ra()
+    ra  = Ra()
     dec = Dec()
 
     object1 = ObjectRaDec()
     object2 = ObjectRaDec()
 
-    object1.ra.hr   = 10.0
-    object1.dec.deg =  0.0
-    object2.ra.hr   = 15.0
-    object2.dec.deg =  0.0
+    object1.ra.hr   = 10
+    object1.dec.deg =  0
+    object2.ra.hr   = 15
+    object2.dec.deg =  0
 
     if (object1 == object2):
         print 'equal is True'
