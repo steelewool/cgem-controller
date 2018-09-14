@@ -56,10 +56,45 @@ class Dec(CgemConverter):
         
         return self.convertSeconds(self.decInSeconds)
 
+class ObjectRaDec():
+    ra  = Ra()
+    dec = Dec()
+    def __eq__ (x,y):
+        if ((x.ra == y.ra) and (x.dec == y.dec)):
+            return 0
+        else:
+            return -1;
+
+    def __lt__ (x,y):
+        xRaInSeconds  = ((x.ra.hr   * 60.0 * 60.0) + (x.ra.min  * 60.0) + x.ra.sec) * 15.0
+        yRaInSeconds  = ((y.ra.hr   * 60.0 * 60.0) + (y.ra.min  * 60.0) + y.ra.sec) * 15.0
+        xDecInSeconds =  (x.dec.deg * 60.0 * 60.0) + (x.dec.min * 60.0) + x.dec.sec
+        yDecInSeconds =  (y.dec.deg * 60.0 * 60.0) + (y.dec.min * 60.0) + y.dec.sec
+
+        return 0
+
 if __name__ == '__main__':
     ra = Ra()
     dec = Dec()
-    
+
+    object1 = ObjectRaDec()
+    object2 = ObjectRaDec()
+
+    object1.ra.hr   = 10.0
+    object1.dec.deg =  0.0
+    object2.ra.hr   = 15.0
+    object2.dec.deg =  0.0
+
+    if (object1 == object2):
+        print 'equal is True'
+    else:
+        print 'equal to False'
+
+    if (object1 < object2):
+        print 'less than true'
+    else:
+        print 'less than false'
+        
     ra.hr   = input ('raHr   : ')
     ra.min  = input ('raMin  : ')
     ra.sec  = input ('raSec  : ')
@@ -68,24 +103,12 @@ if __name__ == '__main__':
     dec.min = input ('decMin : ')
     dec.sec = input ('decSec : ')
 
-    conversion = CgemConverter()
-    
     print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
     print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec
     print 'softwareResolution   : ', CgemConverter.softwareResolution
     print 'fullCircleSec        : ', CgemConverter.fullCircleSec
     print 'oneTwelthArcSeconds  : ', CgemConverter.oneTwelthArcSeconds
     print 'conversionFactor     : ', CgemConverter.conversionFactor
-#    print 'decInSeconds         : ', self.decInSeconds
-#    print 'raInSeconds          : ', self.raInSeconds
-#    print 'hex-int decGotoValue : ', hex(int(conversion.decGotoValue))
-#    print 'hex-int raGotValuie  : ', hex(int(conversion.raGotoValue))
-#    print 'hex decHighByte      : ', hex(conversion.decHighByte)
-#    print 'hex decMidByte       : ', hex(conversion.decMidByte)
-#    print 'hex decLowByte       : ', hex(conversion.decLowByte)
-#    print 'hex raHighByte       : ', hex(conversion.raHighByte)
-#    print 'hex raMidByte        : ', hex(conversion.raMidByte)
-#    print 'hex raLowByte        : ', hex(conversion.raLowByte)
 
 # This fails if there is no serial device. Need someway to test without the
 # hardware being present. Until then I'll put a #@ in front of serial
