@@ -4,10 +4,23 @@ import serial
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
 
-ser = serial.Serial('/dev/ttyUSB0', timeout=1)
+# Setting a 5 second timeout - which seems too long
+# But good to start experimenting with.
+
+timeoutValue = 5
+ser = serial.Serial('/dev/ttyUSB0', timeout=timeoutValue)
 print 'ser name : ', ser.name
 
+# Do a read of the serial port with the idea to clear out
+# any characters that may be sitting there.
+
+print 'Do a read of the serial with the timerout of: ', timeoutValue
+
+data = serial.Read(50)
+print 'data : ', data
 loopControl = True
+
+pirnt 'Enter a negative number for the RA hours wnd the loop will exit.'
 
 while loopControl:
     ra.hr   = input ('raHr   : ')
@@ -27,12 +40,14 @@ while loopControl:
         print 'dec : ', dec.deg, dec.min, dec.sec
         print
 
-        print 'r'+ra.toCgem()+','+dec.toCgem()+'#'
-        ser.write ('r'+ra.toCgem()+','+dec.toCgem()+'#')
+        print 'r'+ra.toCgem()+','+dec.toCgem()
+        
+        ser.write ('r'+ra.toCgem()+','+dec.toCgem())
 
-        data = ser.read(50)
+        data = ser.read(1)
         print 'data : ', data
         print
-        
+
+        # Hand controller should respond with a # character
 
 
