@@ -1,5 +1,4 @@
 import serial
-
     
 # Algorith doesn't handle negavite degrees. Negative angle much be translated
 # to be between 270 and 360 degrees.
@@ -57,9 +56,7 @@ class Dec(CgemConverter):
         return self.convertSeconds(self.decInSeconds)
 
 if __name__ == '__main__':
-    ra = Ra()
-    dec = Dec()
-    
+        
     ra.hr   = input ('raHr   : ')
     ra.min  = input ('raMin  : ')
     ra.sec  = input ('raSec  : ')
@@ -68,24 +65,12 @@ if __name__ == '__main__':
     dec.min = input ('decMin : ')
     dec.sec = input ('decSec : ')
 
-    conversion = CgemConverter()
-    
     print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
     print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec
     print 'softwareResolution   : ', CgemConverter.softwareResolution
     print 'fullCircleSec        : ', CgemConverter.fullCircleSec
     print 'oneTwelthArcSeconds  : ', CgemConverter.oneTwelthArcSeconds
     print 'conversionFactor     : ', CgemConverter.conversionFactor
-#    print 'decInSeconds         : ', self.decInSeconds
-#    print 'raInSeconds          : ', self.raInSeconds
-#    print 'hex-int decGotoValue : ', hex(int(conversion.decGotoValue))
-#    print 'hex-int raGotValuie  : ', hex(int(conversion.raGotoValue))
-#    print 'hex decHighByte      : ', hex(conversion.decHighByte)
-#    print 'hex decMidByte       : ', hex(conversion.decMidByte)
-#    print 'hex decLowByte       : ', hex(conversion.decLowByte)
-#    print 'hex raHighByte       : ', hex(conversion.raHighByte)
-#    print 'hex raMidByte        : ', hex(conversion.raMidByte)
-#    print 'hex raLowByte        : ', hex(conversion.raLowByte)
 
 # This fails if there is no serial device. Need someway to test without the
 # hardware being present. Until then I'll put a #@ in front of serial
