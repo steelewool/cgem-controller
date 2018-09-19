@@ -1,3 +1,6 @@
+# For now this is just a basic test. May want to rename it to something like:
+# cgemTest if it actually works.
+
 import convertRaDecToCgemUnits
 import serial
 
@@ -8,6 +11,7 @@ dec = convertRaDecToCgemUnits.Dec()
 # But good to start experimenting with.
 
 timeoutValue = 5
+
 ser = serial.Serial('/dev/ttyUSB0', timeout=timeoutValue)
 print 'ser name : ', ser.name
 
@@ -16,11 +20,11 @@ print 'ser name : ', ser.name
 
 print 'Do a read of the serial with the timerout of: ', timeoutValue
 
-data = serial.Read(50)
+data = ser.read(50)
 print 'data : ', data
 loopControl = True
 
-pirnt 'Enter a negative number for the RA hours wnd the loop will exit.'
+print 'Enter a negative number for the RA hours wnd the loop will exit.'
 
 while loopControl:
     ra.hr   = input ('raHr   : ')
@@ -44,7 +48,7 @@ while loopControl:
         
         ser.write ('r'+ra.toCgem()+','+dec.toCgem())
 
-        data = ser.read(1)
+        data = ser.read(50)
         print 'data : ', data
         print
 
