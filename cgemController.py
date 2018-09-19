@@ -10,7 +10,7 @@ dec = convertRaDecToCgemUnits.Dec()
 # Setting a 5 second timeout - which seems too long
 # But good to start experimenting with.
 
-timeoutValue = 5
+timeoutValue = 1
 
 ser = serial.Serial('/dev/ttyUSB0', timeout=timeoutValue)
 print 'ser name : ', ser.name
@@ -18,7 +18,7 @@ print 'ser name : ', ser.name
 # Do a read of the serial port with the idea to clear out
 # any characters that may be sitting there.
 
-print 'Do a read of the serial with the timerout of: ', timeoutValue
+print 'Do a read of the serial with the timeout of: ', timeoutValue
 
 data = ser.read(50)
 print 'data : ', data
@@ -48,8 +48,16 @@ while loopControl:
         
         ser.write ('r'+ra.toCgem()+','+dec.toCgem())
 
-        data = ser.read(50)
-        print 'data : ', data
+        ser.timeout = 60
+
+        print 'Changed the timeout value to: ', ser.timeout
+        tried = 120
+        foundHashTag = False
+        while ((tries > 0) or foundHashTag):
+            data = ser.read(1)
+            print 'data : ', data
+            if (data == '#'):
+                foundHashTag = True
         print
 
         # Hand controller should respond with a # character
