@@ -40,26 +40,25 @@ while loopControl:
         dec.min = input ('decMin : ')
         dec.sec = input ('decSec : ')
 
-        print 'ra  : ', ra.hr, ra.min, ra.sec
+        print 'ra  : ', ra.hr,   ra.min,  ra.sec
         print 'dec : ', dec.deg, dec.min, dec.sec
         print
 
         print 'r'+ra.toCgem()+','+dec.toCgem()
-        
+
         ser.write ('r'+ra.toCgem()+','+dec.toCgem())
 
-        ser.timeout = 60
+        # Hand controller should respond with a # character
 
         print 'Changed the timeout value to: ', ser.timeout
-        tried = 120
+        tries = 30
         foundHashTag = False
+
         while ((tries > 0) or foundHashTag):
             data = ser.read(1)
             print 'data : ', data
             if (data == '#'):
                 foundHashTag = True
+            tries -= 1
         print
-
-        # Hand controller should respond with a # character
-
 
