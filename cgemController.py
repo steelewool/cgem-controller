@@ -4,15 +4,22 @@
 import convertRaDecToCgemUnits
 import serial
 
+import commands
+
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
 
-# Setting a 5 second timeout - which seems too long
-# But good to start experimenting with.
+# Setting a 1 second timeout
 
 timeoutValue = 1
 
-ser = serial.Serial('/dev/ttyUSB0', timeout=timeoutValue)
+# Get and list the possible serial ports
+
+print commands.getstatusoutput ('ls /dev/ttyUSB*')
+
+serialPort = input ("Enter serial port, something like 'ttyUSB0' for example ")
+
+ser = serial.Serial('/dev/'+serialPort, timeout=timeoutValue)
 print 'ser name : ', ser.name
 
 # Do a read of the serial port with the idea to clear out
