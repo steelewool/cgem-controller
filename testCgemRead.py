@@ -6,19 +6,26 @@
 
 import serial
 
-ser0 = serial.Serial('/dev/ttyUSB0',
-                     baudrate = 9600,
-                     timeout  =    6 ) # open serial port
+ser = serial.Serial(port     = '/dev/ttyUSB0',
+                     baudrate =          9600,
+                     timeout  =             1) # open serial port
 
-print 'ser0.name : ', ser0.name    # check which port was really used
+print 'ser.name : ', ser.name    # check which port was really used
 
-ser0.write(b'e')            # write a string
+ser.write(b'e')            # write a string
 
 print 'read from serial port'
 
-char = ser0.read(20)            # read a character
+foundHashTag = True
 
-print 'char     : ', char       # print the output
+output = ''
 
-ser0.close()                     # close port
+while (foundHashTag):
+    data = ser.read(1)
+    output = output + data
+    if (data == '#'):
+        foundHashTag = False
+print 'output: ', output
+
+ser.close()                     # close port
 
