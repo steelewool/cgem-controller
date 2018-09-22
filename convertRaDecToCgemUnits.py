@@ -23,14 +23,22 @@ class CgemConverter:
         self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor
         self.hexGotoValue = hex(int(self.gotoValue))
         self.strGotoValue = hex(int(self.gotoValue))[2:]
+        x = len(self.strGotoValue)
+#        print 'x            : ', x
+        addCharacters = 8-x
+#        print 'strGotoValue : ', self.strGotoValue
+#        print 'addCharacters: ', addCharacters
+        for i in range (0,addCharacters):
+            self.strGotoValue += '0'
         return self.strGotoValue
 
-# Function may be deprecated after things are working.
 
-    def highMidLow(self, gotoValue):
-        highByte = int (gotoValue  / 256 / 256)
-        midByte  = int ((gotoValue - (highByte  * 256 * 256)) / 256)
-        lowByte  = int (gotoValue  - (highByte  * 256 * 256) - (midByte  * 256))
+    def highMidLow(self, seconds):
+        self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor        
+        highByte = int (self.gotoValue  / 256 / 256)
+        midByte  = int ((self.gotoValue - (highByte  * 256 * 256)) / 256)
+        lowByte  = int (self.gotoValue  - (highByte  * 256 * 256) - (midByte  * 256))
+        print 'highMidLow : ', highByte, midByte, lowByte
         return [highByte, midByte, lowByte]
 
 class Ra(CgemConverter):
@@ -56,7 +64,10 @@ class Dec(CgemConverter):
         return self.convertSeconds(self.decInSeconds)
 
 if __name__ == '__main__':
-        
+
+    ra = Ra()
+    dec = Dec()
+    
     ra.hr   = input ('raHr   : ')
     ra.min  = input ('raMin  : ')
     ra.sec  = input ('raSec  : ')
@@ -71,7 +82,7 @@ if __name__ == '__main__':
     print 'fullCircleSec        : ', CgemConverter.fullCircleSec
     print 'oneTwelthArcSeconds  : ', CgemConverter.oneTwelthArcSeconds
     print 'conversionFactor     : ', CgemConverter.conversionFactor
-
+    
 # This fails if there is no serial device. Need someway to test without the
 # hardware being present. Until then I'll put a #@ in front of serial
 # commands until I get this resolved
