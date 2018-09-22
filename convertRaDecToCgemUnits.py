@@ -32,14 +32,6 @@ class CgemConverter:
             self.strGotoValue += '0'
         return self.strGotoValue
 
-#    def highMidLow(self, seconds):
-#        self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor        
-#        highByte = int (self.gotoValue  / 256 / 256)
-#        midByte  = int ((self.gotoValue - (highByte  * 256 * 256)) / 256)
-#        lowByte  = int (self.gotoValue  - (highByte  * 256 * 256) - (midByte  * 256))
-#        print 'highMidLow : ', highByte, midByte, lowByte
-#        return [highByte, midByte, lowByte]
-
 class Ra(CgemConverter):
     hr  = 0.0
     min = 0.0
