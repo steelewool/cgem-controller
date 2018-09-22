@@ -17,9 +17,14 @@ timeoutValue = 1
 
 print commands.getstatusoutput ('ls /dev/ttyUSB*')
 
-serialPort = input ("Enter serial port, something like 'ttyUSB0' for example ")
+# serialPort = input ("Enter serial port, something like 'ttyUSB0' for example ")
 
-ser = serial.Serial('/dev/'+serialPort, timeout=timeoutValue)
+# Using a hardwired /dev/ttyUSB0 for now.
+
+ser = serial.Serial(port     = '/dev/ttyUSB0',
+                    baudrate =           9600,
+                    timeout  =   timeoutValue)
+
 print 'ser name : ', ser.name
 
 # Do a read of the serial port with the idea to clear out
@@ -54,18 +59,30 @@ while loopControl:
         print 'r'+ra.toCgem()+','+dec.toCgem()
 
         ser.write ('r'+ra.toCgem()+','+dec.toCgem())
-
+        
         # Hand controller should respond with a # character
 
-        print 'Changed the timeout value to: ', ser.timeout
-        tries = 30
-        foundHashTag = False
+        # print 'Changed the timeout value to: ', ser.timeout
+        foundHashTag = True
 
-        while ((tries > 0) or foundHashTag):
+        while (foundHashTag):
             data = ser.read(1)
             print 'data : ', data
             if (data == '#'):
-                foundHashTag = True
-            tries -= 1
+                print 'found the hash tag'
+                foundHashTag = False
         print
 
+        ser.write(b'e')            # write a string
+        foundHashTag = True
+
+        output = ''
+
+        while (foundHashTag):
+            data = ser.read(1)
+            output = output + data
+            if (data == '#'):
+                foundHashTag = False
+        print 'output: ', output
+
+ser.close()
