@@ -40,6 +40,15 @@ class Ra(CgemConverter):
     def toCgem(self):
         self.raInSeconds     = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
         return self.convertSeconds(self.raInSeconds)
+    
+    # Incomlete, mostly generating test output for now
+    @staticmethod
+    def parse(cgem):
+        gotoValue = int(cgem[:-2], 16)
+        print 'Computed goto value: ', gotoValue
+        totalSeconds = gotoValue / 12.0 / CgemConverter.conversionFactor
+        print 'Total in seconds: ', totalSeconds
+        return 0;
 
 class Dec(CgemConverter):
     deg = 0.0
@@ -95,6 +104,10 @@ if __name__ == '__main__':
     
     print 'raCgemUnits  : ', raCgemUnits
     print 'decCgemUnits : ', decCgemUnits
+    
+    print 'RA in seconds: ', ra.raInSeconds
+    print 'RA goto value: ', ra.gotoValue
+    Ra.parse(raCgemUnits)
     
 #@    ser.close()
 
