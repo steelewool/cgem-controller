@@ -3,8 +3,8 @@
 
 import convertRaDecToCgemUnits
 import serial
-
 import commands
+import time
 
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
@@ -30,14 +30,20 @@ print 'ser name : ', ser.name
 # Do a read of the serial port with the idea to clear out
 # any characters that may be sitting there.
 
-print 'Do a read of the serial with the timeout of: ', timeoutValue
+print 'Test communication to the device by sending a Ka'
+print 'Hand controllers should return with a#'
 
-data = ser.read(50)
-print 'data : ', data
-loopControl = True
+ser.write('Ka')
+data = ser.read(2)
+print 'Read : ', data
 
+if (data != 'a#'):
+    print 'Comm not working and exit'
+    exit()
+    
 print 'Enter a negative number for the RA hours wnd the loop will exit.'
 
+loopControl = True
 while loopControl:
     ra.hr   = input ('raHr   : ')
 
@@ -58,31 +64,25 @@ while loopControl:
 
         print 'r'+ra.toCgem()+','+dec.toCgem()
 
-        ser.write ('r'+ra.toCgem()+','+dec.toCgem())
+        print 'Execute the goto command:'
         
-        # Hand controller should respond with a # character
+        ser.write ('r'+ra.toCgem()+','+dec.toCgem())
+#       Confirm command sent to the handcontroller'
+        data = ser.read(1)
+        
+        gotoInProgress = True
+        while (gotoInProgress):
+            time.sleep(1)
+            ser.write('L')
+            data = ser.read(2)
+#            print 'Result of L command: ', data
+            if (data == '0#'):
+                print 'Goto Finished'
+                gotoInProgress = False
 
-        # print 'Changed the timeout value to: ', ser.timeout
-        foundHashTag = True
-
-        while (foundHashTag):
-            data = ser.read(1)
-            print 'data : ', data
-            if (data == '#'):
-                print 'found the hash tag'
-                foundHashTag = False
-        print
-
-        ser.write(b'e')            # write a string
-        foundHashTag = True
-
-        output = ''
-
-        while (foundHashTag):
-            data = ser.read(1)
-            output = output + data
-            if (data == '#'):
-                foundHashTag = False
-        print 'output: ', output
+        print 'Goto complete, now request where it moved to.'
+        
+        ser.write('e')            # write a string
+        print 'output: ', ser.read(20)
 
 ser.close()
