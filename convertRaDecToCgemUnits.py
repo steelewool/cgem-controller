@@ -48,6 +48,21 @@ class Ra(CgemConverter):
         print 'Computed goto value: ', gotoValue
         totalSeconds = gotoValue / 12.0 / CgemConverter.conversionFactor
         print 'Total in seconds: ', totalSeconds
+        raBuffer = totalSeconds / 15.0
+        raHr = 0
+        raMin = 0
+        raSec = 0
+        while raBuffer >= 3600:
+            raBuffer -= 3600
+            raHr += 1
+        while raBuffer >= 60:
+            raBuffer -= 60
+            raMin += 1
+        raSec = int(round(raBuffer))
+        print 'raBuffer: ', raBuffer
+        print 'ra Hours: ', raHr
+        print 'ra Mins:  ', raMin
+        print 'ra Secs:  ', raSec
         return 0;
 
 class Dec(CgemConverter):
