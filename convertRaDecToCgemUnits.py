@@ -39,7 +39,7 @@ class Ra(CgemConverter):
     
     def toCgem(self):
         self.raInSeconds     = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
-        return self.convertSeconds(self.raInSeconds)
+        return str.upper(self.convertSeconds(self.raInSeconds))
 
 class Dec(CgemConverter):
     deg = 0.0
@@ -52,7 +52,7 @@ class Dec(CgemConverter):
         if (self.deg < 0):
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
         
-        return self.convertSeconds(self.decInSeconds)
+        return str.upper(self.convertSeconds(self.decInSeconds))
 
 # This paradigm was provided by Zach as a way to test the individual
 # classes as a main program.
