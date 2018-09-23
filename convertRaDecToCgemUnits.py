@@ -37,21 +37,19 @@ class Ra(CgemConverter):
     min = 0.0
     sec = 0.0
     
+    def __init__(self, params=[0,0,0]):
+        self.hr, self.min, self.sec = params
+        CgemConverter.__init__(self)
+    
     def toCgem(self):
         self.raInSeconds     = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
         return str.upper(self.convertSeconds(self.raInSeconds))
     
-    # Incomlete, mostly generating test output for now
     @staticmethod
     def parse(cgem):
         gotoValue = int(cgem[:-2], 16)
-        print 'Computed goto value: ', gotoValue
-        totalSeconds = gotoValue / 12.0 / CgemConverter.conversionFactor
-        print 'Total in seconds: ', totalSeconds
-        raBuffer = totalSeconds / 15.0
-        raHr = 0
-        raMin = 0
-        raSec = 0
+        raBuffer = (gotoValue / 12.0 / CgemConverter.conversionFactor) / 15.0
+        raSec = raMin = raHr = 0
         while raBuffer >= 3600:
             raBuffer -= 3600
             raHr += 1
@@ -59,11 +57,7 @@ class Ra(CgemConverter):
             raBuffer -= 60
             raMin += 1
         raSec = int(round(raBuffer))
-        print 'raBuffer: ', raBuffer
-        print 'ra Hours: ', raHr
-        print 'ra Mins:  ', raMin
-        print 'ra Secs:  ', raSec
-        return 0;
+        return Ra([raHr, raMin, raSec]);
 
 class Dec(CgemConverter):
     deg = 0.0
@@ -122,7 +116,10 @@ if __name__ == '__main__':
     
     print 'RA in seconds: ', ra.raInSeconds
     print 'RA goto value: ', ra.gotoValue
-    Ra.parse(raCgemUnits)
+    cgemToRa = Ra.parse(raCgemUnits)
+    print 'Reversed hours:   ', cgemToRa.hr
+    print 'Reversed minutes: ', cgemToRa.min
+    print 'Reversed seconds: ', cgemToRa.sec
     
 #@    ser.close()
 
