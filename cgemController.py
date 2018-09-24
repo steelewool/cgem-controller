@@ -3,8 +3,8 @@
 
 import convertRaDecToCgemUnits
 import serial
-
 import commands
+import time
 
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
@@ -25,12 +25,24 @@ timeoutValue = 1
 # Do a read of the serial port with the idea to clear out
 # any characters that may be sitting there.
 
-loopControl = True
+print 'Test communication to the device by sending a Ka'
+print 'Hand controllers should return with a#'
 
+ser.write('Ka')
+data = ser.read(2)
+print 'Read : ', data
+
+if (data != 'a#'):
+    print 'Comm not working and exit'
+    exit()
+    
 print 'Enter a negative number for the RA hours wnd the loop will exit.'
 
+loopControl = True
 while loopControl:
     ra.hr   = input ('raHr   : ')
+    
+# Touch base, with Zach, see if using an exit() here would by python like?
 
     if ra.hr <= -1:
         print 'User specified time to quit'
@@ -49,29 +61,27 @@ while loopControl:
         print
 
         print 'r'+ra.toCgem()+','+dec.toCgem()
-        # ser.write ('r'+ra.toCgem()+','+dec.toCgem()+'#')
-        # data = ser.read(50)
-        # print 'data : ', data
+
+        print 'Execute the goto command:'
         
-        # Hand controller should respond with a # character
+        ser.write ('r'+ra.toCgem()+','+dec.toCgem())
+        
+#       Confirm command sent to the handcontroller'
+        data = ser.read(1)
+        
+        gotoInProgress = True
+        while (gotoInProgress):
+            time.sleep(1)
+            ser.write('L')
+            data = ser.read(2)
+#            print 'Result of L command: ', data
+            if (data == '0#'):
+                print 'Goto Finished'
+                gotoInProgress = False
 
-# Leaving this present/commented for the moment - possible remove before merging
-#        foundHashTag = True
-#        while (foundHashTag):
-#            data = ser.read(1)
-#            print 'data : ', data
-#            if (data == '#'):
-#                print 'found the hash tag'
-#                foundHashTag = False
-#        ser.write(b'e')            # write a string
-#
-#        foundHashTag = True
-#        output = ''
-#        while (foundHashTag):
-#            data = ser.read(1)
-#            output = output + data
-#            if (data == '#'):
-#                foundHashTag = False
-#        print 'output: ', output
+        print 'Goto complete, now request where it moved to.'
+        
+        ser.write('e')            # write a string
+        print 'output: ', ser.read(20)
 
-#ser.close()
+ser.close()
