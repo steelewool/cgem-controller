@@ -23,6 +23,7 @@ class CgemConverter:
         self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor
         self.hexGotoValue = hex(int(self.gotoValue))
         self.strGotoValue = hex(int(self.gotoValue))[2:]
+        print 'Interim gotoValue: ', self.strGotoValue
         x = len(self.strGotoValue)
 #        print 'x            : ', x
         addCharacters = 8-x
@@ -71,6 +72,15 @@ class Dec(CgemConverter):
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
         
         return str.upper(self.convertSeconds(self.decInSeconds))
+    
+    @staticmethod
+    def parse(cgem):
+        print 'cgem raw hex: ', cgem
+        gotoValue = int(cgem[:-4], 16)
+        print 'cgem value:   ', gotoValue
+        raBuffer = gotoValue / 12.0 / CgemConverter.conversionFactor
+        raDeg = raMin = raHr = 0
+        print 'raBuffer:     ', raBuffer
 
 # This paradigm was provided by Zach as a way to test the individual
 # classes as a main program.
@@ -116,10 +126,16 @@ if __name__ == '__main__':
     
     print 'RA in seconds: ', ra.raInSeconds
     print 'RA goto value: ', ra.gotoValue
+    
     cgemToRa = Ra.parse(raCgemUnits)
     print 'Reversed hours:   ', cgemToRa.hr
     print 'Reversed minutes: ', cgemToRa.min
     print 'Reversed seconds: ', cgemToRa.sec
+    
+    print 'Dec gotoValue: ', dec.gotoValue
+    print 'Dec seconds:   ', dec.decInSeconds
+    print 'Conversion factor:', CgemConverter.conversionFactor
+    Dec.parse(decCgemUnits)
     
 #@    ser.close()
 
