@@ -1,3 +1,7 @@
+# The class ObjectRaDec, which is not a very description name is
+# intended to provide sorting of a list of objects for the 'best'
+# observing order.
+
 class Ra():
     hr  = 0
     min = 0
@@ -39,6 +43,8 @@ class ObjectRaDec():
             print 'need code to computer xBin'
             
         return 0
+
+# Using the paradigm supplied by Zach to be able to test this class
 
 if __name__ == '__main__':
     ra  = Ra()
