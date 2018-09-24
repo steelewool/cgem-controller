@@ -32,15 +32,6 @@ class CgemConverter:
             self.strGotoValue += '0'
         return self.strGotoValue
 
-
-    def highMidLow(self, seconds):
-        self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor        
-        highByte = int (self.gotoValue  / 256 / 256)
-        midByte  = int ((self.gotoValue - (highByte  * 256 * 256)) / 256)
-        lowByte  = int (self.gotoValue  - (highByte  * 256 * 256) - (midByte  * 256))
-        print 'highMidLow : ', highByte, midByte, lowByte
-        return [highByte, midByte, lowByte]
-
 class Ra(CgemConverter):
     hr  = 0.0
     min = 0.0
@@ -48,7 +39,7 @@ class Ra(CgemConverter):
     
     def toCgem(self):
         self.raInSeconds     = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
-        return self.convertSeconds(self.raInSeconds)
+        return str.upper(self.convertSeconds(self.raInSeconds))
 
 class Dec(CgemConverter):
     deg = 0.0
@@ -61,10 +52,14 @@ class Dec(CgemConverter):
         if (self.deg < 0):
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
         
-        return self.convertSeconds(self.decInSeconds)
+        return str.upper(self.convertSeconds(self.decInSeconds))
+
+# This paradigm was provided by Zach as a way to test the individual
+# classes as a main program.
 
 if __name__ == '__main__':
-
+    
+    # Is there a better way to initialize the ra and dec values?
     ra = Ra()
     dec = Dec()
     
@@ -75,7 +70,7 @@ if __name__ == '__main__':
     dec.deg = input ('decDeg : ')
     dec.min = input ('decMin : ')
     dec.sec = input ('decSec : ')
-
+    
     print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
     print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec
     print 'softwareResolution   : ', CgemConverter.softwareResolution
@@ -86,19 +81,15 @@ if __name__ == '__main__':
 # This fails if there is no serial device. Need someway to test without the
 # hardware being present. Until then I'll put a #@ in front of serial
 # commands until I get this resolved
-
-#@    ser = serial.Serial('/dev/ttyUSB0', timeout=1)
     
+#@    ser = serial.Serial('/dev/ttyUSB0', timeout=1)
 #@    print 'ser name : ', ser.name
-
     print 'write to the serial: ', 'r' + ra.toCgem() + ',' + dec.toCgem()
     
 #@    ser.write ('r' + conversion.strRaGotoValue + ',' + conversion.strDecGotoValue)
-    
 #@    char = ser.read(100)
-    
 #@    print 'char     : ', char
-
+    
     raCgemUnits  = ra.toCgem()
     decCgemUnits = dec.toCgem()
     

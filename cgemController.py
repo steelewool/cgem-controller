@@ -9,23 +9,18 @@ import time
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
 
-# Setting a 1 second timeout
-
 timeoutValue = 1
-
 # Get and list the possible serial ports
-
-print commands.getstatusoutput ('ls /dev/ttyUSB*')
+#print commands.getstatusoutput ('ls /dev/ttyUSB*')
 
 # serialPort = input ("Enter serial port, something like 'ttyUSB0' for example ")
-
 # Using a hardwired /dev/ttyUSB0 for now.
-
-ser = serial.Serial(port     = '/dev/ttyUSB0',
-                    baudrate =           9600,
-                    timeout  =   timeoutValue)
-
-print 'ser name : ', ser.name
+#ser = serial.Serial(port     = '/dev/ttyUSB0',
+#                    baudrate =           9600,
+#                    timeout  =   timeoutValue)
+#print 'ser name : ', ser.name
+#data = ser.read(50)
+#print 'data : ', data
 
 # Do a read of the serial port with the idea to clear out
 # any characters that may be sitting there.
@@ -46,6 +41,8 @@ print 'Enter a negative number for the RA hours wnd the loop will exit.'
 loopControl = True
 while loopControl:
     ra.hr   = input ('raHr   : ')
+    
+# Touch base, with Zach, see if using an exit() here would by python like?
 
     if ra.hr <= -1:
         print 'User specified time to quit'
@@ -56,6 +53,7 @@ while loopControl:
     
         dec.deg = input ('decDeg : ')
         dec.min = input ('decMin : ')
+        
         dec.sec = input ('decSec : ')
 
         print 'ra  : ', ra.hr,   ra.min,  ra.sec
@@ -67,6 +65,7 @@ while loopControl:
         print 'Execute the goto command:'
         
         ser.write ('r'+ra.toCgem()+','+dec.toCgem())
+        
 #       Confirm command sent to the handcontroller'
         data = ser.read(1)
         
