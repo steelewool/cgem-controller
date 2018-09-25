@@ -55,8 +55,8 @@ class ObjectRaDec:
         return self.dec
     def getLst(self):
         return self.lst
-    def getSeconds(self):
-        (self.deg * 60.0 * 60.0) + (self.min * 60.0) + self.sec
+#    def getSeconds(self):
+#        (self.deg * 60.0 * 60.0) + (self.min * 60.0) + self.sec
     
 # First determine which bin the two objects are in which is based on the LST.
 
@@ -77,6 +77,13 @@ class ObjectRaDec:
         else:
             print 'need code to computer xBin'
         return 0
+
+# Yet another questions, whey am I having to use getLst() instead of lst?
+
+    def write(self):
+        print 'RA   hr min sec: ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
+        print 'Dec deg min sec: ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
+        print 'LST  hr min sec: ' + str(self.getLst().hr)  + ':' + str(self.getLst().min) + ':' + str(self.getLst().sec)
 
 # Using the paradigm supplied by Zach to be able to test this class
 
@@ -106,6 +113,9 @@ if __name__ == '__main__':
     print object1.ra.hr
     print object2.dec.deg
 
+    print object1.write()
+    print object2.write()
+    
     if (object1 == object2):
         print 'equal is True'
     else:
