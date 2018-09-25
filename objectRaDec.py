@@ -2,61 +2,104 @@
 # intended to provide sorting of a list of objects for the 'best'
 # observing order.
 
-class Ra():
-    hr  = 0
-    min = 0
-    sec = 0
-
-class Dec():
-    deg = 0
-    min = 0
-    sec = 0
+class Ra:
+    def __init__ (self, hr = 0, min = 0, sec = 0):
+        self.hr  = hr
+        self.min = min
+        self.sec = sec
+    def getHr(self):
+        return self.hr
+    def getMin(self):
+        return self.min
+    def getSec(self):
+        return self.sec
+    def getSeconds(self):
+        return ((self.hr * 60.0 * 60.0) + (self.min  * 60.0) + self.sec) * 15.0
     
-class ObjectRaDec():
-    ra  = Ra()
-    dec = Dec()
+class Dec():
+    def __init__ (self, deg = 0, min = 0, sec = 0):
+        self.deg = deg
+        self.min = min
+        self.sec = sec
+    def getDeg(self):
+        return self.deg
+    def getMin(self):
+        return self.min
+    def getSec(self):
+        return self.sec
+    def getSeconds(self):
+        return (self.deg * 60.0 * 60.0) + (self.min  * 60.0) + self.sec
 
-#   lst = Ra(15,10,0)
-    lst = Ra()
-    lst.hr  = 15
-    lst.min = 10
-    lst.sec = 0
-
+class Lst:
+    def __init__ (self, hr = 0, min = 0, sec = 0):
+        self.hr  = hr
+        self.min = min
+        self.sec = sec
+    def getHr(self):
+        return self.hr
+    def getMin(self):
+        return self.min
+    def getSec(self):
+        return self.sec
+    def getSeconds(self):
+        return ((self.hr * 60.0 * 60.0) + (self.min * 60.0) + self.sec) * 15.0
+    
+class ObjectRaDec:
+    def __init__ (self, ra=Ra(), dec=Dec(), lst=Lst()):
+        self.ra  = ra
+        self.dec = dec
+        self.lst = lst
+    def getRa(self):
+        return self.ra
+    def getDec(self):
+        return self.dec
+    def getLst(self):
+        return self.lst
+    def getSeconds(self):
+        (self.deg * 60.0 * 60.0) + (self.min * 60.0) + self.sec
+    
 # First determine which bin the two objects are in which is based on the LST.
 
     def __eq__ (x,y):
         if ((x.ra == y.ra) and (x.dec == y.dec)):
             return 0
         else:
-            return -1;
+            return -1
 
     def __lt__ (x,y):
+        xRaInSeconds  = x.getRa().getSeconds()
+        yRaInSeconds  = y.getRa().getSeconds()
+        xDecInSeconds = x.getDec().getSeconds()
+        yDecInSeconds = y.getDec().getSeconds()
 
-        xRaInSeconds  = ((x.ra.hr   * 60.0 * 60.0) + (x.ra.min  * 60.0) + x.ra.sec) * 15.0
-        yRaInSeconds  = ((y.ra.hr   * 60.0 * 60.0) + (y.ra.min  * 60.0) + y.ra.sec) * 15.0
-        xDecInSeconds =  (x.dec.deg * 60.0 * 60.0) + (x.dec.min * 60.0) + x.dec.sec
-        yDecInSeconds =  (y.dec.deg * 60.0 * 60.0) + (y.dec.min * 60.0) + y.dec.sec
-
-        if (x.dec.deg > 70):
+        if (x.getDec().getDeg() > 70):
             xBin = 1
         else:
             print 'need code to computer xBin'
-            
         return 0
 
 # Using the paradigm supplied by Zach to be able to test this class
 
 if __name__ == '__main__':
-    ra  = Ra()
+
+    ra  = Ra(10,11,12)
     dec = Dec()
 
-    object1 = ObjectRaDec()
-    object2 = ObjectRaDec()
+    print 'a ', ra.getHr()
+    print 'b ', ra.getMin()
+    print 'c ', ra.getSec()
+    
+    object1 = ObjectRaDec(Ra(12,13,14),Dec(1,2,3),Lst(4,5,6))
+    object2 = ObjectRaDec(Ra(0,1,2),Dec(3,4,5),Lst(6,7,8))
 
-    object1.ra.hr   = 10
-    object1.dec.deg =  0
-    object2.ra.hr   = 15
-    object2.dec.deg =  0
+    print 'x ', object1.getRa().getHr()
+    print 'y ', object1.getDec().getDeg()
+    print 'z ', object1.getLst().getHr()
+    
+#    object1.ra.hr   = 10
+#    object1.dec.deg =  0
+#    object2.ra.hr   = 15
+#    object2.dec.deg =  0
 
     if (object1 == object2):
         print 'equal is True'
