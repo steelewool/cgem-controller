@@ -13,6 +13,10 @@ class Ra:
         self.sec = sec
     def getSeconds(self):
         return ((self.hr * 60.0 * 60.0) + (self.min  * 60.0) + self.sec) * 15.0
+    def __sub__ (self, y):
+        xSeconds = self.getSeconds()
+        ySeconds = y.getSeconds()
+        return xSeconds - ySeconds
     
 class Dec():
     def __init__ (self, deg = 0, min = 0, sec = 0):
@@ -29,20 +33,37 @@ class Lst:
         self.sec = sec
     def getSeconds(self):
         return ((self.hr * 60.0 * 60.0) + (self.min * 60.0) + self.sec) * 15.0
-    
+
 class ObjectRaDec:
     def __init__ (self, ra=Ra(), dec=Dec(), lst=Lst()):
         self.ra  = ra
         self.dec = dec
         self.lst = lst
-    
+
+# Need to look up the formula for computing local hour angle. This subtraction
+# could be reversed.
+# Zach - why does the subtraction of a ra and lst work. I would have thought I
+#        needed a cast operator.
+
+    def localHrAngle(self):
+        return int((self.ra - self.lst)/(3600*15))
+    def bin (self):
+        if (self.dec.deg > 70):
+            return 1
+        else:
+            localHrAngle = self.localHrAngle()
+            if (localHrAngle > 0):
+                return 2
+            else:
+                return 3
+
 # First determine which bin the two objects are in which is based on the LST.
 
     def __eq__ (x,y):
         if ((x.ra == y.ra) and (x.dec == y.dec)):
-            return 0
+            return 1
         else:
-            return -1
+            return 0
 
     def __lt__ (x,y):
         xRaInSeconds  = x.ra.getSeconds()
@@ -54,61 +75,40 @@ class ObjectRaDec:
         print yRaInSeconds
         print xDecInSeconds
         print yDecInSeconds
-        
-        if (x.dec.deg > 70):
-            xBin = 1
-        else:
-            print 'need code to computer xBin'
+
+# If the objects declination is > 70 degrees north then it goes in bin 1. The other 12 bins start
+# with the local angle of -90 degree going each by 15 degree increments until I get to +90 degree.
+
         return 0
 
 # Yet another questions, whey am I having to use getLst() instead of lst?
 
-    def xwrite(self):
-        print 'start'
+    def write(self):
         print '   RA   hr min sec: ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
         print '   Dec deg min sec: ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
         print '   LST  hr min sec: ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec)
-        print 'Done'
 
 # Using the paradigm supplied by Zach to be able to test this class
 
 if __name__ == '__main__':
 
-    ra  = Ra(10,11,12)
-    dec = Dec()
-
-#    print 'a ', ra.getHr()
-#    print 'b ', ra.getMin()
-#    print 'c ', ra.getSec()
-    
     object1 = ObjectRaDec(Ra(12,13,14),Dec(1,2,3), Lst(4,5,6))
     object2 = ObjectRaDec(Ra(0,1,2),   Dec(3,4,5), Lst(6,7,8))
-
-# Not sure if the get methods are necessary
-
-#    print 'x ', object1.getRa().getHr()
-#    print 'y ', object1.getDec().getDeg()
-#    print 'z ', object1.getLst().getHr()
+    object3 = object2
     
-    object1.ra.hr   = 10
-#    object1.dec.deg =  0
-#    object2.ra.hr   = 15
-#    object2.dec.deg =  0
+    print object1.write()
+    print object2.write()
 
-#    print 'object1.ra.hr   : ', object1.ra.hr
-#    print 'object2,dec.deg : ', object2.dec.deg
-
-#   Seeing a none after this .write in my output - I don't know why
-
-    print object1.xwrite()
-    print object2.xwrite()
-
+    print 'subtract ra  : ', object1.ra - object2.ra
+    print 'localHrAngle : ', object1.localHrAngle()
+    print 'bin          : ', object1.bin()
+    
     print 'testing == operator'
     
-    if (object1 == object2):
+    if (object3 == object2):
         print 'equal is True'
     else:
-        print 'equal to False'
+        print 'equal is False'
 
     if (object1 < object2):
         print 'less than true'
