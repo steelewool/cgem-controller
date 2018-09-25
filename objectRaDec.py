@@ -2,17 +2,15 @@
 # intended to provide sorting of a list of objects for the 'best'
 # observing order.
 
+# As of 9/25/18 I have the LST embedded in the ObjectRaDec object. It may make more
+# sense to place in the list - but but is still a deferred design detail.
+
+
 class Ra:
     def __init__ (self, hr = 0, min = 0, sec = 0):
         self.hr  = hr
         self.min = min
         self.sec = sec
-    def getHr(self):
-        return self.hr
-    def getMin(self):
-        return self.min
-    def getSec(self):
-        return self.sec
     def getSeconds(self):
         return ((self.hr * 60.0 * 60.0) + (self.min  * 60.0) + self.sec) * 15.0
     
@@ -21,12 +19,6 @@ class Dec():
         self.deg = deg
         self.min = min
         self.sec = sec
-    def getDeg(self):
-        return self.deg
-    def getMin(self):
-        return self.min
-    def getSec(self):
-        return self.sec
     def getSeconds(self):
         return (self.deg * 60.0 * 60.0) + (self.min  * 60.0) + self.sec
 
@@ -35,12 +27,6 @@ class Lst:
         self.hr  = hr
         self.min = min
         self.sec = sec
-    def getHr(self):
-        return self.hr
-    def getMin(self):
-        return self.min
-    def getSec(self):
-        return self.sec
     def getSeconds(self):
         return ((self.hr * 60.0 * 60.0) + (self.min * 60.0) + self.sec) * 15.0
     
@@ -49,14 +35,6 @@ class ObjectRaDec:
         self.ra  = ra
         self.dec = dec
         self.lst = lst
-    def getRa(self):
-        return self.ra
-    def getDec(self):
-        return self.dec
-    def getLst(self):
-        return self.lst
-#    def getSeconds(self):
-#        (self.deg * 60.0 * 60.0) + (self.min * 60.0) + self.sec
     
 # First determine which bin the two objects are in which is based on the LST.
 
@@ -67,12 +45,17 @@ class ObjectRaDec:
             return -1
 
     def __lt__ (x,y):
-        xRaInSeconds  = x.getRa().getSeconds()
-        yRaInSeconds  = y.getRa().getSeconds()
-        xDecInSeconds = x.getDec().getSeconds()
-        yDecInSeconds = y.getDec().getSeconds()
+        xRaInSeconds  = x.ra.getSeconds()
+        yRaInSeconds  = y.ra.getSeconds()
+        xDecInSeconds = x.dec.getSeconds()
+        yDecInSeconds = y.dec.getSeconds()
 
-        if (x.getDec().getDeg() > 70):
+        print xRaInSeconds
+        print yRaInSeconds
+        print xDecInSeconds
+        print yDecInSeconds
+        
+        if (x.dec.deg > 70):
             xBin = 1
         else:
             print 'need code to computer xBin'
@@ -80,10 +63,12 @@ class ObjectRaDec:
 
 # Yet another questions, whey am I having to use getLst() instead of lst?
 
-    def write(self):
-        print 'RA   hr min sec: ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
-        print 'Dec deg min sec: ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
-        print 'LST  hr min sec: ' + str(self.getLst().hr)  + ':' + str(self.getLst().min) + ':' + str(self.getLst().sec)
+    def xwrite(self):
+        print 'start'
+        print '   RA   hr min sec: ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
+        print '   Dec deg min sec: ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
+        print '   LST  hr min sec: ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec)
+        print 'Done'
 
 # Using the paradigm supplied by Zach to be able to test this class
 
@@ -92,29 +77,33 @@ if __name__ == '__main__':
     ra  = Ra(10,11,12)
     dec = Dec()
 
-    print 'a ', ra.getHr()
-    print 'b ', ra.getMin()
-    print 'c ', ra.getSec()
+#    print 'a ', ra.getHr()
+#    print 'b ', ra.getMin()
+#    print 'c ', ra.getSec()
     
-    object1 = ObjectRaDec(Ra(12,13,14),Dec(1,2,3),Lst(4,5,6))
-    object2 = ObjectRaDec(Ra(0,1,2),Dec(3,4,5),Lst(6,7,8))
+    object1 = ObjectRaDec(Ra(12,13,14),Dec(1,2,3), Lst(4,5,6))
+    object2 = ObjectRaDec(Ra(0,1,2),   Dec(3,4,5), Lst(6,7,8))
 
-# Not sure if the get's are necessary
+# Not sure if the get methods are necessary
 
-    print 'x ', object1.getRa().getHr()
-    print 'y ', object1.getDec().getDeg()
-    print 'z ', object1.getLst().getHr()
+#    print 'x ', object1.getRa().getHr()
+#    print 'y ', object1.getDec().getDeg()
+#    print 'z ', object1.getLst().getHr()
     
     object1.ra.hr   = 10
 #    object1.dec.deg =  0
 #    object2.ra.hr   = 15
 #    object2.dec.deg =  0
 
-    print object1.ra.hr
-    print object2.dec.deg
+#    print 'object1.ra.hr   : ', object1.ra.hr
+#    print 'object2,dec.deg : ', object2.dec.deg
 
-    print object1.write()
-    print object2.write()
+#   Seeing a none after this .write in my output - I don't know why
+
+    print object1.xwrite()
+    print object2.xwrite()
+
+    print 'testing == operator'
     
     if (object1 == object2):
         print 'equal is True'
