@@ -92,14 +92,19 @@ if __name__ == '__main__':
     object1 = ObjectRaDec(Ra(12,13,14),Dec(1,2,3),Lst(4,5,6))
     object2 = ObjectRaDec(Ra(0,1,2),Dec(3,4,5),Lst(6,7,8))
 
+# Not sure if the get's are necessary
+
     print 'x ', object1.getRa().getHr()
     print 'y ', object1.getDec().getDeg()
     print 'z ', object1.getLst().getHr()
     
-#    object1.ra.hr   = 10
+    object1.ra.hr   = 10
 #    object1.dec.deg =  0
 #    object2.ra.hr   = 15
 #    object2.dec.deg =  0
+
+    print object1.ra.hr
+    print object2.dec.deg
 
     if (object1 == object2):
         print 'equal is True'
