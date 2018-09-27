@@ -15,7 +15,7 @@ class Ra:
         self.min = min
         self.sec = sec
     def getSeconds(self):
-        return ((self.hr * 60.0 * 60.0) + (self.min  * 60.0) + self.sec) * 15.0
+        return ((float(self.hr) * 60.0 * 60.0) + (float(self.min)  * 60.0) + float(self.sec)) * 15.0
     # define subtracttion
     def __sub__ (self, y):
         xSeconds = self.getSeconds()
@@ -45,7 +45,8 @@ class Lst:
         return ((self.hr * 60.0 * 60.0) + (self.min * 60.0) + self.sec) * 15.0
 
 class ObjectRaDec:
-    def __init__ (self, ra = Ra(), dec = Dec(), lst = Lst()):
+    def __init__ (self, name = ' ', ra = Ra(), dec = Dec(), lst = Lst()):
+        self.name = name
         self.ra  = ra
         self.dec = dec
         self.lst = lst
@@ -78,16 +79,20 @@ class ObjectRaDec:
     # assigned a bin.
     
     def bin (self):
-        if (self.dec.deg > 70):
+        if (float(self.dec.deg) > 70.0):
+#            print 'self.dec.deg: ', self.dec.deg
+#            print 'bin, return 1'
             return 1
         else:
             localHrAngle = self.localHrAngle()
-            
+#            print 'bin, localHrAngle : ', localHrAngle
             # First make sure the object is in the range -6 .. 6
             
             if ((localHrAngle <= -6) and (localHrAngle <= 6)): # assign a bin
+#                print 'bin, return ', localHrAngle+8
                 return localHrAngle + 8
             else:
+#                print 'bin, return -1'
                 return -1
 
 # First determine which bin the two objects are in which is based on the LST.
@@ -121,6 +126,7 @@ class ObjectRaDec:
 # Yet another questions, whey am I having to use getLst() instead of lst?
         
     def write(self):
+        print '   Name           : ' + self.name
         print '   RA   hr min sec: ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
         print '   Dec deg min sec: ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
         print '   LST  hr min sec: ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec)
@@ -158,9 +164,9 @@ if __name__ == '__main__':
     # Extract the hour, minute, and second from the mean LST.
     # Be nice if there were methods in the astropy package.
     
-    lst_hr  = int(str(meanLST)[0:2])
-    lst_min = int(str(meanLST)[3:5])
-    lst_sec = int(str(meanLST)[6:8])
+    lst_hr  = int(str(meanLST)[0:1])
+    lst_min = int(str(meanLST)[2:4])
+    lst_sec = int(str(meanLST)[5:7])
     
     print lst_hr, lst_min, lst_sec
 
@@ -178,9 +184,9 @@ if __name__ == '__main__':
     # range function.
         
     for i in range(len(table)):
-        print table[i]['MAIN_ID']
-        print table[i]['RA']
-        print table[i]['DEC']
+#        print table[i]['MAIN_ID']
+#        print table[i]['RA']
+#        print table[i]['DEC']
         ra = table[i]['RA']
         dec = table[i]['DEC']
         ra_hr   = ra[0:2]
@@ -191,30 +197,48 @@ if __name__ == '__main__':
         dec_sec = dec[7:12]
         if (dec_sec == ''):
             dec_sec = 0
-        print 'i   : ', i
-        print 'ra  : ', ra_hr,   ra_min,  ra_sec
-        print 'dec : ', dec_deg, dec_min, dec_sec
-        newObject = ObjectRaDec (Ra  (ra_hr, ra_min, ra_sec),
-                                Dec (dec_deg, dec_min, dec_sec),
-                                Lst (lst_hr, lst_min, lst_sec))
+#        print 'i   : ', i
+#        print 'ra  : ', ra_hr,   ra_min,  ra_sec
+#        print 'dec : ', dec_deg, dec_min, dec_sec
+        newObject = ObjectRaDec (table[i]['MAIN_ID'],
+                                 Ra  (ra_hr, ra_min, ra_sec),
+                                 Dec (dec_deg, dec_min, dec_sec),
+                                 Lst (lst_hr, lst_min, lst_sec))
         if (i == 0):
             objectTable = [newObject]
         else:
             objectTable.append(newObject)
     
-    if (objectTable[0] < objectTable[1]):
-        print 'less than is true'
-    else:
-        print 'less than is false'
-        
+ #   if (objectTable[0] < objectTable[1]):
+ #       print 'less than is true'
+ #   else:
+ #       print 'less than is false'
+    
+    # print first and last object before sort and after sorting.
+    
+    print 'Before sort.'
+    
+    objectTable[0].write()
+    objectTable[len(objectTable)-1].write()
+    
     objectTable.sort()
-            
+    
+    print 'After sort.'
+
+    print 'Bin number: ', objectTable[0].bin()
+    print 'LHA       : ', objectTable[0].localHrAngle()
+    objectTable[0].write()
+
+    print 'Bin number: ', objectTable[109].bin()
+    print 'LHA       : ', objectTable[109].localHrAngle()
+    objectTable[len(objectTable)-1].write()
+       
     print '---------------------'
     # When initializing the object I really only want to use one global LST
     # value, I'm not sure how to implement that in Python.
     
-    object1 = ObjectRaDec(Ra(12,13,14),Dec(1,2,3), Lst(lst_hr, lst_min, lst_sec))
-    object2 = ObjectRaDec(Ra(9,1,2),   Dec(3,4,5), Lst(lst_hr, lst_min, lst_sec))
+    object1 = ObjectRaDec('object1', Ra(12,13,14),Dec(1,2,3), Lst(lst_hr, lst_min, lst_sec))
+    object2 = ObjectRaDec(ra = Ra(9,1,2),  dec = Dec(3,4,5), lst = Lst(lst_hr, lst_min, lst_sec))
     object3 = object2
     
     object1.write()
