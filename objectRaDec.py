@@ -111,10 +111,9 @@ class ObjectRaDec:
 
     # define < operation for 
     def __lt__ (self,y):
-        xBinNumber = self.bin()
-        yBinNumber = y.bin()
-        
         if (self.bin() == y.bin()): # use declination to sort
+            # if bin is an odd number then use <= to sort
+            # if bin is even use >= to sort
             return self.dec <= y.dec
         else: # bins are not equal use bin number to sort
             return self.bin() < y.bin()
@@ -124,6 +123,15 @@ class ObjectRaDec:
             return 1
         else:
             return self < y
+        
+    def __gt__ (self,y):
+        return not(self < y)
+    
+    def __ge__ (self,y):
+        if (self.bin == y.bin()):
+            return self.dec <= y.dec
+        else:
+            return not(self.bin < y.bin)
 
 # If the objects declination is > 70 degrees north then it goes in bin 1. The other 12 bins start
 # with the local angle of -90 degree going each by 15 degree increments until I get to +90 degree.
