@@ -45,11 +45,15 @@ class Lst:
         return ((self.hr * 60.0 * 60.0) + (self.min * 60.0) + self.sec) * 15.0
 
 class ObjectRaDec:
-    def __init__ (self, name = ' ', ra = Ra(), dec = Dec(), lst = Lst()):
-        self.name = name
-        self.ra  = ra
-        self.dec = dec
-        self.lst = lst
+    def __init__ (self, name = ' ',
+                  ra = Ra(),
+                  dec = Dec(),
+                  lst = Lst()):
+        self.name      = name
+        self.ra        = ra
+        self.dec       = dec
+        self.lst       = lst
+        self.binNumber = self.bin()
 
 # Need to look up the formula for computing local hour angle. This subtraction
 # could be reversed.
@@ -79,7 +83,8 @@ class ObjectRaDec:
     # assigned a bin.
     
     def bin (self):
-        if (float(self.dec.deg) > 70.0):
+        # original I was using 70, but for experimenting will change to 65
+        if (float(self.dec.deg) > 65.0):
 #            print 'self.dec.deg: ', self.dec.deg
 #            print 'bin, return 1'
             return 1
@@ -88,7 +93,7 @@ class ObjectRaDec:
 #            print 'bin, localHrAngle : ', localHrAngle
             # First make sure the object is in the range -6 .. 6
             
-            if ((localHrAngle <= -6) and (localHrAngle <= 6)): # assign a bin
+            if ((-6 <= localHrAngle) and (localHrAngle <= 6)): # assign a bin
 #                print 'bin, return ', localHrAngle+8
                 return localHrAngle + 8
             else:
@@ -164,9 +169,9 @@ if __name__ == '__main__':
     # Extract the hour, minute, and second from the mean LST.
     # Be nice if there were methods in the astropy package.
     
-    lst_hr  = int(str(meanLST)[0:1])
-    lst_min = int(str(meanLST)[2:4])
-    lst_sec = int(str(meanLST)[5:7])
+    lst_hr  = int(str(meanLST)[0:2])
+    lst_min = int(str(meanLST)[3:5])
+    lst_sec = int(str(meanLST)[6:8])
     
     print lst_hr, lst_min, lst_sec
 
@@ -176,12 +181,15 @@ if __name__ == '__main__':
     
     from astroquery.simbad import Simbad
 
-    # This query will get all of the Messier objects.
+    # This query will get all of the Messier objects. Note that the table
+    # isn't modified - but instead I copy the data to the objectTable list
+    # which does get sorted my observability.
     
     table = Simbad.query_object ('M *', wildcard=True, verbose=False, get_query_payload=False)
 
     # There are 110 objects, len(table) get the length for the
     # range function.
+    
         
     for i in range(len(table)):
 #        print table[i]['MAIN_ID']
@@ -223,15 +231,22 @@ if __name__ == '__main__':
     
     objectTable.sort()
     
+    # Remove any objects that have a negative bin number
+    
     print 'After sort.'
 
-    print 'Bin number: ', objectTable[0].bin()
-    print 'LHA       : ', objectTable[0].localHrAngle()
-    objectTable[0].write()
+    for i in range(len(objectTable)):
+        if (objectTable[i].binNumber > 0):
+            print 'Index     : ', i
+            print 'Bin number: ', objectTable[i].bin()
+            print 'Bin number: ', objectTable[i].binNumber
+            print 'LHA       : ', objectTable[i].localHrAngle()
+            objectTable[i].write()
 
-    print 'Bin number: ', objectTable[109].bin()
-    print 'LHA       : ', objectTable[109].localHrAngle()
-    objectTable[len(objectTable)-1].write()
+#    print 'Bin number: ', objectTable[len(objectTable)-1].bin()
+#    print 'Bin number: ', objectTable[len(objectTable)-1].binNumber
+#    print 'LHA       : ', objectTable[len(objectTable)-1].localHrAngle()
+#    objectTable[len(objectTable)-1].write()
        
     print '---------------------'
     # When initializing the object I really only want to use one global LST
