@@ -4,7 +4,7 @@
 
 # Not sure where this from came from - uness LiClipse added it.
 
-from pyraf.iraffunctions import substr
+# from pyraf.iraffunctions import substr
 
 # As of 9/25/18 I have the LST embedded in the ObjectRaDec object. It may make more
 # sense to place in the list - but but is still a deferred design detail.
