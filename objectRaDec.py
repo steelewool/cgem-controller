@@ -114,7 +114,10 @@ class ObjectRaDec:
         if (self.bin() == y.bin()): # use declination to sort
             # if bin is an odd number then use <= to sort
             # if bin is even use >= to sort
-            return self.dec <= y.dec
+            if ((self.bin() % 2) == 0):
+                return self.dec <= y.dec
+            else:
+                return y.dec <= self.dec
         else: # bins are not equal use bin number to sort
             return self.bin() < y.bin()
         
@@ -139,6 +142,7 @@ class ObjectRaDec:
 # Yet another questions, whey am I having to use getLst() instead of lst?
         
     def write(self):
+        print '   Bin number     : ' + str(self.bin())
         print '   Name           : ' + self.name
         print '   RA   hr min sec: ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
         print '   Dec deg min sec: ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
@@ -198,11 +202,7 @@ if __name__ == '__main__':
     # There are 110 objects, len(table) get the length for the
     # range function.
     
-        
     for i in range(len(table)):
-#        print table[i]['MAIN_ID']
-#        print table[i]['RA']
-#        print table[i]['DEC']
         ra = table[i]['RA']
         dec = table[i]['DEC']
         ra_hr   = ra[0:2]
@@ -213,9 +213,6 @@ if __name__ == '__main__':
         dec_sec = dec[7:12]
         if (dec_sec == ''):
             dec_sec = 0
-#        print 'i   : ', i
-#        print 'ra  : ', ra_hr,   ra_min,  ra_sec
-#        print 'dec : ', dec_deg, dec_min, dec_sec
         newObject = ObjectRaDec (table[i]['MAIN_ID'],
                                  Ra  (ra_hr, ra_min, ra_sec),
                                  Dec (dec_deg, dec_min, dec_sec),
@@ -224,12 +221,7 @@ if __name__ == '__main__':
             objectTable = [newObject]
         else:
             objectTable.append(newObject)
-    
- #   if (objectTable[0] < objectTable[1]):
- #       print 'less than is true'
- #   else:
- #       print 'less than is false'
-    
+
     # print first and last object before sort and after sorting.
     
     print 'Before sort.'
