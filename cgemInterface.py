@@ -34,6 +34,7 @@ class CgemInterface:
     
         self.ra  = convertRaDecToCgemUnits.Ra()
         self.dec = convertRaDecToCgemUnits.Dec()
+        timeoutValue = 1
 
     def gotoCommand (self, ra, dec):
         print 'ra  : ', ra
@@ -41,10 +42,30 @@ class CgemInterface:
         self.ra  = ra
         self.dec = dec
         
+        if self.useSerial:
+            ser.write ('r'+ra.toCgem()+','+dec.toCgem())
+        else:
+            print 'r'+ra.toCgem()+','+dec.toCgem()
+
+#       Confirm command sent to the handcontroller'
+        data = ser.read(1)
+        
+        gotoInProgress = True
+        while (gotoInProgress):
+            time.sleep(1)
+            ser.write('L')
+            data = ser.read(2)
+#            print 'Result of L command: ', data
+            if (data == '0#'):
+                print 'Goto Finished'
+                gotoInProgress = False
+        
+        
+        
 if __name__ == '__main__':
-timeoutValue = 1
 
     
+
 print 'Enter a negative number for the RA hours wnd the loop will exit.'
 
 loopControl = True
@@ -69,24 +90,8 @@ while loopControl:
         print 'dec : ', dec.deg, dec.min, dec.sec
         print
 
-        print 'r'+ra.toCgem()+','+dec.toCgem()
 
-        print 'Execute the goto command:'
         
-        ser.write ('r'+ra.toCgem()+','+dec.toCgem())
-        
-#       Confirm command sent to the handcontroller'
-        data = ser.read(1)
-        
-        gotoInProgress = True
-        while (gotoInProgress):
-            time.sleep(1)
-            ser.write('L')
-            data = ser.read(2)
-#            print 'Result of L command: ', data
-            if (data == '0#'):
-                print 'Goto Finished'
-                gotoInProgress = False
 
         print 'Goto complete, now request where it moved to.'
         
