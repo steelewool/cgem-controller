@@ -15,10 +15,10 @@ timeoutValue = 1
 
 # serialPort = input ("Enter serial port, something like 'ttyUSB0' for example ")
 # Using a hardwired /dev/ttyUSB0 for now.
-#ser = serial.Serial(port     = '/dev/ttyUSB0',
-#                    baudrate =           9600,
-#                    timeout  =   timeoutValue)
-#print 'ser name : ', ser.name
+ser = serial.Serial(port     = '/dev/ttyUSB0',
+                    baudrate =           9600,
+                    timeout  =   timeoutValue)
+print 'ser name : ', ser.name
 #data = ser.read(50)
 #print 'data : ', data
 
