@@ -7,20 +7,30 @@ import commands
 import time
 
 class CgemInterface:
-    def __init__:
+    def __init__(self, useSerial):
+        
+        # If useSerial is False, then simulate serial. Will incorporate a
+        #    simulator after Zach gets that portion working.
+        # If useSerial use hardware serial.
+        
+        self.useSerial = useSerial
         # Using a hardwired /dev/ttyUSB0 for now.
-        ser = serial.Serial(port     = '/dev/ttyUSB0',
-                            baudrate =           9600,
-                            timeout  =   timeoutValue)
-        ser.write('Ka')
-        data = ser.read(2)
-        print 'Read : ', data
+        
+        if (self.useSerial == True)
+            ser = serial.Serial(port     = '/dev/ttyUSB0',
+                                baudrate =           9600,
+                                timeout  =   timeoutValue)
+            ser.write('Ka')
+            data = ser.read(2)
+            print 'Read : ', data
 
-        if (data != 'a#'):
-            print 'Comm not working and exit'
-            commFailed = True
+            if (data != 'a#'):
+                print 'Comm not working and exit'
+                commWorking = False
+            else:
+                commWorking = True
         else:
-            commFailed = False;
+            commWorking = False
     
         self.ra  = convertRaDecToCgemUnits.Ra()
         self.dec = convertRaDecToCgemUnits.Dec()
