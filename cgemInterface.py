@@ -58,7 +58,10 @@ class CgemInterface:
                 if (data == '0#'):
                     print 'Goto Finished'
                     gotoInProgress = False
-                    
+
+    def gotCommandWithLP (self, ra, dec):
+        print 'Not implemented'
+                            
     def requestHighPrecisionRaDec (self):
         if self.userSerial:
             ser.write ('e')
@@ -67,6 +70,14 @@ class CgemInterface:
             result = 'xxxxx#'
         return result
     
+    def requestLowPrecisionRaDec (self):
+        if self.userSerial:
+            ser.write ('E')
+            result = ser.read(20)
+        else:
+            result = 'xxxxx#'
+        return result       
+        
     def closeSerial(self):
         if self.userSerial:
             ser.close()
@@ -86,7 +97,7 @@ if __name__ == '__main__':
     dec.min = 20
     dec.min = 10
     
-    cgemInterface.gotoCommand(ra, dec)
+    cgemInterface.gotoCommandWithHP (ra, dec)
     
 
 
