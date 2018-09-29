@@ -38,14 +38,15 @@ class CgemInterface:
                 commWorking = True
         else:
             commWorking = False
-
+    
     def gotoCommandWithHP (self, ra, dec):
         if self.useSerial:
             ser.write ('r'+ra.toCgem()+','+dec.toCgem())
         else:
             print 'r'+ra.toCgem()+','+dec.toCgem()
 
-#       Confirm command sent to the handcontroller'
+#       Confirm command sent to the handcontroller
+
         if self.useSerial:
             data = ser.read(1)
         
@@ -58,7 +59,7 @@ class CgemInterface:
                 if (data == '0#'):
                     print 'Goto Finished'
                     gotoInProgress = False
-                    
+        
     def requestHighPrecisionRaDec (self):
         if self.userSerial:
             ser.write ('e')
@@ -88,5 +89,3 @@ if __name__ == '__main__':
     
     cgemInterface.gotoCommand(ra, dec)
     
-
-
