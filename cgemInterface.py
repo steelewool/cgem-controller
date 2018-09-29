@@ -27,8 +27,8 @@ class CgemInterface:
         
         if self.useSerial:
             self.ser = serial.Serial(port     = './pty',
-                                baudrate =           9600,
-                                timeout  =   timeoutValue)
+                                     baudrate =           9600,
+                                     timeout  =   timeoutValue)
             self.ser.write('Ka')
             data = self.ser.read(2)
             print 'Read : ', data
@@ -103,7 +103,6 @@ if __name__ == '__main__':
     dec.min = 10
     
     cgemInterface.gotoCommandWithHP (ra, dec)
-    print 'New ra/dec: ', CgemInterface.requestHighPrecisionRaDec()
-
-
+    print 'result of move: ', cgemInterface.requestHighPrecisionRaDec()
+    
 
