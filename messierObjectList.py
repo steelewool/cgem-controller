@@ -68,6 +68,7 @@ class MessierObjectList:
         self.objectTable.sort()
 
 if __name__ == '__main__':
+        
     print 'main program entered'
     messierObjects = MessierObjectList()
     print messierObjects.objectTable[0].name

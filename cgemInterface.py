@@ -16,7 +16,8 @@ class CgemInterface:
         self.useSerial = useSerial
         # Using a hardwired /dev/ttyUSB0 for now.
         
-        if (self.useSerial == True)
+        timeout = 1
+        if self.useSerial:
             ser = serial.Serial(port     = '/dev/ttyUSB0',
                                 baudrate =           9600,
                                 timeout  =   timeoutValue)
@@ -32,70 +33,36 @@ class CgemInterface:
         else:
             commWorking = False
     
-        self.ra  = convertRaDecToCgemUnits.Ra()
-        self.dec = convertRaDecToCgemUnits.Dec()
-        timeoutValue = 1
-
-    def gotoCommand (self, ra, dec):
-        print 'ra  : ', ra
-        print 'dec : ', dec
-        self.ra  = ra
-        self.dec = dec
-        
+    def gotoCommand (self, ra, dec):        
         if self.useSerial:
             ser.write ('r'+ra.toCgem()+','+dec.toCgem())
         else:
             print 'r'+ra.toCgem()+','+dec.toCgem()
 
 #       Confirm command sent to the handcontroller'
-        data = ser.read(1)
+        if self.useSerial:
+            data = ser.read(1)
         
-        gotoInProgress = True
-        while (gotoInProgress):
-            time.sleep(1)
-            ser.write('L')
-            data = ser.read(2)
+            gotoInProgress = True
+            while (gotoInProgress):
+                time.sleep(1)
+                ser.write('L')
+                data = ser.read(2)
 #            print 'Result of L command: ', data
-            if (data == '0#'):
-                print 'Goto Finished'
-                gotoInProgress = False
+                if (data == '0#'):
+                    print 'Goto Finished'
+                    gotoInProgress = False
         
-        
+    def closeSerial (self):
+        ser.close()
         
 if __name__ == '__main__':
-
+    print 'Main program for cgemInterface.py'
     
-
-print 'Enter a negative number for the RA hours wnd the loop will exit.'
-
-loopControl = True
-while loopControl:
-    ra.hr   = input ('raHr   : ')
+    cgemInterface = CgemInterface(False)
     
-# Touch base, with Zach, see if using an exit() here would by python like?
-
-    if ra.hr <= -1:
-        print 'User specified time to quit'
-        loopControl = False
-    else:
-        ra.min  = input ('raMin  : ')
-        ra.sec  = input ('raSec  : ')
+    ra = convertRaDecToCgemUnits.Ra()
+    dec = convertRaDecToCgemUnits.Dec()
     
-        dec.deg = input ('decDeg : ')
-        dec.min = input ('decMin : ')
-        
-        dec.sec = input ('decSec : ')
-
-        print 'ra  : ', ra.hr,   ra.min,  ra.sec
-        print 'dec : ', dec.deg, dec.min, dec.sec
-        print
-
-
-        
-
-        print 'Goto complete, now request where it moved to.'
-        
-        ser.write('e')            # write a string
-        print 'output: ', ser.read(20)
-
-ser.close()
+    cgemInterface.gotoCommand(ra,dec)
+    
