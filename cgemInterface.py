@@ -17,6 +17,7 @@ class CgemInterface:
         # Using a hardwired /dev/ttyUSB0 for now.
         
         timeout = 1
+        
         if self.useSerial:
             ser = serial.Serial(port     = '/dev/ttyUSB0',
                                 baudrate =           9600,
