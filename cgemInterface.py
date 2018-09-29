@@ -6,12 +6,17 @@ import serial
 import commands
 import time
 
+# Zach is working on a simulator. My thought is that I should be able
+#      to accept as input to the CgemClass a string for setting the port
+#      value. Util that is working I'll continue using the useSerial flag
+#      to jump around any ser commands.
+
 class CgemInterface:
     def __init__(self, useSerial):
         
         # If useSerial is False, then simulate serial. Will incorporate a
         #    simulator after Zach gets that portion working.
-        # If useSerial use hardware serial.
+        # If useSerial is True, then use hardware serial.
         
         self.useSerial = useSerial
         # Using a hardwired /dev/ttyUSB0 for now.
@@ -34,13 +39,14 @@ class CgemInterface:
         else:
             commWorking = False
     
-    def gotoCommand (self, ra, dec):        
+    def gotoCommandWithHP (self, ra, dec):
         if self.useSerial:
             ser.write ('r'+ra.toCgem()+','+dec.toCgem())
         else:
             print 'r'+ra.toCgem()+','+dec.toCgem()
 
-#       Confirm command sent to the handcontroller'
+#       Confirm command sent to the handcontroller
+
         if self.useSerial:
             data = ser.read(1)
         
@@ -54,16 +60,32 @@ class CgemInterface:
                     print 'Goto Finished'
                     gotoInProgress = False
         
-    def closeSerial (self):
-        ser.close()
-        
-if __name__ == '__main__':
-    print 'Main program for cgemInterface.py'
+    def requestHighPrecisionRaDec (self):
+        if self.userSerial:
+            ser.write ('e')
+            result = ser.read(20)
+        else:
+            result = 'xxxxx#'
+        return result
     
+    def closeSerial(self):
+        if self.userSerial:
+            ser.close()
+
+if __name__ == '__main__':
+
     cgemInterface = CgemInterface(False)
     
-    ra = convertRaDecToCgemUnits.Ra()
+    ra  = convertRaDecToCgemUnits.Ra()
     dec = convertRaDecToCgemUnits.Dec()
     
-    cgemInterface.gotoCommand(ra,dec)
+    ra.hr = 15
+    ra.min = 14
+    ra.sec = 13
+    
+    dec.deg = 0
+    dec.min = 20
+    dec.min = 10
+    
+    cgemInterface.gotoCommand(ra, dec)
     
