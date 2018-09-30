@@ -1,11 +1,13 @@
-# For now this is just a basic test. May want to rename it to something like:
-# cgemTest if it actually works.
+# Provide basic goto operations for a manually entered RA/Declination
 
 import convertRaDecToCgemUnits
 import cgemInterface
 import serial
 import commands
 import time
+
+# Initialize the CgemInterface with a False - this will need to be updated
+# after we get the serial simulator working.
 
 cgem = cgemInterface.CgemInterface(False)
 ra  = convertRaDecToCgemUnits.Ra()
@@ -31,15 +33,10 @@ while loopControl:
         
         dec.sec = input ('decSec : ')
 
-#        print 'ra  : ', ra.hr,   ra.min,  ra.sec
-#        print 'dec : ', dec.deg, dec.min, dec.sec
-#        print
-
-#        print 'r'+ra.toCgem()+','+dec.toCgem()
-
         print 'Execute the goto command:'
 
         cgem.gotoCommandWithHP (ra, dec)
+        print cgem.requestHighPrecisionRaDec()
 
 cgem.closeSerial()
 

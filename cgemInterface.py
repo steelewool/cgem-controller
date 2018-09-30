@@ -1,5 +1,4 @@
-# For now this is just a basic test. May want to rename it to something like:
-# cgemTest if it actually works.
+# Provide the interface to the Cgem controller via the serial interface.
 
 import convertRaDecToCgemUnits
 import serial
@@ -61,7 +60,7 @@ class CgemInterface:
                     gotoInProgress = False
         
     def requestHighPrecisionRaDec (self):
-        if self.userSerial:
+        if self.useSerial:
             ser.write ('e')
             result = ser.read(20)
         else:
@@ -69,7 +68,7 @@ class CgemInterface:
         return result
     
     def closeSerial(self):
-        if self.userSerial:
+        if self.useSerial:
             ser.close()
 
 if __name__ == '__main__':
