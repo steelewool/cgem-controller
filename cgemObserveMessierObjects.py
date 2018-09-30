@@ -1,5 +1,4 @@
-# For now this is just a basic test. May want to rename it to something like:
-# cgemTest if it actually works.
+# This program is setup to observe Messier objetcs.
 
 import convertRaDecToCgemUnits
 import cgemInterface
@@ -25,7 +24,7 @@ if __name__ == '__main__':
         if timeToQuit == -1:
             loopControl = False
         else:
-            ra = messierList.objectTable[0].write()
+            messierList.objectTable[0].write()
 #            dec = messierList.objectTable[0].dec
 #            cgem.gotoCommand (ra,dec)
 #            print messierObjectList.objectTable[0].name
