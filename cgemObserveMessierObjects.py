@@ -11,7 +11,7 @@ if __name__ == '__main__':
     
 #    cgemInterface = CgemInterface(False)
     
-    cgem = cgemInterface.CgemInterface(False)
+    cgem = cgemInterface.CgemInterface(True)
 #    ra   = convertRaDecToCgemUnits.Ra()
 #   dec  = convertRaDecToCgemUnits.Dec()
     
@@ -47,6 +47,7 @@ if __name__ == '__main__':
                 newDec.sec = float(dec.sec)
     
                 cgem.gotoCommandWithHP (newRa, newDec)
+                print 'result ra/dec: ', cgem.requestHighPrecisionRaDec()
             else:
                 if x == 3 or (index == len(messierList.objectTable)-1):
                     loopControl = False

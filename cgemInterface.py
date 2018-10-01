@@ -20,14 +20,17 @@ class CgemInterface:
         self.useSerial = useSerial
         # Using a hardwired /dev/ttyUSB0 for now.
         
-        timeout = 1
+        timeoutValue = 1
+        
+        # For zach I'm changing the serial port form '/dev/ttyUSB0' which
+        # was working to ./pty for the test of socat
         
         if self.useSerial:
-            ser = serial.Serial(port     = '/dev/ttyUSB0',
+            self.ser = serial.Serial(port     = './pty',
                                 baudrate =           9600,
                                 timeout  =   timeoutValue)
-            ser.write('Ka')
-            data = ser.read(2)
+            self.ser.write('Ka')
+            data = self.ser.read(2)
             print 'Read : ', data
 
             if (data != 'a#'):
@@ -40,20 +43,21 @@ class CgemInterface:
     
     def gotoCommandWithHP (self, ra, dec):
         if self.useSerial:
-            ser.write ('r'+ra.toCgem()+','+dec.toCgem())
+            self.ser.write ('r'+ra.toCgem()+','+dec.toCgem())
+            print 'gotoCommand : r'+ra.toCgem()+','+dec.toCgem()
         else:
             print 'r'+ra.toCgem()+','+dec.toCgem()
 
 #       Confirm command sent to the handcontroller
 
         if self.useSerial:
-            data = ser.read(1)
+            data = self.ser.read(1)
         
             gotoInProgress = True
             while (gotoInProgress):
                 time.sleep(1)
-                ser.write('L')
-                data = ser.read(2)
+                self.ser.write('L')
+                data = self.ser.read(2)
 #            print 'Result of L command: ', data
                 if (data == '0#'):
                     print 'Goto Finished'
@@ -61,15 +65,17 @@ class CgemInterface:
         
     def requestHighPrecisionRaDec (self):
         if self.useSerial:
-            ser.write ('e')
-            result = ser.read(20)
+            self.ser.write ('e')
+            result = self.ser.read(20)
         else:
             result = 'xxxxx#'
+#        print 'result of e: ', result
         return result
     
     def closeSerial(self):
         if self.useSerial:
-            ser.close()
+            print 'closing serial interface'
+            self.ser.close()
 
 if __name__ == '__main__':
 

@@ -142,11 +142,12 @@ class ObjectRaDec:
 # Yet another questions, whey am I having to use getLst() instead of lst?
         
     def write(self):
-        print '   Bin number     : ' + str(self.bin())
-        print '   Name           : ' + self.name
-        print '   RA   hr min sec: ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
-        print '   Dec deg min sec: ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
-        print '   LST  hr min sec: ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec)
+        print '   Bin number      : ' + str(self.bin())
+        print '   Name            : ' + self.name
+        print '   RA   hr min sec : ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
+        print '   Dec deg min sec : ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
+        print '   Local Hour Angle: ' + str(self.localHrAngle())
+        print '   LST  hr min sec : ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec)
         print
 
 # Using the paradigm supplied by Zach to be able to test this class

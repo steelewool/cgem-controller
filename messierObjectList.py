@@ -29,9 +29,9 @@ class MessierObjectList:
         
         # This is not very robust. It fails with different LST values.
     
-        lst_hr  = int(str(meanLST)[0:1])
-        lst_min = int(str(meanLST)[2:4])
-        lst_sec = int(str(meanLST)[5:7])
+        lst_hr  = int(str(meanLST)[0:2])
+        lst_min = int(str(meanLST)[3:5])
+        lst_sec = int(str(meanLST)[6:8])
     
         print lst_hr, lst_min, lst_sec
    
