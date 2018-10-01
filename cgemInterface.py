@@ -72,7 +72,6 @@ class CgemInterface:
             result = self.ser.read(20)
         else:
             result = 'xxxxx#'
-#        print 'result of e: ', result
         return result
     
     def requestLowPrecisionRaDec (self):
@@ -81,7 +80,7 @@ class CgemInterface:
             result = ser.read(20)
         else:
             result = 'xxxxx#'
-        return result       
+        return result          
         
     def closeSerial(self):
         if self.useSerial:
@@ -104,6 +103,8 @@ if __name__ == '__main__':
     dec.min = 10
     
     cgemInterface.gotoCommandWithHP (ra, dec)
+
     print 'result of move: ', cgemInterface.requestHighPrecisionRaDec()
+
     
 
