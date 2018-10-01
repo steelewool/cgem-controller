@@ -11,7 +11,7 @@ import time
 #      to jump around any ser commands.
 
 class CgemInterface:
-    def __init__(self, useSerial):
+    def __init__(self, useSerial, port='./pty'):
         
         # If useSerial is False, then simulate serial. Will incorporate a
         #    simulator after Zach gets that portion working.
@@ -26,9 +26,9 @@ class CgemInterface:
         # was working to ./pty for the test of socat
         
         if self.useSerial:
-            self.ser = serial.Serial(port     = './pty',
-                                baudrate =           9600,
-                                timeout  =   timeoutValue)
+            self.ser = serial.Serial(port     =    self.port,
+                                     baudrate =         9600,
+                                     timeout  = timeoutValue)
             self.ser.write('Ka')
             data = self.ser.read(2)
             print 'Read : ', data
@@ -48,8 +48,6 @@ class CgemInterface:
         else:
             print 'r'+ra.toCgem()+','+dec.toCgem()
 
-#       Confirm command sent to the handcontroller
-
         if self.useSerial:
             data = self.ser.read(1)
         
@@ -58,7 +56,6 @@ class CgemInterface:
                 time.sleep(1)
                 self.ser.write('L')
                 data = self.ser.read(2)
-#            print 'Result of L command: ', data
                 if (data == '0#'):
                     print 'Goto Finished'
                     gotoInProgress = False
@@ -69,7 +66,6 @@ class CgemInterface:
             result = self.ser.read(20)
         else:
             result = 'xxxxx#'
-#        print 'result of e: ', result
         return result
     
     def closeSerial(self):
@@ -93,4 +89,5 @@ if __name__ == '__main__':
     dec.min = 10
     
     cgemInterface.gotoCommand(ra, dec)
+    print 'resultant ra/dec: ', CgemInterface.requestHighPrecisionRaDec()
     
