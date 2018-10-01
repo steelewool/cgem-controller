@@ -63,6 +63,7 @@ class CgemInterface:
                     print 'Goto Finished'
                     gotoInProgress = False
 
+
     def gotCommandWithLP (self, ra, dec):
         print 'Not implemented'
                             
@@ -104,5 +105,6 @@ if __name__ == '__main__':
     
     cgemInterface.gotoCommandWithHP (ra, dec)
     print 'result of move: ', cgemInterface.requestHighPrecisionRaDec()
+
     
 
