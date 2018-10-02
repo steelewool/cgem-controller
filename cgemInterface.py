@@ -61,7 +61,7 @@ class CgemInterface:
                     gotoInProgress = False
 
 
-    def gotCommandWithLP (self, ra, dec):
+    def gotoCommandWithLP (self, ra, dec):
         print 'Not implemented'
                             
     def requestHighPrecisionRaDec (self):
