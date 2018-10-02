@@ -41,7 +41,7 @@ class CgemInterface:
         else:
             commWorking = False
     
-    def gotoCommandWithHP (self, ra, dec):
+    def gotoCommand (self, ra, dec):
         if self.useSerial:
             self.ser.write ('r'+ra.toCgem()+','+dec.toCgem())
             print 'gotoCommand : r'+ra.toCgem()+','+dec.toCgem()
@@ -76,7 +76,7 @@ class CgemInterface:
 
 if __name__ == '__main__':
 
-    cgemInterface = CgemInterface(False)
+    cgemInterface = CgemInterface(True)
     
     ra  = convertRaDecToCgemUnits.Ra()
     dec = convertRaDecToCgemUnits.Dec()
@@ -90,5 +90,5 @@ if __name__ == '__main__':
     dec.min = 10
     
     cgemInterface.gotoCommand(ra, dec)
-    print 'resultant ra/dec: ', CgemInterface.requestHighPrecisionRaDec()
+    print 'resultant ra/dec: ', cgemInterface.requestHighPrecisionRaDec()
     
