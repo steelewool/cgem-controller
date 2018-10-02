@@ -26,7 +26,7 @@ class CgemInterface:
         # was working to ./pty for the test of socat
         
         if self.useSerial:
-            self.ser = serial.Serial(port     =    self.port,
+            self.ser = serial.Serial(port     =         port,
                                      baudrate =         9600,
                                      timeout  = timeoutValue)
             self.ser.write('Ka')
