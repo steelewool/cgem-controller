@@ -55,6 +55,11 @@ class ObjectRaDec:
         self.lst       = lst
         self.binNumber = self.bin()
 
+    # Really only want one LST that applies to all of the elements in
+    # the class: objectRaDec
+    
+    def setLstForClass (self, ra):
+        self.ra = ra
 # Need to look up the formula for computing local hour angle. This subtraction
 # could be reversed.
 # Zach - why does the subtraction of a ra and lst work. I would have thought I
