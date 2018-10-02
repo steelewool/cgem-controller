@@ -1,9 +1,10 @@
-# Provide the interface to the Cgem controller via the serial interface.
-
-import convertRaDecToCgemUnits
+# Imports from standard lib
 import serial
 import commands
 import time
+import sys
+# Provide the interface to the Cgem controller via the serial interface.
+import convertRaDecToCgemUnits
 
 # Zach is working on a simulator. My thought is that I should be able
 #      to accept as input to the CgemClass a string for setting the port
@@ -76,7 +77,11 @@ class CgemInterface:
 
 if __name__ == '__main__':
 
-    cgemInterface = CgemInterface(True)
+    port = './pty1'
+    if len(sys.argv) > 1:
+        port = sys.argv[1]
+
+    cgemInterface = CgemInterface(True, port)
     
     ra  = convertRaDecToCgemUnits.Ra()
     dec = convertRaDecToCgemUnits.Dec()
