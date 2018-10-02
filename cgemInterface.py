@@ -11,7 +11,7 @@ import time
 #      to jump around any ser commands.
 
 class CgemInterface:
-    def __init__(self, useSerial, port='./pty'):
+    def __init__(self, useSerial, port='./pty1'):
         
         # If useSerial is False, then simulate serial. Will incorporate a
         #    simulator after Zach gets that portion working.
@@ -26,7 +26,7 @@ class CgemInterface:
         # was working to ./pty for the test of socat
         
         if self.useSerial:
-            self.ser = serial.Serial(port     =    self.port,
+            self.ser = serial.Serial(port     =         port,
                                      baudrate =         9600,
                                      timeout  = timeoutValue)
             self.ser.write('Ka')
