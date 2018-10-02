@@ -6,6 +6,7 @@ from   astropy.time        import Time
 from   astropy             import units as u
 from   astropy.coordinates import EarthLocation
 from   astropy.coordinates import SkyCoord
+
  
 class MessierObjectList:
     
@@ -13,6 +14,10 @@ class MessierObjectList:
     # As of right now I'm setting the time internally
     
     def __init__(self):
+        
+        # Hard wired to Frazier Park. Need to add lat/lon/height as an
+        # argument to the class.
+        
         observingPosition = EarthLocation(lat    = ( 34+49/60+32/3600) *u.deg,
                                           lon    =-(118+1 /60+27*3600) *u.deg,
                                           height = (5000 * 0.3048)     *u.m)
@@ -24,14 +29,18 @@ class MessierObjectList:
         meanLST = date.sidereal_time('mean')
         print 'meanLST                      : ', meanLST
 
+        # Use the 'h' and 'm' to extract the hour, minute, and second
+        # from the meanLST
+        
+        positionH = str(meanLST).find('h')
+        positionM = str(meanLST).find('m')
+        
         # Extract the hour, minute, and second from the mean LST.
         # Be nice if there were methods in the astropy package.
-        
-        # This is not very robust. It fails with different LST values.
     
-        lst_hr  = int(str(meanLST)[0:2])
-        lst_min = int(str(meanLST)[3:5])
-        lst_sec = int(str(meanLST)[6:8])
+        lst_hr  = int(str(meanLST)[0          :positionH])
+        lst_min = int(str(meanLST)[positionH+1:positionM])
+        lst_sec = int(str(meanLST)[positionM+1:positionM+3])
     
         print lst_hr, lst_min, lst_sec
    
