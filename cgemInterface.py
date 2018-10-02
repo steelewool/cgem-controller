@@ -26,7 +26,7 @@ class CgemInterface:
         # was working to ./pty for the test of socat
         
         if self.useSerial:
-            self.ser = serial.Serial(port     = './pty',
+            self.ser = serial.Serial(port     = './pty1',
                                 baudrate =           9600,
                                 timeout  =   timeoutValue)
             self.ser.write('Ka')
@@ -58,7 +58,7 @@ class CgemInterface:
                 time.sleep(1)
                 self.ser.write('L')
                 data = self.ser.read(2)
-#            print 'Result of L command: ', data
+                print 'Result of L command: ', data
                 if (data == '0#'):
                     print 'Goto Finished'
                     gotoInProgress = False

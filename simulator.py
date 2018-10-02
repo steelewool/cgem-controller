@@ -13,8 +13,13 @@ class TelescopeSim:
       print "Read command parameters: '{0}'".format(commandText)
       args = commandText.split(',', 2)
       ser.write("#")
+    elif prefix == 'K':
+        argument = ser.read(1)
+        ser.write (argument + '#')
+    elif prefix == 'L':
+        ser.write ('#0') # This seems reversed
     else:
-      print "Unknown command"
+        print "Unknown command"
 
 if __name__ == '__main__':
   done = False
