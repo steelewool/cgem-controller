@@ -42,7 +42,7 @@ class CgemInterface:
         else:
             commWorking = False
     
-    def gotoCommand (self, ra, dec):
+    def gotoCommandWithHP (self, ra, dec):
         if self.useSerial:
             self.ser.write ('r'+ra.toCgem()+','+dec.toCgem())
             print 'gotoCommand : r'+ra.toCgem()+','+dec.toCgem()
@@ -61,7 +61,11 @@ class CgemInterface:
                 if (data == '0#'):
                     print 'Goto Finished'
                     gotoInProgress = False
-        
+
+
+    def gotoCommandWithLP (self, ra, dec):
+        print 'Not implemented'
+                            
     def requestHighPrecisionRaDec (self):
         if self.useSerial:
             self.ser.write ('e')
@@ -70,17 +74,25 @@ class CgemInterface:
             result = 'xxxxx#'
         return result
     
+    def requestLowPrecisionRaDec (self):
+        if self.userSerial:
+            ser.write ('E')
+            result = ser.read(20)
+        else:
+            result = 'xxxxx#'
+        return result       
+        
     def closeSerial(self):
         if self.useSerial:
             print 'closing serial interface'
             self.ser.close()
 
 if __name__ == '__main__':
-
+    
     port = './pty1'
     if len(sys.argv) > 1:
         port = sys.argv[1]
-
+    
     cgemInterface = CgemInterface(True, port)
     
     ra  = convertRaDecToCgemUnits.Ra()
@@ -94,6 +106,6 @@ if __name__ == '__main__':
     dec.min = 20
     dec.min = 10
     
-    cgemInterface.gotoCommand(ra, dec)
-    print 'resultant ra/dec: ', cgemInterface.requestHighPrecisionRaDec()
-    
+    cgemInterface.gotoCommandWithHP (ra, dec)
+    print 'result of move: ', cgemInterface.requestHighPrecisionRaDec()
+
