@@ -56,12 +56,18 @@ class CgemInterface:
             while (gotoInProgress):
                 time.sleep(1)
                 self.ser.write('L')
-                data = self.ser.read(2)
-                print 'Result of L command: ', data
+                
+                data = ""
+                while len(data) < 2:
+                    time.sleep(0.100)
+                    data = data.strip("#")
+                    data += str(self.ser.read_until('#'))
+                    print "Attempting to parse read_until:",data
+                
+                print 'Result of L command:', data
                 if (data == '0#'):
                     print 'Goto Finished'
                     gotoInProgress = False
-
 
     def gotoCommandWithLP (self, ra, dec):
         print 'Not implemented'

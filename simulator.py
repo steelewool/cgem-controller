@@ -17,7 +17,7 @@ class TelescopeSim:
         argument = ser.read(1)
         ser.write (argument + '#')
     elif prefix == 'L':
-        ser.write ('#0') # This seems reversed
+        ser.write ('0#')
     else:
         print "Unknown command"
 
