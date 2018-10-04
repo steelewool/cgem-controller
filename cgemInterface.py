@@ -51,6 +51,7 @@ class CgemInterface:
 
         if self.useSerial:
             data = self.ser.read(1)
+            print 'Read after gotoCommand:',data
         
             gotoInProgress = True
             while (gotoInProgress):
