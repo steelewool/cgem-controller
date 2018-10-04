@@ -9,7 +9,7 @@ import time
 # Initialize the CgemInterface with a False - this will need to be updated
 # after we get the serial simulator working.
 
-cgem = cgemInterface.CgemInterface(True)
+cgem = cgemInterface.CgemInterface(True, './pty1')
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
     
