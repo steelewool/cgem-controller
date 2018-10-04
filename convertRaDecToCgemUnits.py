@@ -63,31 +63,31 @@ class Dec(CgemConverter):
     decCgemUnits = '0'
     
     def toCgem(self):
+        print 'Dec.togem'
         self.decInSeconds    =  abs(self.deg) * 60.0 * 60.0 + self.min * 60.0 + self.sec
-#        print 'self.decInSeconds: ', self.decInSeconds
+        print 'self.decInSeconds: ', self.decInSeconds
         if (self.deg < 0):
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
         
         gotoValue = self.decInSeconds * 12.0 * CgemConverter.conversionFactor
         
-#        print 'gotoValue : ', gotoValue
+        print 'gotoValue     : ', gotoValue
+        print 'hex gotoValue : ', hex(int(gotoValue))
         
         hexGotoValue = hex(int(gotoValue) << 8)
         strGotoValue = str(hexGotoValue)[2:]
         addCharacters = 8-len(strGotoValue)
         for i in range (0,addCharacters):
             strGotoValue += '0'
-
+        
+        print 'strGotoValue : ', str.upper(strGotoValue)
+        print 'end of Dec.togem'
         return str.upper(strGotoValue)
     
         # return str.upper(self.convertSeconds(self.decInSeconds))
 
     def fromCgem (self, cgemUnits):
-        # y = numpy.uint32(x)
-        # x = numpy.uint64 (cgemUnits)
-        # lowByte = int(cgemUnits) & 0xFF
-        # print x
-        # lowByte = x  & 255
+
         return cgemUnits
 # This paradigm was provided by Zach as a way to test the individual
 # classes as a main program.
@@ -121,14 +121,21 @@ if __name__ == '__main__':
     print 'raCgemUnits  : ', raCgemUnits
     print 'decCgemUnits : ', decCgemUnits
 
-    print 'RA  fromCgem : ', ra.fromCgem(raCgemUnits)
-    print 'Dec fromCgem : ', dec.fromCgem(decCgemUnits)
+    # print 'RA  fromCgem : ', ra.fromCgem(raCgemUnits)
+    # print 'Dec fromCgem   : ', dec.fromCgem(decCgemUnits)
     
     # worked: print str.upper(str(hex((int(decCgemUnits, 16) >> 8) & 0xff))[2:])
     x = int(decCgemUnits,16) >> 8
-    print ' x and hex(x) ', x, hex(x)
-    print 'conversionFactor: ', CgemConverter.conversionFactor
+    print ' x and hex(x)     : ', x, hex(x)
+    print 'conversionFactor  : ', CgemConverter.conversionFactor
     seconds = int(x / 12.0 / CgemConverter.conversionFactor)
-    print seconds
+    print 'seconds           : ', seconds
+    deg = int(seconds / 3600.0)
+    print 'deg               : ', deg
+    min = int((seconds - (deg * 3600.0)) / 60.0)
+    print 'min               : ', min
+    sec = int(seconds - (deg * 3600.0) - (min * 60.0))
+    print 'sec               : ', sec
+    
     
     
