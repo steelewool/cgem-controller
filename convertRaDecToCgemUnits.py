@@ -46,12 +46,26 @@ class Ra(CgemConverter):
     def toCgem(self):
         self.raInSeconds     = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
         print 'self.raInSeconds: ', self.raInSeconds
-        return str.upper(self.convertSeconds(self.raInSeconds))
+#        return str.upper(self.convertSeconds(self.raInSeconds))
     
+        gotoValue = self.raInSeconds * 12.0 * CgemConverter.conversionFactor
+        print 'gotoValue     : ', gotoValue
+        print 'hex gotoValue : ', hex(int(gotoValue))
+        hexGotoValue = hex(int(gotoValue) << 8)
+        print 'hexGotValue << 8: ', hexGotoValue
+        strGotoValue = str(hexGotoValue)[2:]
+        addCharacters = 8-len(strGotoValue)
+        for i in range (0,addCharacters):
+            strGotoValue = '0' + strGotoValue
+        return strGotoValue
+
     def fromCgem(self, cgemUnits):
         x = int(cgemUnits,16)>>0
-        seconds = x / 12.0 / CgemConverter.conversionFactor / 15.0
+        seconds = x / 12.0 / CgemConverter.conversionFactor
         print 'seconds : ', seconds
+        hr = int(seconds / 3600)
+        print 'hr      : ', hr
+        returnValue = hr + 'h'
         return cgemUnits
     
 class Dec(CgemConverter):
