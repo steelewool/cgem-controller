@@ -33,7 +33,7 @@ class CgemInterface:
             self.ser.write('Ka')
             data = self.ser.read(2)
             print 'Read : ', data
-
+            
             if (data != 'a#'):
                 print 'Comm not working and exit'
                 commWorking = False
@@ -45,14 +45,14 @@ class CgemInterface:
     def gotoCommandWithHP (self, ra, dec):
         if self.useSerial:
             self.ser.write ('r'+ra.toCgem()+','+dec.toCgem())
-            print 'gotoCommand : r'+ra.toCgem()+','+dec.toCgem()
+            print 'gotoCommand: r'+ra.toCgem()+','+dec.toCgem()
         else:
             print 'r'+ra.toCgem()+','+dec.toCgem()
-
+        
         if self.useSerial:
             data = self.ser.read(1)
             print 'Read after gotoCommand:',data
-        
+            
             gotoInProgress = True
             while (gotoInProgress):
                 time.sleep(1)
@@ -114,5 +114,5 @@ if __name__ == '__main__':
     dec.min = 10
     
     cgemInterface.gotoCommandWithHP (ra, dec)
-    print 'result of move: ', cgemInterface.requestHighPrecisionRaDec()
+    print 'result of move:', cgemInterface.requestHighPrecisionRaDec()
 

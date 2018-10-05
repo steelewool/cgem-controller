@@ -18,6 +18,9 @@ class TelescopeSim:
         ser.write (argument + '#')
     elif prefix == 'L':
         ser.write ('0#')
+    elif prefix == 'e':
+        # TODO: Store values from GOTO command (r/R) and return that here
+        ser.write ('1234AB00,5678CD00#')
     else:
         print "Unknown command"
 
