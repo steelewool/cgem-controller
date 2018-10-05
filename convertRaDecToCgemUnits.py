@@ -18,7 +18,7 @@ class CgemConverter:
     # This only works when instantiating child classes (Ra and Dec)
     def __init__(self):
         self.toCgem()
-        self.fromCgem(cgemUnits = ' ')
+        self.fromCgem(cgemUnits = '0')
 
     # Compute the ra/hex value, store as hex but return as string
     def convertSeconds(self, seconds):
@@ -63,7 +63,7 @@ class Dec(CgemConverter):
     decCgemUnits = '0'
     
     def toCgem(self):
-        print 'Dec.togem'
+        print 'Dec.toCgem'
         self.decInSeconds    =  abs(self.deg) * 60.0 * 60.0 + self.min * 60.0 + self.sec
         print 'self.decInSeconds: ', self.decInSeconds
         if (self.deg < 0):
@@ -75,20 +75,39 @@ class Dec(CgemConverter):
         print 'hex gotoValue : ', hex(int(gotoValue))
         
         hexGotoValue = hex(int(gotoValue) << 8)
+        
+        print 'hexGotValue << 8: ', hexGotoValue
+        
         strGotoValue = str(hexGotoValue)[2:]
         addCharacters = 8-len(strGotoValue)
         for i in range (0,addCharacters):
-            strGotoValue += '0'
+            strGotoValue = '0' + strGotoValue
         
         print 'strGotoValue : ', str.upper(strGotoValue)
         print 'end of Dec.togem'
+        
         return str.upper(strGotoValue)
     
         # return str.upper(self.convertSeconds(self.decInSeconds))
 
     def fromCgem (self, cgemUnits):
-
-        return cgemUnits
+        print 'begin Dec.fromCgem'
+        x = int(cgemUnits,16) >> 8        
+        print 'cgemUnits      : ', cgemUnits
+        print ' x and hex(x)     : ', x, '   ', hex(x)
+        print 'conversionFactor  : ', CgemConverter.conversionFactor
+        seconds = int(x / 12.0 / CgemConverter.conversionFactor)
+        print 'seconds           : ', seconds
+        deg = int(seconds / 3600.0)
+        print 'deg               : ', deg
+        min = int((seconds - (deg * 3600.0)) / 60.0)
+        print 'min               : ', min
+        sec = int(seconds - (deg * 3600.0) - (min * 60.0))
+        print 'sec               : ', sec
+        print 'end Dec.fromCgem'
+        
+        returnValue = str(deg) + 'h' + str(min) + 'm' + str(sec) + 's'
+        return returnValue
 # This paradigm was provided by Zach as a way to test the individual
 # classes as a main program.
 
@@ -122,11 +141,14 @@ if __name__ == '__main__':
     print 'decCgemUnits : ', decCgemUnits
 
     # print 'RA  fromCgem : ', ra.fromCgem(raCgemUnits)
-    # print 'Dec fromCgem   : ', dec.fromCgem(decCgemUnits)
     
     # worked: print str.upper(str(hex((int(decCgemUnits, 16) >> 8) & 0xff))[2:])
+    
+    # this converts declination:
+
     x = int(decCgemUnits,16) >> 8
-    print ' x and hex(x)     : ', x, hex(x)
+    print 'decCgemUnits      : ', decCgemUnits
+    print ' x and hex(x)     : ', x, '   ', hex(x)
     print 'conversionFactor  : ', CgemConverter.conversionFactor
     seconds = int(x / 12.0 / CgemConverter.conversionFactor)
     print 'seconds           : ', seconds
@@ -137,5 +159,4 @@ if __name__ == '__main__':
     sec = int(seconds - (deg * 3600.0) - (min * 60.0))
     print 'sec               : ', sec
     
-    
-    
+    print 'Dec fromCgem   : ', dec.fromCgem(decCgemUnits)
