@@ -49,24 +49,30 @@ class Ra(CgemConverter):
 #        return str.upper(self.convertSeconds(self.raInSeconds))
     
         gotoValue = self.raInSeconds * 12.0 * CgemConverter.conversionFactor
-        print 'gotoValue     : ', gotoValue
-        print 'hex gotoValue : ', hex(int(gotoValue))
+#        print 'gotoValue     : ', gotoValue
+#        print 'hex gotoValue : ', hex(int(gotoValue))
         hexGotoValue = hex(int(gotoValue) << 8)
-        print 'hexGotValue << 8: ', hexGotoValue
+#        print 'hexGotValue << 8: ', hexGotoValue
         strGotoValue = str(hexGotoValue)[2:]
         addCharacters = 8-len(strGotoValue)
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
-        return strGotoValue
+        return str.upper(strGotoValue)
 
     def fromCgem(self, cgemUnits):
-        x = int(cgemUnits,16)>>0
-        seconds = x / 12.0 / CgemConverter.conversionFactor
-        print 'seconds : ', seconds
-        hr = int(seconds / 3600)
-        print 'hr      : ', hr
-        returnValue = hr + 'h'
-        return cgemUnits
+#        print 'Begining of Ra.fromCgem'
+#        print 'cgemUnits :', cgemUnits
+        x = int(cgemUnits,16)>>8
+#        print 'x         : ', x
+#        print 'hex x     : ', hex(x)
+        seconds = x / 15.0 / 12.0 / CgemConverter.conversionFactor
+#        print 'seconds : ', seconds
+        hr = int(seconds / 3600.0)
+        min = int((seconds - (hr * 3600.0)) / 60.0)
+        sec = int(seconds - (hr * 3600.0) - (min * 60.0))
+        returnValue = str(hr) + 'h' + str(min) + 'm' + str(sec) + 's'
+#        print 'end of Ra.fromCgem'
+        return returnValue
     
 class Dec(CgemConverter):
     deg = 0.0
@@ -110,7 +116,7 @@ class Dec(CgemConverter):
 #        print 'sec               : ', sec
 #        print 'end Dec.fromCgem'
         
-        returnValue = str(deg) + 'h' + str(min) + 'm' + str(sec) + 's'
+        returnValue = str(deg) + 'd' + str(min) + 'm' + str(sec) + 's'
         return returnValue
 # This paradigm was provided by Zach as a way to test the individual
 # classes as a main program.
@@ -145,6 +151,5 @@ if __name__ == '__main__':
     print 'raCgemUnits    : ', raCgemUnits
     print 'decCgemUnits   : ', decCgemUnits
 
-    print 'RA  fromCgem   : ', ra.fromCgem(raCgemUnits)
-    
     print 'Dec fromCgem   : ', dec.fromCgem(decCgemUnits)
+    print 'RA  fromCgem   : ', ra.fromCgem(raCgemUnits)
