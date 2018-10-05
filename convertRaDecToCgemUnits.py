@@ -49,11 +49,9 @@ class Ra(CgemConverter):
         return str.upper(self.convertSeconds(self.raInSeconds))
     
     def fromCgem(self, cgemUnits):
-        #x = hex(int(cgemUnits, 16)) >> 8
-        #print x
-        #print hex(x)
-        # lowByte = int(cgemUnits, 16)
-        # print 'lowByte: ', lowByte
+        x = int(cgemUnits,16)>>0
+        seconds = x / 12.0 / CgemConverter.conversionFactor / 15.0
+        print 'seconds : ', seconds
         return cgemUnits
     
 class Dec(CgemConverter):
@@ -63,48 +61,40 @@ class Dec(CgemConverter):
     decCgemUnits = '0'
     
     def toCgem(self):
-        print 'Dec.toCgem'
+#        print 'Dec.toCgem'
         self.decInSeconds    =  abs(self.deg) * 60.0 * 60.0 + self.min * 60.0 + self.sec
-        print 'self.decInSeconds: ', self.decInSeconds
+#        print 'self.decInSeconds: ', self.decInSeconds
         if (self.deg < 0):
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
-        
         gotoValue = self.decInSeconds * 12.0 * CgemConverter.conversionFactor
-        
-        print 'gotoValue     : ', gotoValue
-        print 'hex gotoValue : ', hex(int(gotoValue))
-        
+#        print 'gotoValue     : ', gotoValue
+#        print 'hex gotoValue : ', hex(int(gotoValue))
         hexGotoValue = hex(int(gotoValue) << 8)
-        
-        print 'hexGotValue << 8: ', hexGotoValue
-        
+#        print 'hexGotValue << 8: ', hexGotoValue
         strGotoValue = str(hexGotoValue)[2:]
         addCharacters = 8-len(strGotoValue)
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
-        
-        print 'strGotoValue : ', str.upper(strGotoValue)
-        print 'end of Dec.togem'
+#        print 'strGotoValue : ', str.upper(strGotoValue)
+#        print 'end of Dec.togem'
         
         return str.upper(strGotoValue)
-    
-        # return str.upper(self.convertSeconds(self.decInSeconds))
 
     def fromCgem (self, cgemUnits):
-        print 'begin Dec.fromCgem'
+#        print 'begin Dec.fromCgem'
         x = int(cgemUnits,16) >> 8        
-        print 'cgemUnits      : ', cgemUnits
-        print ' x and hex(x)     : ', x, '   ', hex(x)
-        print 'conversionFactor  : ', CgemConverter.conversionFactor
+#        print 'cgemUnits      : ', cgemUnits
+#        print ' x and hex(x)     : ', x, '   ', hex(x)
+#        print 'conversionFactor  : ', CgemConverter.conversionFactor
         seconds = int(x / 12.0 / CgemConverter.conversionFactor)
-        print 'seconds           : ', seconds
+#        print 'seconds           : ', seconds
         deg = int(seconds / 3600.0)
-        print 'deg               : ', deg
+#        print 'deg               : ', deg
         min = int((seconds - (deg * 3600.0)) / 60.0)
-        print 'min               : ', min
+#        print 'min               : ', min
         sec = int(seconds - (deg * 3600.0) - (min * 60.0))
-        print 'sec               : ', sec
-        print 'end Dec.fromCgem'
+#        print 'sec               : ', sec
+#        print 'end Dec.fromCgem'
         
         returnValue = str(deg) + 'h' + str(min) + 'm' + str(sec) + 's'
         return returnValue
@@ -114,6 +104,7 @@ class Dec(CgemConverter):
 if __name__ == '__main__':
     
     # Is there a better way to initialize the ra and dec values?
+    
     ra = Ra()
     dec = Dec()
     
@@ -137,26 +128,9 @@ if __name__ == '__main__':
     raCgemUnits  = ra.toCgem()
     decCgemUnits = dec.toCgem()
     
-    print 'raCgemUnits  : ', raCgemUnits
-    print 'decCgemUnits : ', decCgemUnits
+    print 'raCgemUnits    : ', raCgemUnits
+    print 'decCgemUnits   : ', decCgemUnits
 
-    # print 'RA  fromCgem : ', ra.fromCgem(raCgemUnits)
-    
-    # worked: print str.upper(str(hex((int(decCgemUnits, 16) >> 8) & 0xff))[2:])
-    
-    # this converts declination:
-
-    x = int(decCgemUnits,16) >> 8
-    print 'decCgemUnits      : ', decCgemUnits
-    print ' x and hex(x)     : ', x, '   ', hex(x)
-    print 'conversionFactor  : ', CgemConverter.conversionFactor
-    seconds = int(x / 12.0 / CgemConverter.conversionFactor)
-    print 'seconds           : ', seconds
-    deg = int(seconds / 3600.0)
-    print 'deg               : ', deg
-    min = int((seconds - (deg * 3600.0)) / 60.0)
-    print 'min               : ', min
-    sec = int(seconds - (deg * 3600.0) - (min * 60.0))
-    print 'sec               : ', sec
+    print 'RA  fromCgem   : ', ra.fromCgem(raCgemUnits)
     
     print 'Dec fromCgem   : ', dec.fromCgem(decCgemUnits)
