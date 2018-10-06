@@ -1,8 +1,5 @@
 import serial
-import numpy
-
-# Algorith doesn't handle negavite degrees. Negative angle much be translated
-# to be between 270 and 360 degrees.
+# import numpy
 
 class CgemConverter:
 
@@ -21,21 +18,21 @@ class CgemConverter:
         self.fromCgem(cgemUnits = '0')
 
     # Compute the ra/hex value, store as hex but return as string
-    def convertSeconds(self, seconds):
-        print 'seconds :', seconds
-        self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor
-        print 'self.gotoValue: ', self.gotoValue
-        self.hexGotoValue = hex(int(self.gotoValue))
-        self.strGotoValue = hex(int(self.gotoValue))[2:]
-        x = len(self.strGotoValue)
+#    def convertSeconds(self, seconds):
+#        print 'seconds :', seconds
+#        self.gotoValue = seconds * 12.0 * CgemConverter.conversionFactor
+#        print 'self.gotoValue: ', self.gotoValue
+#        self.hexGotoValue = hex(int(self.gotoValue))
+#        self.strGotoValue = hex(int(self.gotoValue))[2:]
+#        x = len(self.strGotoValue)
 #        print 'x            : ', x
-        addCharacters = 8-x
-        print 'strGotoValue : ', self.strGotoValue
-        print 'addCharacters: ', addCharacters
-        for i in range (0,addCharacters):
-            self.strGotoValue += '0'
-        print 'self.strGotoValue: ', self.strGotoValue
-        return self.strGotoValue
+#        addCharacters = 8-x
+#        print 'strGotoValue : ', self.strGotoValue
+#        print 'addCharacters: ', addCharacters
+#        for i in range (0,addCharacters):
+#            self.strGotoValue += '0'
+#        print 'self.strGotoValue: ', self.strGotoValue
+#        return self.strGotoValue
 
 class Ra(CgemConverter):
     hr  = 0.0
@@ -45,7 +42,7 @@ class Ra(CgemConverter):
     
     def toCgem(self):
         self.raInSeconds     = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
-        print 'self.raInSeconds: ', self.raInSeconds
+#        print 'self.raInSeconds: ', self.raInSeconds
 #        return str.upper(self.convertSeconds(self.raInSeconds))
     
         gotoValue = self.raInSeconds * 12.0 * CgemConverter.conversionFactor
@@ -138,10 +135,10 @@ if __name__ == '__main__':
     
     print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
     print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec
-    print 'softwareResolution   : ', CgemConverter.softwareResolution
-    print 'fullCircleSec        : ', CgemConverter.fullCircleSec
-    print 'oneTwelthArcSeconds  : ', CgemConverter.oneTwelthArcSeconds
-    print 'conversionFactor     : ', CgemConverter.conversionFactor
+#    print 'softwareResolution   : ', CgemConverter.softwareResolution
+#    print 'fullCircleSec        : ', CgemConverter.fullCircleSec
+#    print 'oneTwelthArcSeconds  : ', CgemConverter.oneTwelthArcSeconds
+#    print 'conversionFactor     : ', CgemConverter.conversionFactor
     
     print 'write to the serial: ', 'r' + ra.toCgem() + ',' + dec.toCgem()
     
@@ -151,5 +148,5 @@ if __name__ == '__main__':
     print 'raCgemUnits    : ', raCgemUnits
     print 'decCgemUnits   : ', decCgemUnits
 
-    print 'Dec fromCgem   : ', dec.fromCgem(decCgemUnits)
     print 'RA  fromCgem   : ', ra.fromCgem(raCgemUnits)
+    print 'Dec fromCgem   : ', dec.fromCgem(decCgemUnits)
