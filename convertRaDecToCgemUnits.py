@@ -43,7 +43,7 @@ class Ra(CgemConverter):
     sec = 0.0
     raCgemUnits = '0'
     
-    def __init (self, hr=0, min=0, sec=0):
+    def __init__ (self, hr=0, min=0, sec=0):
         self.hr = hr
         self.min = min
         self.sec = sec
@@ -80,7 +80,7 @@ class Ra(CgemConverter):
         xmin = int((seconds - (xhr * 3600.0)) / 60.0)
         xsec = int(seconds - (xhr * 3600.0) - (xmin * 60.0))
         returnValue = str(xhr) + 'h' + str(xmin) + 'm' + str(xsec) + 's'
-        return returnValue
+        return [xhr, xmin, xsec]
     
 class Dec(CgemConverter):
     deg = 0.0
@@ -88,6 +88,11 @@ class Dec(CgemConverter):
     sec = 0.0
     decCgemUnits = '0'
     
+    def __init__ (self, deg=0, min=0, sec=0):
+        self.deg = deg
+        self.min = min
+        self.sec = sec
+        
     def toCgem(self):
         if self.deg > 90 or self.deg < -90:
             raise DecError.message('deg out of range')
@@ -113,22 +118,23 @@ class Dec(CgemConverter):
         xmin = int((seconds - (xdeg * 3600.0)) / 60.0)
         xsec = int(seconds - (xdeg * 3600.0) - (xmin * 60.0))
         returnValue = str(xdeg) + 'd' + str(xmin) + 'm' + str(xsec) + 's'
-        return returnValue
+        return [xdeg, xmin, xsec]
 
 if __name__ == '__main__':
     
     # Is there a better way to initialize the ra and dec values?
     
-    ra = Ra()
-    dec = Dec()
+    hr   = input ('raHr   : ')
+    min  = input ('raMin  : ')
+    sec  = input ('raSec  : ')
     
-    ra.hr   = input ('raHr   : ')
-    ra.min  = input ('raMin  : ')
-    ra.sec  = input ('raSec  : ')
+    ra = Ra(hr, min, sec)
     
-    dec.deg = input ('decDeg : ')
-    dec.min = input ('decMin : ')
-    dec.sec = input ('decSec : ')
+    deg = input ('decDeg : ')
+    min = input ('decMin : ')
+    sec = input ('decSec : ')
+    
+    dec = Dec (deg, min, sec)
     
     print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
     print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec
