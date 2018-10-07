@@ -1,9 +1,10 @@
-# Provide the interface to the Cgem controller via the serial interface.
-
-import convertRaDecToCgemUnits
+# Imports from standard lib
 import serial
 import commands
 import time
+import sys
+# Provide the interface to the Cgem controller via the serial interface.
+import convertRaDecToCgemUnits
 
 # Zach is working on a simulator. My thought is that I should be able
 #      to accept as input to the CgemClass a string for setting the port
@@ -11,7 +12,7 @@ import time
 #      to jump around any ser commands.
 
 class CgemInterface:
-    def __init__(self, useSerial, port='./pty'):
+    def __init__(self, useSerial, port='./pty1'):
         
         # If useSerial is False, then simulate serial. Will incorporate a
         #    simulator after Zach gets that portion working.
@@ -32,7 +33,7 @@ class CgemInterface:
             self.ser.write('Ka')
             data = self.ser.read(2)
             print 'Read : ', data
-
+            
             if (data != 'a#'):
                 print 'Comm not working and exit'
                 commWorking = False
@@ -44,22 +45,30 @@ class CgemInterface:
     def gotoCommandWithHP (self, ra, dec):
         if self.useSerial:
             self.ser.write ('r'+ra.toCgem()+','+dec.toCgem())
-            print 'gotoCommand : r'+ra.toCgem()+','+dec.toCgem()
+            print 'gotoCommand: r'+ra.toCgem()+','+dec.toCgem()
         else:
             print 'r'+ra.toCgem()+','+dec.toCgem()
-
+        
         if self.useSerial:
             data = self.ser.read(1)
-        
+            print 'Read after gotoCommand:',data
+            
             gotoInProgress = True
             while (gotoInProgress):
                 time.sleep(1)
                 self.ser.write('L')
-                data = self.ser.read(2)
+                
+                data = ""
+                while len(data) < 2:
+                    time.sleep(0.100)
+                    data = data.strip("#")
+                    data += str(self.ser.read_until('#'))
+                    print "Attempting to parse read_until:",data
+                
+                print 'Result of L command:', data
                 if (data == '0#'):
                     print 'Goto Finished'
                     gotoInProgress = False
-
 
     def gotoCommandWithLP (self, ra, dec):
         print 'Not implemented'
@@ -86,8 +95,12 @@ class CgemInterface:
             self.ser.close()
 
 if __name__ == '__main__':
-
-    cgemInterface = CgemInterface(False)
+    
+    port = './pty1'
+    if len(sys.argv) > 1:
+        port = sys.argv[1]
+    
+    cgemInterface = CgemInterface(True, port)
     
     ra  = convertRaDecToCgemUnits.Ra()
     dec = convertRaDecToCgemUnits.Dec()
@@ -101,5 +114,5 @@ if __name__ == '__main__':
     dec.min = 10
     
     cgemInterface.gotoCommandWithHP (ra, dec)
-    print 'result of move: ', cgemInterface.requestHighPrecisionRaDec()
+    print 'result of move:', cgemInterface.requestHighPrecisionRaDec()
 
