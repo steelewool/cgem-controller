@@ -76,11 +76,11 @@ class Ra(CgemConverter):
     def fromCgem(self, cgemUnits):
         x = int(cgemUnits,16)>>8
         seconds = x / 15.0 / 12.0 / CgemConverter.conversionFactor
-        xhr = int(seconds / 3600.0)
-        xmin = int((seconds - (xhr * 3600.0)) / 60.0)
-        xsec = int(seconds - (xhr * 3600.0) - (xmin * 60.0))
-        returnValue = str(xhr) + 'h' + str(xmin) + 'm' + str(xsec) + 's'
-        return [xhr, xmin, xsec]
+        self.hr = int(seconds / 3600.0)
+        self.min = int((seconds - (self.hr * 3600.0)) / 60.0)
+        self.sec = int(seconds - (self.hr * 3600.0) - (self.min * 60.0))
+        returnValue = str(self.hr) + 'h' + str(self.min) + 'm' + str(self.sec) + 's'
+        return [self.hr, self.min, self.sec]
     
 class Dec(CgemConverter):
     deg = 0.0
@@ -114,11 +114,11 @@ class Dec(CgemConverter):
     def fromCgem (self, cgemUnits):
         x = int(cgemUnits,16) >> 8        
         seconds = int(x / 12.0 / CgemConverter.conversionFactor)
-        xdeg = int(seconds / 3600.0)
-        xmin = int((seconds - (xdeg * 3600.0)) / 60.0)
-        xsec = int(seconds - (xdeg * 3600.0) - (xmin * 60.0))
-        returnValue = str(xdeg) + 'd' + str(xmin) + 'm' + str(xsec) + 's'
-        return [xdeg, xmin, xsec]
+        self.deg = int(seconds / 3600.0)
+        self.min = int((seconds - (self.deg * 3600.0)) / 60.0)
+        self.sec = int(seconds - (self.deg * 3600.0) - (self.min * 60.0))
+        returnValue = str(self.deg) + 'd' + str(self.min) + 'm' + str(self.sec) + 's'
+        return [self.deg, self.min, self.sec]
 
 if __name__ == '__main__':
     

@@ -17,6 +17,8 @@ class TelescopeSim:
       print 'args', args, args[0], args[1]
       x = self.lastRa.fromCgem(args[0])
       print 'x', x
+      y = self.lastDec.fromCgem(args[1])
+      print 'y', y
       ser.write("#")
     elif prefix == 'K':
         argument = ser.read(1)
