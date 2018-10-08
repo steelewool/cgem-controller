@@ -21,7 +21,7 @@ class DecError(Error):
         self.expr = expr
         self.msg  = msg
     
-class CgemConverter:
+class CgemConverter(object):
 
 # This is setting up constants for the conversion process:
 
@@ -33,7 +33,9 @@ class CgemConverter:
     conversionFactor    = softwareResolution / oneTwelthArcSeconds
 
     # This only works when instantiating child classes (Ra and Dec)
-    def __init__(self):
+    def __init__(self, args={}):
+        for k,v in args.iteritems():
+            setattr(self, k, v)
         self.toCgem()
         self.fromCgem(cgemUnits = '0')
 
@@ -44,10 +46,9 @@ class Ra(CgemConverter):
     raCgemUnits = '0'
     
     def __init__ (self, hr=0, min=0, sec=0):
-        self.hr = hr
-        self.min = min
-        self.sec = sec
-        
+        args = locals()
+        super(Ra, args.pop('self')).__init__(args)
+    
     def toCgem(self):
         self.raInSeconds = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
         if self.hr < 0 or self.hr > 23:
@@ -89,10 +90,9 @@ class Dec(CgemConverter):
     decCgemUnits = '0'
     
     def __init__ (self, deg=0, min=0, sec=0):
-        self.deg = deg
-        self.min = min
-        self.sec = sec
-        
+        args = locals()
+        super(Dec, args.pop('self')).__init__(args)
+    
     def toCgem(self):
         if self.deg > 90 or self.deg < -90:
             raise DecError.message('deg out of range')
