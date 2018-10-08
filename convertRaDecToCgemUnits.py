@@ -47,8 +47,7 @@ class Ra(CgemConverter):
     
     def __init__ (self, hr=0, min=0, sec=0):
         args = locals()
-        args.pop('self')
-        super(Ra, self).__init__(args)
+        super(Ra, args.pop('self')).__init__(args)
     
     def toCgem(self):
         self.raInSeconds = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
@@ -92,8 +91,7 @@ class Dec(CgemConverter):
     
     def __init__ (self, deg=0, min=0, sec=0):
         args = locals()
-        args.pop('self')
-        super(Dec, self).__init__(args)
+        super(Dec, args.pop('self')).__init__(args)
     
     def toCgem(self):
         if self.deg > 90 or self.deg < -90:
