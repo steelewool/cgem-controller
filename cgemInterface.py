@@ -51,7 +51,7 @@ class CgemInterface:
             newContent = str(self.ser.read_until('#'))
             output += newContent
             if newContent == "":
-                ++nullCount
+                nullCount += 1
         # Log errors to console for now
         if nullCount == 10:
             print "ERROR: Unable to complete read operation; no response from serial device"
