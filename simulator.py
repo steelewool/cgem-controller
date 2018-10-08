@@ -27,7 +27,9 @@ class TelescopeSim:
         ser.write ('0#')
     elif prefix == 'e':
         # TODO: Store values from GOTO command (r/R) and return that here
-        ser.write ('1234AB00,5678CD00#')
+        print 'RA  : ', self.lastRa.toCgem()
+        print 'Dec : ', self.lastDec.toCgem()
+        #ser.write (self.lastRa.toCgem()+','+self.lastDec.toCgem()+'#')
     else:
         print "Unknown command"
 
