@@ -42,6 +42,21 @@ class CgemInterface:
         else:
             commWorking = False
     
+    # 'length' should include the final delimiter in the expected response
+    def readSerial(self, length):
+        output = ""
+        nullCount = 0
+        while len(output) < length and nullCount < 10:
+            output = output.strip("#")
+            newContent = str(self.ser.read_until('#'))
+            output += newContent
+            if newContent == "":
+                nullCount += 1
+        # Log errors to console for now
+        if nullCount == 10:
+            print "ERROR: Unable to complete read operation; no response from serial device"
+        return output
+    
     def gotoCommandWithHP (self, ra, dec):
         if self.useSerial:
             self.ser.write ('r'+ra.toCgem()+','+dec.toCgem())
@@ -50,7 +65,7 @@ class CgemInterface:
             print 'r'+ra.toCgem()+','+dec.toCgem()
         
         if self.useSerial:
-            data = self.ser.read(1)
+            data = self.readSerial(1)
             print 'Read after gotoCommand:',data
             
             gotoInProgress = True
@@ -58,13 +73,7 @@ class CgemInterface:
                 time.sleep(1)
                 self.ser.write('L')
                 
-                data = ""
-                while len(data) < 2:
-                    time.sleep(0.100)
-                    data = data.strip("#")
-                    data += str(self.ser.read_until('#'))
-                    print "Attempting to parse read_until:",data
-                
+                data = self.readSerial(2)
                 print 'Result of L command:', data
                 if (data == '0#'):
                     print 'Goto Finished'
@@ -76,7 +85,7 @@ class CgemInterface:
     def requestHighPrecisionRaDec (self):
         if self.useSerial:
             self.ser.write ('e')
-            result = self.ser.read(20)
+            result = self.readSerial(18);
         else:
             result = 'xxxxx#'
         return result
@@ -84,7 +93,7 @@ class CgemInterface:
     def requestLowPrecisionRaDec (self):
         if self.userSerial:
             ser.write ('E')
-            result = ser.read(20)
+            result = self.readSerial(10)
         else:
             result = 'xxxxx#'
         return result       
