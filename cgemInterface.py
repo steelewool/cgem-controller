@@ -46,12 +46,19 @@ class CgemInterface:
     def readSerial(self, length):
         output = ""
         nullCount = 0
-        while len(output) < length and nullCount < 10:
+        readLimit = 60
+        readCount = 0
+        while len(output) < length and nullCount < 10 and readCount < readLimit:
             output = output.strip("#")
             newContent = str(self.ser.read_until('#'))
             output += newContent
+            print "Partial read:", output
             if newContent == "":
+                print "No data from serial device"
                 nullCount += 1
+            readCount += 1
+        if readCount == readLimit:
+            print "Retry limit exceeded, unable to reach target character length"
         # Log errors to console for now
         if nullCount == 10:
             print "ERROR: Unable to complete read operation; no response from serial device"
