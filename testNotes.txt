@@ -1,0 +1,91 @@
+git checkout simulator
+
+Changed port to ./pty1
+
+Started socat with:
+
+socat -v -D -d -d PTY,link=./pty1 GOPEN:/dev/ttyUSB0 3> x.out
+
+In a second terminal python cgemObserveMessierObjects.py
+
+
+The program first spit out 'Comm not working and then continued to
+communicate. Telesdcocpe did not spit out the a# like it was supposed
+to.
+
+Read :  
+Comm not working and exit
+meanLST                      :  19h20m11.9578s
+19 20 11
+WARNING: Couldn't create u'cds_parsetab'. [Errno 13] Permission denied: u'/usr/lib/python2.7/dist-packages/astropy/units/format/cds_parsetab.py'
+WARNING: Couldn't write lextab module u'cds_lextab'. [Errno 13] Permission denied: u'/usr/lib/python2.7/dist-packages/astropy/units/format/cds_lextab.py'
+M 103
+   Bin number      : 1
+   Name            : M  82
+   RA   hr min sec : 09:55:52
+   Dec deg min sec : +69:40:52
+   Local Hour Angle: -9
+   LST  hr min sec : 19:20:11
+
+1 to observe, 2 to skip, 3 to exit 1
+gotoCommand: r69EE8D00,318CCD00
+Read after gotoCommand: 
+Attempting to parse read_until: 
+Attempting to parse read_until:
+
+The 'Attempting to parse read_until seemed in an infinite loop.
+
+The socat line I'm using doesn't appear to be displaying data from the
+telescope.
+
+Tried without socat and change cgemObserveMessier.py to use /dev/ttyUSB0
+Getting input from the telescope this time.
+
+After adding back in the two byte read into cgemInterface the loop
+with the 1 second delay looking for 0# started working
+
+Telescope drove to the postion of M82 as expected.
+
+Given the following inputs:
+
+   Bin number      : 2
+   Name            : M  68
+   RA   hr min sec : 12:39:27
+   Dec deg min sec : -26:44:27
+   Local Hour Angle: -6
+   LST  hr min sec : 19:35:24
+
+1 to observe, 2 to skip, 3 to exit 1
+gotoCommand: r87036900L,ECFB6400L
+
+The telescope drive to a declination of -69 degrees. So my convesion
+to cgem declination values is in error.
+
+For M60, with the the following inputs:
+   Bin number      : 2
+   Name            : M  60
+   RA   hr min sec : 12:43:40
+   Dec deg min sec : +11:33:40
+   Local Hour Angle: -6
+   LST  hr min sec : 19:41:47
+
+1 to observe, 2 to skip, 3 to exit 1
+gotoCommand: r87C35100L,08371600
+The telecope drove to:
+
+RA: 2 33 54
+Dec: -89
+
+   Bin number      : 2
+   Name            : M  64
+   RA   hr min sec : 12:56:43
+   Dec deg min sec : +21:40:43
+   Local Hour Angle: -6
+   LST  hr min sec : 19:56:7
+
+1 to observe, 2 to skip, 3 to exit 1
+gotoCommand: r8A153D00L,0F6B3500
+
+telescope drove to
+RA:    3  5 40
+DEC: -88 12 17
