@@ -11,7 +11,7 @@ if __name__ == '__main__':
     
 #    cgemInterface = CgemInterface(False)
     
-    cgem = cgemInterface.CgemInterface(True, port='/dev/ttyUSB0')
+    cgem = cgemInterface.CgemInterface(True) # port='/dev/ttyUSB0')
 #    ra   = convertRaDecToCgemUnits.Ra()
 #   dec  = convertRaDecToCgemUnits.Dec()
     
