@@ -52,7 +52,8 @@ class MessierObjectList:
         # isn't modified - but instead I copy the data to the objectTable list
         # which does get sorted my observability.
     
-        table = Simbad.query_object ('M *', wildcard=True, verbose=False, get_query_payload=False)
+        table = Simbad.query_object ('M *', wildcard=True, verbose=False)
+        # does not work on the pi: , get_query_payload=False)
         
         for i in range(len(table)):
             ra      = table[i]['RA']

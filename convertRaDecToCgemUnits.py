@@ -72,6 +72,15 @@ class Ra(CgemConverter):
         addCharacters = 8-len(strGotoValue)
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
+
+        # for some unknown reason, at least to me, and 'L' is being added
+        # to the strGotoValue.
+
+        positionL = str(strGotoValue).find('L')
+        print 'positionL: ', positionL
+        if positionL > 0:
+            strGotoValue = strGotoValue[0:positionL]
+        print 'strGotoValue: ', strGotoValue
         return str.upper(strGotoValue)
 
     def fromCgem(self, cgemUnits):
@@ -109,6 +118,13 @@ class Dec(CgemConverter):
         addCharacters = 8-len(strGotoValue)
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue       
+
+        positionL = str(strGotoValue).find('L')
+        print 'positionL: ', positionL
+        if positionL > 0:
+            strGotoValue = strGotoValue[0:positionL]
+        print 'strGotoValue: ', strGotoValue
+
         return str.upper(strGotoValue)
 
     def fromCgem (self, cgemUnits):
