@@ -40,16 +40,17 @@ class CgemConverter(object):
         self.fromCgem(cgemUnits = '0')
 
 class Ra(CgemConverter):
-    hr  = 0.0
-    min = 0.0
-    sec = 0.0
     raCgemUnits = '0'
     
     def __init__ (self, hr=0, min=0, sec=0):
         args = locals()
         super(Ra, args.pop('self')).__init__(args)
+        self.hr  = hr
+        self.min = min
+        self.sec = sec
     
     def toCgem(self):
+        print 'Ra.toCgem'
         self.raInSeconds = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
         if self.hr < 0 or self.hr > 23:
             print 'hr is out of range'
@@ -70,9 +71,17 @@ class Ra(CgemConverter):
         hexGotoValue = hex(int(gotoValue) << 8)
         strGotoValue = str(hexGotoValue)[2:]
         addCharacters = 8-len(strGotoValue)
+
+        print 'gotoValue     : ', gotoValue
+        print 'hexGotoValue  : ', hexGotoValue
+        print 'strGotoValue  : ', strGotoValue
+        print 'addCharacters : ', addCharacters
+        
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
 
+        print 'strGotoValue  : ', strGotoValue
+        
         # for some unknown reason, at least to me, and 'L' is being added
         # to the strGotoValue.
 
@@ -93,15 +102,18 @@ class Ra(CgemConverter):
         return [xhr, xmin, xsec]
     
 class Dec(CgemConverter):
-    deg = 0.0
-    min = 0.0
-    sec = 0.0
+    #deg = 0.0
+    #min = 0.0
+    #sec = 0.0
     decCgemUnits = '0'
     
     def __init__ (self, deg=0, min=0, sec=0):
         args = locals()
         super(Dec, args.pop('self')).__init__(args)
-    
+        self.deg = deg
+        self.min = min
+        self.sec = sec
+        
     def toCgem(self):
         if self.deg > 90 or self.deg < -90:
             raise DecError.message('deg out of range')

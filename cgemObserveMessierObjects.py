@@ -11,8 +11,8 @@ if __name__ == '__main__':
     
 #    cgemInterface = CgemInterface(False)
     
-    cgem = cgemInterface.CgemInterface(True) # port='/dev/ttyUSB0')
-#    ra   = convertRaDecToCgemUnits.Ra()
+    cgem = cgemInterface.CgemInterface()
+#   ra   = convertRaDecToCgemUnits.Ra()
 #   dec  = convertRaDecToCgemUnits.Dec()
     
     messierList = messierObjectList.MessierObjectList()
@@ -22,30 +22,30 @@ if __name__ == '__main__':
     loopControl = True
     index = 0
     while loopControl:
-#        timeToQuit = input ("Enter a negative 1 to quit ")
-#        if timeToQuit == -1:
-#            loopControl = False
-#        else:
-#        print 'binNumber: ', messierList.objectTable[index].bin()
-#        print 'index    : ', index
         if messierList.objectTable[index].bin() > 0:
             messierList.objectTable[index].write()
             
             x = input('1 to observe, 2 to skip, 3 to exit ')
             if x == 1:
+                
+                print 'XXX'
                 ra = messierList.objectTable[index].ra
                 dec = messierList.objectTable[index].dec
             
-                newRa = convertRaDecToCgemUnits.Ra()
-                newRa.hr = float(ra.hr)
-                newRa.min = float(ra.min)
-                newRa.sec = float(ra.sec)
+                print 'YYY'
+                
+                newRa = convertRaDecToCgemUnits.Ra(float(ra.hr),
+                                                   float(ra.min),
+                                                   float(ra.sec))
+
+                print 'ZZZ'
             
-                newDec = convertRaDecToCgemUnits.Dec()
-                newDec.deg = float(dec.deg)
-                newDec.min = float(dec.min)
-                newDec.sec = float(dec.sec)
-    
+                newDec = convertRaDecToCgemUnits.Dec(float(dec.deg),
+                                                     float(dec.min),
+                                                     float(dec.sec))
+
+                print '000'
+                
                 cgem.gotoCommandWithHP (newRa, newDec)
                 print 'result ra/dec: ', cgem.requestHighPrecisionRaDec()
             else:
