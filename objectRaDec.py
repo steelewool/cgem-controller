@@ -176,15 +176,25 @@ if __name__ == '__main__':
     print 'date.sidereal_time(mean)     : ', date.sidereal_time('mean')
     print 'date.sidereal_time(apparent) : ', date.sidereal_time('apparent')
 
+# As pointed out in issue 62 the extraction of LST was not being done
+# correctly here. This is also done in messierObjectList and perhaps
+# other places.
+
     meanLST = date.sidereal_time('mean')
     print 'meanLST                      : ', meanLST
 
     # Extract the hour, minute, and second from the mean LST.
     # Be nice if there were methods in the astropy package.
     
-    lst_hr  = int(str(meanLST)[0:2])
-    lst_min = int(str(meanLST)[3:5])
-    lst_sec = int(str(meanLST)[6:8])
+    positionH = str(meanLST).find('h')
+    positionM = str(meanLST).find('m')
+        
+    # Extract the hour, minute, and second from the mean LST.
+    # Be nice if there were methods in the astropy package.
+    
+    lst_hr  = int(str(meanLST)[0          :positionH])
+    lst_min = int(str(meanLST)[positionH+1:positionM])
+    lst_sec = int(str(meanLST)[positionM+1:positionM+3])
     
     print lst_hr, lst_min, lst_sec
 

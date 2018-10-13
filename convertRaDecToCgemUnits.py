@@ -21,7 +21,7 @@ class DecError(Error):
         self.expr = expr
         self.msg  = msg
     
-class CgemConverter:
+class CgemConverter(object):
 
 # This is setting up constants for the conversion process:
 
@@ -33,7 +33,9 @@ class CgemConverter:
     conversionFactor    = softwareResolution / oneTwelthArcSeconds
 
     # This only works when instantiating child classes (Ra and Dec)
-    def __init__(self):
+    def __init__(self, args={}):
+        for k,v in args.iteritems():
+            setattr(self, k, v)
         self.toCgem()
         self.fromCgem(cgemUnits = '0')
 
@@ -43,11 +45,10 @@ class Ra(CgemConverter):
     sec = 0.0
     raCgemUnits = '0'
     
-    def __init (self, hr=0, min=0, sec=0):
-        self.hr = hr
-        self.min = min
-        self.sec = sec
-        
+    def __init__ (self, hr=0, min=0, sec=0):
+        args = locals()
+        super(Ra, args.pop('self')).__init__(args)
+    
     def toCgem(self):
         self.raInSeconds = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
         if self.hr < 0 or self.hr > 23:
@@ -71,6 +72,15 @@ class Ra(CgemConverter):
         addCharacters = 8-len(strGotoValue)
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
+
+        # for some unknown reason, at least to me, and 'L' is being added
+        # to the strGotoValue.
+
+        positionL = str(strGotoValue).find('L')
+        print 'positionL: ', positionL
+        if positionL > 0:
+            strGotoValue = strGotoValue[0:positionL]
+        print 'strGotoValue: ', strGotoValue
         return str.upper(strGotoValue)
 
     def fromCgem(self, cgemUnits):
@@ -80,13 +90,17 @@ class Ra(CgemConverter):
         xmin = int((seconds - (xhr * 3600.0)) / 60.0)
         xsec = int(seconds - (xhr * 3600.0) - (xmin * 60.0))
         returnValue = str(xhr) + 'h' + str(xmin) + 'm' + str(xsec) + 's'
-        return returnValue
+        return [xhr, xmin, xsec]
     
 class Dec(CgemConverter):
     deg = 0.0
     min = 0.0
     sec = 0.0
     decCgemUnits = '0'
+    
+    def __init__ (self, deg=0, min=0, sec=0):
+        args = locals()
+        super(Dec, args.pop('self')).__init__(args)
     
     def toCgem(self):
         if self.deg > 90 or self.deg < -90:
@@ -104,6 +118,13 @@ class Dec(CgemConverter):
         addCharacters = 8-len(strGotoValue)
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue       
+
+        positionL = str(strGotoValue).find('L')
+        print 'positionL: ', positionL
+        if positionL > 0:
+            strGotoValue = strGotoValue[0:positionL]
+        print 'strGotoValue: ', strGotoValue
+
         return str.upper(strGotoValue)
 
     def fromCgem (self, cgemUnits):
@@ -113,22 +134,23 @@ class Dec(CgemConverter):
         xmin = int((seconds - (xdeg * 3600.0)) / 60.0)
         xsec = int(seconds - (xdeg * 3600.0) - (xmin * 60.0))
         returnValue = str(xdeg) + 'd' + str(xmin) + 'm' + str(xsec) + 's'
-        return returnValue
+        return [xdeg, xmin, xsec]
 
 if __name__ == '__main__':
     
     # Is there a better way to initialize the ra and dec values?
     
-    ra = Ra()
-    dec = Dec()
+    hr   = input ('raHr   : ')
+    min  = input ('raMin  : ')
+    sec  = input ('raSec  : ')
     
-    ra.hr   = input ('raHr   : ')
-    ra.min  = input ('raMin  : ')
-    ra.sec  = input ('raSec  : ')
+    ra = Ra(hr, min, sec)
     
-    dec.deg = input ('decDeg : ')
-    dec.min = input ('decMin : ')
-    dec.sec = input ('decSec : ')
+    deg = input ('decDeg : ')
+    min = input ('decMin : ')
+    sec = input ('decSec : ')
+    
+    dec = Dec (deg, min, sec)
     
     print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
     print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec
