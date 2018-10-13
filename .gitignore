@@ -1,1 +1,10 @@
+# Python-generated files
 **/*.pyc
+
+# Edit-generated files
+**/*.swp
+
+# Pyinstaller files
+build/**
+dist/**
+*.spec
