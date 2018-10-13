@@ -1,0 +1,10 @@
+('/home/steele/git/steelewool/cgem-controller/build/simulator/pyserial-3.4-py2.7.egg',
+ None,
+ set(['*.py',
+      '*.pyc',
+      '*.so',
+      '*.x86_64-linux-gnu.so',
+      '*module.so',
+      'EGG-INFO']),
+ 'DATA',
+ [])
