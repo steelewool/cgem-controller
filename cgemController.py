@@ -9,7 +9,7 @@ import time
 # Initialize the CgemInterface with a False - this will need to be updated
 # after we get the serial simulator working.
 
-cgem = cgemInterface.CgemInterface(True, './pty1')
+cgem = cgemInterface.CgemInterface()
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
     
@@ -30,8 +30,9 @@ while loopControl:
     
         dec.deg = input ('decDeg : ')
         dec.min = input ('decMin : ')
-        
         dec.sec = input ('decSec : ')
+        
+        print 'dec.deg : ', dec.deg
 
         print 'Execute the goto command:'
 

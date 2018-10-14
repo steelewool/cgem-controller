@@ -40,16 +40,17 @@ class CgemConverter(object):
         self.fromCgem(cgemUnits = '0')
 
 class Ra(CgemConverter):
-    hr  = 0.0
-    min = 0.0
-    sec = 0.0
     raCgemUnits = '0'
     
     def __init__ (self, hr=0, min=0, sec=0):
         args = locals()
         super(Ra, args.pop('self')).__init__(args)
+        self.hr  = hr
+        self.min = min
+        self.sec = sec
     
     def toCgem(self):
+        print 'Ra.toCgem'
         self.raInSeconds = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
         if self.hr < 0 or self.hr > 23:
             print 'hr is out of range'
@@ -70,17 +71,25 @@ class Ra(CgemConverter):
         hexGotoValue = hex(int(gotoValue) << 8)
         strGotoValue = str(hexGotoValue)[2:]
         addCharacters = 8-len(strGotoValue)
+
+        #print 'gotoValue     : ', gotoValue
+        #print 'hexGotoValue  : ', hexGotoValue
+        #print 'strGotoValue  : ', strGotoValue
+        #print 'addCharacters : ', addCharacters
+        
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
 
+        #print 'strGotoValue  : ', strGotoValue
+        
         # for some unknown reason, at least to me, and 'L' is being added
         # to the strGotoValue.
 
         positionL = str(strGotoValue).find('L')
-        print 'positionL: ', positionL
+        #print 'positionL: ', positionL
         if positionL > 0:
             strGotoValue = strGotoValue[0:positionL]
-        print 'strGotoValue: ', strGotoValue
+        #print 'strGotoValue: ', strGotoValue
         return str.upper(strGotoValue)
 
     def fromCgem(self, cgemUnits):
@@ -93,25 +102,42 @@ class Ra(CgemConverter):
         return [xhr, xmin, xsec]
     
 class Dec(CgemConverter):
-    deg = 0.0
-    min = 0.0
-    sec = 0.0
+    #deg = 0.0
+    #min = 0.0
+    #sec = 0.0
     decCgemUnits = '0'
     
     def __init__ (self, deg=0, min=0, sec=0):
         args = locals()
         super(Dec, args.pop('self')).__init__(args)
-    
+        self.deg = deg
+        self.min = min
+        self.sec = sec
+        
     def toCgem(self):
+        decNeg = False;
+        #print 'self.deg : ', self.deg
+        if self.deg < 0:
+            decNeg = True
+            self.deg = -self.deg
+        #print 'self.deg : ', self.deg
         if self.deg > 90 or self.deg < -90:
             raise DecError.message('deg out of range')
+        if self.min < 0:
+            decNeg = True
+            self.min = -self.min
         if self.min < 0 or self.min > 59:
             raise DecError.msg('min out of range')
+        if self.sec < 0:
+            decNeg = True
+            self.sec = -self.sec
         if  self.sec < 0 or self.sec > 59:
             raise DecError.msg('sec out of range')
         self.decInSeconds    =  abs(self.deg) * 60.0 * 60.0 + self.min * 60.0 + self.sec
-        if (self.deg < 0):
+        #print 'self.decInSeconds : ', self.decInSeconds
+        if decNeg:
             self.decInSeconds = (360.0 * 60.0 * 60.0) - self.decInSeconds;
+        #print 'self.decInSeconds : ', self.decInSeconds
         gotoValue = self.decInSeconds * 12.0 * CgemConverter.conversionFactor
         hexGotoValue = hex(int(gotoValue) << 8)
         strGotoValue = str(hexGotoValue)[2:]
@@ -120,10 +146,10 @@ class Dec(CgemConverter):
             strGotoValue = '0' + strGotoValue       
 
         positionL = str(strGotoValue).find('L')
-        print 'positionL: ', positionL
+        #print 'positionL: ', positionL
         if positionL > 0:
             strGotoValue = strGotoValue[0:positionL]
-        print 'strGotoValue: ', strGotoValue
+        #print 'strGotoValue: ', str.upper(strGotoValue)
 
         return str.upper(strGotoValue)
 
