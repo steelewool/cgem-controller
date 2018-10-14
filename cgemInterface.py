@@ -54,8 +54,10 @@ class CgemInterface:
         return output
     
     def gotoCommandWithHP (self, ra, dec):
-        self.ser.write ('r'+ra.toCgem()+','+dec.toCgem())
-        print 'gotoCommand: r'+ra.toCgem()+','+dec.toCgem()
+        raToCgem  = ra.toCgem()
+        decToCgem = dec.toCgem()
+        self.ser.write ('r'+raToCgem+','+decToCgem)
+        print 'gotoCommand: r'+raToCgem+','+decToCgem
 
         data = self.readSerial(1)
         print 'Read after gotoCommand:',data

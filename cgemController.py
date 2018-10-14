@@ -30,8 +30,9 @@ while loopControl:
     
         dec.deg = input ('decDeg : ')
         dec.min = input ('decMin : ')
-        
         dec.sec = input ('decSec : ')
+        
+        print 'dec.deg : ', dec.deg
 
         print 'Execute the goto command:'
 
