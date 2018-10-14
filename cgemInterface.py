@@ -14,11 +14,11 @@ import convertRaDecToCgemUnits
 # 2018-10-12 removed the useSerial argument.
 
 class CgemInterface:
+    
+    # The initializer defaults to .pty1 which is used in the
+    # simulation (nullmodel.sh) and when socat is used for debugging
+    
     def __init__(self, port='./pty1'):
-        
-        # If useSerial is False, then simulate serial. Will incorporate a
-        #    simulator after Zach gets that portion working.
-        # If useSerial is True, then use hardware serial.
         
         timeoutValue = 1
         
@@ -54,6 +54,11 @@ class CgemInterface:
         return output
     
     def gotoCommandWithHP (self, ra, dec):
+        
+        # Since I'm using the results of toGem for debugging
+        # I only to the conversion once and then use the variables
+        # raToCgem and decToCgem in the serial write and the print
+        
         raToCgem  = ra.toCgem()
         decToCgem = dec.toCgem()
         self.ser.write ('r'+raToCgem+','+decToCgem)

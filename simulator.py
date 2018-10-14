@@ -1,4 +1,5 @@
 import serial
+import convertRaDecToCgemUnits
 
 # Another neat idea would be to have this script spawn the virtual serial port
 ser = serial.Serial(
@@ -7,11 +8,22 @@ ser = serial.Serial(
 
 class TelescopeSim:
   
+  raConversion  = convertRaDecToCgemUnits.Ra()
+  decConversion = convertRaDecToCgemUnits.Dec()
+  
   def parse_command(self, prefix):
     if prefix == 'r':
       commandText = ser.read(20)
       print "Read command parameters: '{0}'".format(commandText)
       args = commandText.split(',', 2)
+      print 'args : ', args
+      
+      self.telescopeRa = self.raConversion.fromCgem(args[0])
+      print 'self.telescope RA : ', self.telescopeRa
+      
+      self.telescopeDec = self.decConversion.fromCgem(args[1])
+      print 'self.telescope.Dec : ', self.telescopeDec
+      
       ser.write("#")
     elif prefix == 'K':
         argument = ser.read(1)
