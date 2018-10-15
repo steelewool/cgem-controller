@@ -50,7 +50,7 @@ class Ra(CgemConverter):
         self.sec = sec
     
     def toCgem(self):
-        print 'Ra.toCgem'
+#        print 'Ra.toCgem'
         self.raInSeconds = (self.hr * 60.0 * 60.0 + self.min  * 60.0 + self.sec) * 15.0
         if self.hr < 0 or self.hr > 23:
             print 'hr is out of range'
@@ -122,16 +122,18 @@ class Dec(CgemConverter):
             self.deg = -self.deg
         #print 'self.deg : ', self.deg
         if self.deg > 90 or self.deg < -90:
+            print 'self.deg : ', self.deg
             raise DecError.message('deg out of range')
         if self.min < 0:
             decNeg = True
             self.min = -self.min
-        if self.min < 0 or self.min > 59:
+        if self.min < 0 or self.min >= 60:
             raise DecError.msg('min out of range')
         if self.sec < 0:
             decNeg = True
             self.sec = -self.sec
-        if  self.sec < 0 or self.sec > 59:
+        if  self.sec < 0 or self.sec >= 60:
+            print 'self.sec : ', self.sec
             raise DecError.msg('sec out of range')
         self.decInSeconds    =  abs(self.deg) * 60.0 * 60.0 + self.min * 60.0 + self.sec
         #print 'self.decInSeconds : ', self.decInSeconds
@@ -156,6 +158,9 @@ class Dec(CgemConverter):
     def fromCgem (self, cgemUnits):
         x = int(cgemUnits,16) >> 8        
         seconds = int(x / 12.0 / CgemConverter.conversionFactor)
+#        print 'Dec.fromCgem seconds: ', seconds
+        if seconds > 180.0*60.0*60.0:
+            seconds = seconds - (360.0*60.0*60.0)
         xdeg = int(seconds / 3600.0)
         xmin = int((seconds - (xdeg * 3600.0)) / 60.0)
         xsec = int(seconds - (xdeg * 3600.0) - (xmin * 60.0))
