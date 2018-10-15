@@ -30,7 +30,7 @@ class CgemInterface:
                                  timeout  = timeoutValue)
         self.ser.write('Ka')
         data = self.ser.read(2)
-        print 'Read : ', data
+#        print 'Read : ', data
             
         if (data != 'a#'):
             print 'Comm not working and exit'
@@ -62,10 +62,10 @@ class CgemInterface:
         raToCgem  = ra.toCgem()
         decToCgem = dec.toCgem()
         self.ser.write ('r'+raToCgem+','+decToCgem)
-        print 'gotoCommand: r'+raToCgem+','+decToCgem
+#        print 'gotoCommand: r'+raToCgem+','+decToCgem
 
         data = self.readSerial(1)
-        print 'Read after gotoCommand:',data
+#        print 'Read after gotoCommand:',data
             
         gotoInProgress = True
         while (gotoInProgress):
@@ -73,7 +73,7 @@ class CgemInterface:
             self.ser.write('L')
                 
             data = self.readSerial(2)
-            print 'Result of L command:', data
+#            print 'Result of L command:', data
             if (data == '0#'):
                 print 'Goto Finished'
                 gotoInProgress = False
@@ -84,6 +84,9 @@ class CgemInterface:
     def requestHighPrecisionRaDec (self):
         self.ser.write ('e')
         result = self.readSerial(18);
+        findHashTag = result.find('#')
+        if findHashTag > 0:                        
+            result = result[0:findHashTag]
         return result
     
     def requestLowPrecisionRaDec (self):

@@ -8,21 +8,42 @@ ser = serial.Serial(
 
 class TelescopeSim:
   
+  # Not sure if I have to declare these here, but it doesn't hurt to do so.
+  
   raConversion  = convertRaDecToCgemUnits.Ra()
   decConversion = convertRaDecToCgemUnits.Dec()
   
   def parse_command(self, prefix):
     if prefix == 'r':
       commandText = ser.read(20)
-      print "Read command parameters: '{0}'".format(commandText)
+#      print "Read command parameters: '{0}'".format(commandText)
       args = commandText.split(',', 2)
-      print 'args : ', args
+#      print 'args : ', args
+      
+      # The two variables testscopeRa and telescopeDec will be used
+      # to simulate the current position of the telescope
       
       self.telescopeRa = self.raConversion.fromCgem(args[0])
-      print 'self.telescope RA : ', self.telescopeRa
+      
+      self.telecopeRaCgem = (
+          convertRaDecToCgemUnits.Ra(float(self.telescopeRa[0]),
+                                     float(self.telescopeRa[1]),
+                                     float(self.telescopeRa[2]))).toCgem()
+                                     
+#      print 'self.telescopeRaCgem : ', self.telecopeRaCgem
+      
+      # If the declination is outside of the range -90 to +90 then
+      # it needs to be converted back. The telescopeDec variable
+      # needs to be corrected before calling the toCgem method.
       
       self.telescopeDec = self.decConversion.fromCgem(args[1])
-      print 'self.telescope.Dec : ', self.telescopeDec
+      
+      self.telescopeDecGem = (convertRaDecToCgemUnits.Dec(float(self.telescopeDec[0]),
+                                                     float(self.telescopeDec[1]),
+                                                     float(self.telescopeDec[2]))).toCgem()
+                                                     
+#      print 'self.telescopeDec : ', self.telescopeDec
+#      print 'self.telescopeDecCgem : ', self.telescopeDecGem
       
       ser.write("#")
     elif prefix == 'K':
@@ -32,7 +53,14 @@ class TelescopeSim:
         ser.write ('0#')
     elif prefix == 'e':
         # TODO: Store values from GOTO command (r/R) and return that here
-        ser.write ('1234AB00,5678CD00#')
+        
+        outputCommand = self.telecopeRaCgem+','+self.telescopeDecGem+'#'
+#        print 'outputCommand : ', outputCommand
+        ser.write (outputCommand)
+                                              
+
+#        print 'telescopeRaCgem : ', a.toCgem(), x.toCgem()
+        
     else:
         print "Unknown command"
 
@@ -43,7 +71,7 @@ if __name__ == '__main__':
   while not done:
     cmd = ser.read(1)
     if cmd != '':
-      print "Read command-char '{0}'".format(cmd)
+#      print "Read command-char '{0}'".format(cmd)
       sim.parse_command(cmd)
     if cmd == 'q':
       print "Ready to quit"
