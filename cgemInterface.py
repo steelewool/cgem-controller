@@ -11,36 +11,32 @@ import convertRaDecToCgemUnits
 #      value. Util that is working I'll continue using the useSerial flag
 #      to jump around any ser commands.
 
+# 2018-10-12 removed the useSerial argument.
+
 class CgemInterface:
-    def __init__(self, useSerial, port='./pty1'):
-        
-        # If useSerial is False, then simulate serial. Will incorporate a
-        #    simulator after Zach gets that portion working.
-        # If useSerial is True, then use hardware serial.
-        
-        self.useSerial = useSerial
-        # Using a hardwired /dev/ttyUSB0 for now.
+    
+    # The initializer defaults to .pty1 which is used in the
+    # simulation (nullmodel.sh) and when socat is used for debugging
+    
+    def __init__(self, port='./pty1'):
         
         timeoutValue = 1
         
         # For zach I'm changing the serial port form '/dev/ttyUSB0' which
         # was working to ./pty for the test of socat
         
-        if self.useSerial:
-            self.ser = serial.Serial(port     =         port,
-                                     baudrate =         9600,
-                                     timeout  = timeoutValue)
-            self.ser.write('Ka')
-            data = self.ser.read(2)
-            print 'Read : ', data
+        self.ser = serial.Serial(port     =         port,
+                                 baudrate =         9600,
+                                 timeout  = timeoutValue)
+        self.ser.write('Ka')
+        data = self.ser.read(2)
+#        print 'Read : ', data
             
-            if (data != 'a#'):
-                print 'Comm not working and exit'
-                commWorking = False
-            else:
-                commWorking = True
-        else:
+        if (data != 'a#'):
+            print 'Comm not working and exit'
             commWorking = False
+        else:
+            commWorking = True
     
     # 'length' should include the final delimiter in the expected response
     def readSerial(self, length):
@@ -58,58 +54,53 @@ class CgemInterface:
         return output
     
     def gotoCommandWithHP (self, ra, dec):
-        if self.useSerial:
-            self.ser.write ('r'+ra.toCgem()+','+dec.toCgem())
-            print 'gotoCommand: r'+ra.toCgem()+','+dec.toCgem()
-        else:
-            print 'r'+ra.toCgem()+','+dec.toCgem()
         
-        if self.useSerial:
-            data = self.readSerial(1)
-            print 'Read after gotoCommand:',data
+        # Since I'm using the results of toGem for debugging
+        # I only to the conversion once and then use the variables
+        # raToCgem and decToCgem in the serial write and the print
+        
+        raToCgem  = ra.toCgem()
+        decToCgem = dec.toCgem()
+        self.ser.write ('r'+raToCgem+','+decToCgem)
+#        print 'gotoCommand: r'+raToCgem+','+decToCgem
+
+        data = self.readSerial(1)
+#        print 'Read after gotoCommand:',data
             
-            gotoInProgress = True
-            while (gotoInProgress):
-                time.sleep(1)
-                self.ser.write('L')
+        gotoInProgress = True
+        while (gotoInProgress):
+            time.sleep(1)
+            self.ser.write('L')
                 
-                data = self.readSerial(2)
-                print 'Result of L command:', data
-                if (data == '0#'):
-                    print 'Goto Finished'
-                    gotoInProgress = False
+            data = self.readSerial(2)
+#            print 'Result of L command:', data
+            if (data == '0#'):
+                print 'Goto Finished'
+                gotoInProgress = False
 
     def gotoCommandWithLP (self, ra, dec):
         print 'Not implemented'
                             
     def requestHighPrecisionRaDec (self):
-        if self.useSerial:
-            self.ser.write ('e')
-            result = self.readSerial(18);
-        else:
-            result = 'xxxxx#'
+        self.ser.write ('e')
+        result = self.readSerial(18);
+        findHashTag = result.find('#')
+        if findHashTag > 0:                        
+            result = result[0:findHashTag]
         return result
     
     def requestLowPrecisionRaDec (self):
-        if self.userSerial:
-            ser.write ('E')
-            result = self.readSerial(10)
-        else:
-            result = 'xxxxx#'
+        ser.write ('E')
+        result = self.readSerial(10)
         return result       
         
     def closeSerial(self):
-        if self.useSerial:
-            print 'closing serial interface'
-            self.ser.close()
+        print 'closing serial interface'
+        self.ser.close()
 
 if __name__ == '__main__':
     
-    port = './pty1'
-    if len(sys.argv) > 1:
-        port = sys.argv[1]
-    
-    cgemInterface = CgemInterface(True, port)
+    cgemInterface = CgemInterface()
     
     ra  = convertRaDecToCgemUnits.Ra()
     dec = convertRaDecToCgemUnits.Dec()
