@@ -39,5 +39,6 @@ while loopControl:
         cgem.gotoCommandWithHP (ra, dec)
         print cgem.requestHighPrecisionRaDec()
 
+cgem.quitSimulator()
 cgem.closeSerial()
 

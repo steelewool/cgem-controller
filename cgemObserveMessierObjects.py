@@ -55,5 +55,6 @@ if __name__ == '__main__':
                     loopControl = False
         index += 1
 
+    cgem.quitSimulator() # does nothing when operating with telescope
     cgem.closeSerial()
     

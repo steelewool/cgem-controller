@@ -93,6 +93,9 @@ class CgemInterface:
         ser.write ('E')
         result = self.readSerial(10)
         return result       
+
+    def quitSimulator (self):
+        self.ser.write('q')
         
     def closeSerial(self):
         print 'closing serial interface'
@@ -116,3 +119,5 @@ if __name__ == '__main__':
     cgemInterface.gotoCommandWithHP (ra, dec)
     print 'result of move:', cgemInterface.requestHighPrecisionRaDec()
 
+    cgemInterface.quitSimulator()
+    

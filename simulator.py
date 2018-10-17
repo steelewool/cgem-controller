@@ -2,6 +2,9 @@ import serial
 import convertRaDecToCgemUnits
 
 # Another neat idea would be to have this script spawn the virtual serial port
+# Since simulator only runs while we are simulating (duh) it could runs
+# nullmodem.sh before attempting to establish the serial interface.
+
 ser = serial.Serial(
     port = './pty2',
     timeout=1)
@@ -17,8 +20,10 @@ class TelescopeSim:
     if prefix == 'r':
       commandText = ser.read(20)
 #      print "Read command parameters: '{0}'".format(commandText)
+
+      # Split up the two arguments which are separated by a ','.
+      
       args = commandText.split(',', 2)
-#      print 'args : ', args
       
       # The two variables testscopeRa and telescopeDec will be used
       # to simulate the current position of the telescope
@@ -38,13 +43,10 @@ class TelescopeSim:
       
       self.telescopeDec = self.decConversion.fromCgem(args[1])
       
-      self.telescopeDecGem = (convertRaDecToCgemUnits.Dec(float(self.telescopeDec[0]),
-                                                     float(self.telescopeDec[1]),
-                                                     float(self.telescopeDec[2]))).toCgem()
-                                                     
-#      print 'self.telescopeDec : ', self.telescopeDec
-#      print 'self.telescopeDecCgem : ', self.telescopeDecGem
-      
+      self.telescopeDecGem = (convertRaDecToCgemUnits.Dec
+                              (float(self.telescopeDec[0]),
+                               float(self.telescopeDec[1]),
+                               float(self.telescopeDec[2]))).toCgem()
       ser.write("#")
     elif prefix == 'K':
         argument = ser.read(1)
