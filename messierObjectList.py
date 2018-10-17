@@ -25,7 +25,25 @@ class MessierObjectList:
         date = astropy.time.Time(astropy.time.Time.now(),
                                  scale='utc',
                                  location=observingPosition)
-    
+
+        # Commented out for now, but this is the logic from predict_transit
+        # for getting alt/azi of an object:
+
+        # aa = AltAz(location=observingPosition, obstime=observingNextTransitTime)
+
+        # ra = root.findtext('rightascension')
+        # dec = root.findtext('declination')
+                            
+        # raHrMinSec = ra[0:2] + 'h' + ra[3:5] + 'm' + ra[6:8] + 's'
+        # decDegMinSec = dec[0:3] + 'd' + dec[4:6] + 'm' + dec[8:10] + 's'
+                            
+        # skyCoord = SkyCoord (raHrMinSec + ' ' + decDegMinSec, frame='icrs')
+
+        # altAzi = skyCoord.transform_to(AltAz(obstime=observingNextTransitTime,location=observingPosition))
+
+        # print altAzi.alt.degree
+        
+
         meanLST = date.sidereal_time('mean')
         print 'meanLST                      : ', meanLST
 

@@ -15,7 +15,7 @@ class TelescopeSim:
   
   raConversion  = convertRaDecToCgemUnits.Ra()
   decConversion = convertRaDecToCgemUnits.Dec()
-  
+
   def parse_command(self, prefix):
     if prefix == 'r':
       commandText = ser.read(20)
