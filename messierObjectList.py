@@ -6,6 +6,7 @@ from   astropy.time        import Time
 from   astropy             import units as u
 from   astropy.coordinates import EarthLocation
 from   astropy.coordinates import SkyCoord
+from datetime import date
 
  
 class MessierObjectList:
@@ -18,14 +19,17 @@ class MessierObjectList:
         # Hard wired to Frazier Park. Need to add lat/lon/height as an
         # argument to the class.
         
-        observingPosition = EarthLocation(lat    = ( 34+49/60+32/3600) *u.deg,
-                                          lon    =-(118+1 /60+27*3600) *u.deg,
-                                          height = (5000 * 0.3048)     *u.m)
-
+        observingPosition = EarthLocation(
+            lat    = ( 34.0 + 49.0/60.0 + 32.0/3600.0) * u.deg,
+            lon    =-(118.0 +  1.0/60.0 + 27.0*3600.0) * u.deg,
+            height = (5000 * 0.3048)                   *   u.m)
+        
         date = astropy.time.Time(astropy.time.Time.now(),
                                  scale='utc',
                                  location=observingPosition)
-
+        
+        print 'date : ', date
+        
         # Commented out for now, but this is the logic from predict_transit
         # for getting alt/azi of an object:
 
@@ -45,7 +49,7 @@ class MessierObjectList:
         
 
         meanLST = date.sidereal_time('mean')
-        print 'meanLST                      : ', meanLST
+        print 'meanLST : ', meanLST
 
         # Use the 'h' and 'm' to extract the hour, minute, and second
         # from the meanLST
