@@ -1,3 +1,7 @@
+# Pretty sure that having the name Ra and Dec as classes in two different
+# modules is confusing me. For now I'm going to prefix Ra and Dec in this
+# module with 'C'.
+
 import serial
 
 class Error(Exception):
@@ -39,12 +43,12 @@ class CgemConverter(object):
         self.toCgem()
         self.fromCgem(cgemUnits = '0')
 
-class Ra(CgemConverter):
+class CRa(CgemConverter):
     raCgemUnits = '0'
     
     def __init__ (self, hr=0, min=0, sec=0):
         args = locals()
-        super(Ra, args.pop('self')).__init__(args)
+        super(CRa, args.pop('self')).__init__(args)
         self.hr  = hr
         self.min = min
         self.sec = sec
@@ -101,7 +105,7 @@ class Ra(CgemConverter):
         returnValue = str(xhr) + 'h' + str(xmin) + 'm' + str(xsec) + 's'
         return [xhr, xmin, xsec]
     
-class Dec(CgemConverter):
+class CDec(CgemConverter):
     #deg = 0.0
     #min = 0.0
     #sec = 0.0
@@ -109,7 +113,7 @@ class Dec(CgemConverter):
     
     def __init__ (self, deg=0, min=0, sec=0):
         args = locals()
-        super(Dec, args.pop('self')).__init__(args)
+        super(CDec, args.pop('self')).__init__(args)
         self.deg = deg
         self.min = min
         self.sec = sec
@@ -175,13 +179,13 @@ if __name__ == '__main__':
     min  = input ('raMin  : ')
     sec  = input ('raSec  : ')
     
-    ra = Ra(hr, min, sec)
+    ra = CRa(hr, min, sec)
     
     deg = input ('decDeg : ')
     min = input ('decMin : ')
     sec = input ('decSec : ')
     
-    dec = Dec (deg, min, sec)
+    dec = CDec (deg, min, sec)
     
     print 'RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec
     print 'Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec

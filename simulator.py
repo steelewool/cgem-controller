@@ -2,6 +2,9 @@ import serial
 import convertRaDecToCgemUnits
 
 # Another neat idea would be to have this script spawn the virtual serial port
+# Since simulator only runs while we are simulating (duh) it could runs
+# nullmodem.sh before attempting to establish the serial interface.
+
 ser = serial.Serial(
     port = './pty2',
     timeout=1)
@@ -10,15 +13,17 @@ class TelescopeSim:
   
   # Not sure if I have to declare these here, but it doesn't hurt to do so.
   
-  raConversion  = convertRaDecToCgemUnits.Ra()
-  decConversion = convertRaDecToCgemUnits.Dec()
-  
+  raConversion  = convertRaDecToCgemUnits.CRa()
+  decConversion = convertRaDecToCgemUnits.CDec()
+
   def parse_command(self, prefix):
     if prefix == 'r':
       commandText = ser.read(20)
 #      print "Read command parameters: '{0}'".format(commandText)
+
+      # Split up the two arguments which are separated by a ','.
+      
       args = commandText.split(',', 2)
-#      print 'args : ', args
       
       # The two variables testscopeRa and telescopeDec will be used
       # to simulate the current position of the telescope
@@ -26,9 +31,9 @@ class TelescopeSim:
       self.telescopeRa = self.raConversion.fromCgem(args[0])
       
       self.telecopeRaCgem = (
-          convertRaDecToCgemUnits.Ra(float(self.telescopeRa[0]),
-                                     float(self.telescopeRa[1]),
-                                     float(self.telescopeRa[2]))).toCgem()
+          convertRaDecToCgemUnits.CRa(float(self.telescopeRa[0]),
+                                      float(self.telescopeRa[1]),
+                                      float(self.telescopeRa[2]))).toCgem()
                                      
 #      print 'self.telescopeRaCgem : ', self.telecopeRaCgem
       
@@ -38,13 +43,10 @@ class TelescopeSim:
       
       self.telescopeDec = self.decConversion.fromCgem(args[1])
       
-      self.telescopeDecGem = (convertRaDecToCgemUnits.Dec(float(self.telescopeDec[0]),
-                                                     float(self.telescopeDec[1]),
-                                                     float(self.telescopeDec[2]))).toCgem()
-                                                     
-#      print 'self.telescopeDec : ', self.telescopeDec
-#      print 'self.telescopeDecCgem : ', self.telescopeDecGem
-      
+      self.telescopeDecGem = (convertRaDecToCgemUnits.CDec
+                              (float(self.telescopeDec[0]),
+                               float(self.telescopeDec[1]),
+                               float(self.telescopeDec[2]))).toCgem()
       ser.write("#")
     elif prefix == 'K':
         argument = ser.read(1)
