@@ -1,6 +1,7 @@
 # The class ObjectRaDec, which is not a very description name is
 # intended to provide sorting of a list of objects for the 'best'
 # observing order.
+from healpy.projaxes import AzimuthalAxes
 
 # Not sure where this from came from - uness LiClipse added it.
 
@@ -8,8 +9,9 @@
 
 # As of 9/25/18 I have the LST embedded in the ObjectRaDec object. It may make more
 # sense to place in the list - but but is still a deferred design detail.
+# But this makes the
 
-class Ra:
+class ORa:
     def __init__ (self, hr = 0, min = 0, sec = 0):
         self.hr  = hr
         self.min = min
@@ -22,7 +24,7 @@ class Ra:
         ySeconds = y.getSeconds()
         return xSeconds - ySeconds
     
-class Dec():
+class ODec():
     def __init__ (self, deg = 0, min = 0, sec = 0):
         self.deg = deg
         self.min = min
@@ -36,7 +38,7 @@ class Dec():
     def __eq__ (self,y):
         return self.getSeconds() == y.getSeconds()
 
-class Lst:
+class OLst:
     def __init__ (self, hr = 0, min = 0, sec = 0):
         self.hr  = hr
         self.min = min
@@ -44,15 +46,33 @@ class Lst:
     def getSeconds(self):
         return ((self.hr * 60.0 * 60.0) + (self.min * 60.0) + self.sec) * 15.0
 
+# For altitude and azimuth will use decimal degrees
+
+class OAlt:
+    def __init__ (self, deg = 0.0):
+        self.deg = deg
+    def getSeconds(self):
+        return (float(self.deg) * 60.0 * 60.0)
+    
+class OAzi:
+    def __init__ (self, deg = 0.0):
+        self.deg = deg
+    def getSeconds(self):
+        return (float(self.deg) * 60.0 * 60.0)
+    
 class ObjectRaDec:
     def __init__ (self, name = ' ',
-                  ra = Ra(),
-                  dec = Dec(),
-                  lst = Lst()):
+                  ra  = ORa(),
+                  dec = ODec(),
+                  lst = OLst(),
+                  alt = OAlt(),
+                  azi = OAzi()):
         self.name      = name
         self.ra        = ra
         self.dec       = dec
         self.lst       = lst
+        self.alt       = alt
+        self.azi       = azi
         self.binNumber = self.bin()
 
 # Need to look up the formula for computing local hour angle. This subtraction
@@ -162,7 +182,7 @@ if __name__ == '__main__':
 
     observingPosition = EarthLocation(lat    = ( 34+49/60+32/3600) *u.deg,
                                       lon    =-(118+1 /60+27*3600) *u.deg,
-                                      height = (5000 * 0.3048)    *u.m)
+                                      height = (5000 * 0.3048)     *u.m)
     
     print 'observingPosition            : ', observingPosition
     print 'astropy.time.Time.now()      : ', astropy.time.Time.now()
@@ -224,10 +244,28 @@ if __name__ == '__main__':
         dec_sec = dec[7:12]
         if (dec_sec == ''):
             dec_sec = 0
+            
+        raHrMinSec   = ra_hr   + 'h' + ra_min  + 'm' + ra_sec  + 's'
+        if dec_sec > 0:
+            decDegMinSec = dec_deg + 'd' + dec_min + 'm' + dec_sec + 's'
+        else:
+            decDegMinSec = dec_deg + 'd' + dec_min + 'm' + '00' + 's'
+        # print 'raHrMinSec   : ', raHrMinSec
+        # print 'decDegMinSec : ', decDegMinSec
+                          
+        skyCoord = SkyCoord (raHrMinSec + ' ' + decDegMinSec, frame='icrs')
+
+        altAzi = skyCoord.transform_to(AltAz(obstime=date,location=observingPosition))
+
+        print 'alt : ', altAzi.alt.degree
+        print 'azi : ', altAzi.az.degree
+ 
         newObject = ObjectRaDec (table[i]['MAIN_ID'],
-                                 Ra  (ra_hr, ra_min, ra_sec),
-                                 Dec (dec_deg, dec_min, dec_sec),
-                                 Lst (lst_hr, lst_min, lst_sec))
+                                 ORa  (ra_hr, ra_min, ra_sec),
+                                 ODec (dec_deg, dec_min, dec_sec),
+                                 OLst (lst_hr, lst_min, lst_sec),
+                                 OAlt (altAzi.alt.degree),
+                                 OAzi (altAzi.az.degree))
         if (i == 0):
             objectTable = [newObject]
         else:
@@ -263,8 +301,8 @@ if __name__ == '__main__':
     # When initializing the object I really only want to use one global LST
     # value, I'm not sure how to implement that in Python.
     
-    object1 = ObjectRaDec('object1', Ra(12,13,14),Dec(1,2,3), Lst(lst_hr, lst_min, lst_sec))
-    object2 = ObjectRaDec(ra = Ra(9,1,2),  dec = Dec(3,4,5), lst = Lst(lst_hr, lst_min, lst_sec))
+    object1 = ObjectRaDec('object1', ORa(12,13,14),ODec(1,2,3), OLst(lst_hr, lst_min, lst_sec))
+    object2 = ObjectRaDec(ra = ORa(9,1,2),  dec = ODec(3,4,5), lst = OLst(lst_hr, lst_min, lst_sec))
     object3 = object2
     
     object1.write()

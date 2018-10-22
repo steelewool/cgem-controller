@@ -10,8 +10,8 @@ import time
 # after we get the serial simulator working.
 
 cgem = cgemInterface.CgemInterface()
-ra  = convertRaDecToCgemUnits.Ra()
-dec = convertRaDecToCgemUnits.Dec()
+ra  = convertRaDecToCgemUnits.CRa()
+dec = convertRaDecToCgemUnits.CDec()
     
 print 'Enter a negative number for the RA hours wnd the loop will exit.'
 

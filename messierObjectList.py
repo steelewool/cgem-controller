@@ -1,14 +1,15 @@
 
 import objectRaDec
-from   objectRaDec import Ra, Dec, Lst
+from   objectRaDec import ORa, ODec, OLst, OAlt, OAzi
 import astropy.time
 from   astropy.time        import Time
 from   astropy             import units as u
 from   astropy.coordinates import EarthLocation
 from   astropy.coordinates import SkyCoord
-from datetime import date
+from   astropy.coordinates import AltAz
+from   datetime import date
 
- 
+
 class MessierObjectList:
     
     # Initialzation logic to create the the sorted list
@@ -22,32 +23,12 @@ class MessierObjectList:
         observingPosition = EarthLocation(
             lat    = ( 34.0 + 49.0/60.0 + 32.0/3600.0) * u.deg,
             lon    =-(118.0 +  1.0/60.0 + 27.0*3600.0) * u.deg,
-            height = (5000 * 0.3048)                   *   u.m)
+            height = (5000 * 0.3048)                   * u.m)
         
         date = astropy.time.Time(astropy.time.Time.now(),
                                  scale='utc',
                                  location=observingPosition)
         
-        print 'date : ', date
-        
-        # Commented out for now, but this is the logic from predict_transit
-        # for getting alt/azi of an object:
-
-        # aa = AltAz(location=observingPosition, obstime=observingNextTransitTime)
-
-        # ra = root.findtext('rightascension')
-        # dec = root.findtext('declination')
-                            
-        # raHrMinSec = ra[0:2] + 'h' + ra[3:5] + 'm' + ra[6:8] + 's'
-        # decDegMinSec = dec[0:3] + 'd' + dec[4:6] + 'm' + dec[8:10] + 's'
-                            
-        # skyCoord = SkyCoord (raHrMinSec + ' ' + decDegMinSec, frame='icrs')
-
-        # altAzi = skyCoord.transform_to(AltAz(obstime=observingNextTransitTime,location=observingPosition))
-
-        # print altAzi.alt.degree
-        
-
         meanLST = date.sidereal_time('mean')
         print 'meanLST : ', meanLST
 
@@ -64,7 +45,7 @@ class MessierObjectList:
         lst_min = int(str(meanLST)[positionH+1:positionM])
         lst_sec = int(str(meanLST)[positionM+1:positionM+3])
     
-        print lst_hr, lst_min, lst_sec
+        # print lst_hr, lst_min, lst_sec
    
         # Grab the Simbad data base
     
@@ -75,23 +56,59 @@ class MessierObjectList:
         # which does get sorted my observability.
     
         table = Simbad.query_object ('M *', wildcard=True, verbose=False)
-        # does not work on the pi: , get_query_payload=False)
+        
+        # This loop goes through the table of messier objects obtained from
+        # the query above and moves the objects into the array objectTable.
         
         for i in range(len(table)):
             ra      = table[i]['RA']
             dec     = table[i]['DEC']
+            
+            # print 'ra from simbad query  : ', ra
+            # print 'dec from simbad query : ', dec
+            
+            # These substring operations have me concernedNeed to debug
+            # to make things are working correctly.
+            
+            # This works correctly because the objects from simbad query
+            # come in a very fixed format.
+            
             ra_hr   = ra[0:2]
             ra_min  = ra[3:5]
             ra_sec  = ra[6:8]
+            if ra_sec == '':
+                ra_sec = 0
             dec_deg = dec[0:3]
             dec_min = dec[4:6]
             dec_sec = dec[7:12]
-            if (dec_sec == ''):
+            if dec_sec == '':
                 dec_sec = 0
+                
+            # Need to calculate the altitude and azimuth for each of the
+            # objects here.
+            
+            raHrMinSec   = ra_hr   + 'h' + ra_min  + 'm' + ra_sec  + 's'
+            if dec_sec > 0:
+                decDegMinSec = dec_deg + 'd' + dec_min + 'm' + dec_sec + 's'
+            else:
+                decDegMinSec = dec_deg + 'd' + dec_min + 'm' + '00' + 's'
+            # print 'raHrMinSec   : ', raHrMinSec
+            # print 'decDegMinSec : ', decDegMinSec
+                          
+            skyCoord = SkyCoord (raHrMinSec + ' ' + decDegMinSec, frame='icrs')
+
+            altAzi = skyCoord.transform_to(AltAz(obstime=date,location=observingPosition))
+
+            # print 'alt : ', altAzi.alt.degree
+            # print 'azi : ', altAzi.az.degree
+            
             newObject = objectRaDec.ObjectRaDec(table[i]['MAIN_ID'],
-                                                 Ra  (ra_hr,   ra_min,  ra_sec),
-                                                 Dec (dec_deg, dec_min, dec_sec),
-                                                 Lst (lst_hr,  lst_min, lst_sec))
+                                                 ORa  (ra_hr,   ra_min,  ra_sec),
+                                                 ODec (dec_deg, dec_min, dec_sec),
+                                                 OLst (lst_hr,  lst_min, lst_sec),
+                                                 OAlt (altAzi.alt.degree),
+                                                 OAzi (altAzi.az.degree))
+            
             if (i == 0):
                 self.objectTable = [newObject]
             else:
@@ -100,7 +117,7 @@ class MessierObjectList:
         # Sort the objects into a best fit for observing
         
         self.objectTable.sort()
-
+    
 if __name__ == '__main__':
         
     print 'main program entered'
