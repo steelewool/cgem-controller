@@ -3,11 +3,15 @@
 # I'm not using the alt/azi to determine if the object is above the horizon
 # and I should be.
 
+import spawnSimulator
 import convertRaDecToCgemUnits
 import cgemInterface
 import messierObjectList
 
 if __name__ == '__main__':
+    
+    print 'spawn the simulator - need to control by an argment'
+    spawnSimulator.SpawnSimulator()
     
     # The initializer for cgemInterface will open the serial port.
     # The default is ./pty1 which works with either the simulator
