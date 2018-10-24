@@ -4,7 +4,8 @@ import os
 
 class SpawnSimulator:
     def __init__(self):
-        pid = os.spawnlp(os.P_NOWAIT, "python", "", "simulator.py")
+        pid_nullmodem = os.spawnlp(os.P_NOWAIT, "./nullmodem.sh", "", "")
+        pid_python = os.spawnlp(os.P_NOWAIT, "python", "", "simulator.py")
         print 'simulator started'
         
 if __name__ == '__main__':
