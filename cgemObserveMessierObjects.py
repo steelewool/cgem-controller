@@ -81,7 +81,14 @@ if __name__ == '__main__':
                         loopControl = False
         index += 1
 
+    print 'call sp.shutdown()'
     sp.shutdown()
+
+    print 'call cgem.quiteSimulator'
+    
     cgem.quitSimulator() # does nothing when operating with telescope
+
+    print 'call cgem.closeSerial'
+    
     cgem.closeSerial()
     

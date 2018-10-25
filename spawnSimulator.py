@@ -12,11 +12,12 @@ class SpawnSimulator:
         self.pid_python = os.spawnlp(os.P_NOWAIT, "python", "", "simulator.py")
         print 'simulator started'
     def shutdown(self):
-        print 'About to kill null modem task'
-        os.kill(self.pid_nullmodem,0)
+        print 'About to kill null modem task - kill not working'
+        os.kill(self.pid_nullmodem,signal.SIGINT)
+        time.sleep(1)
+#        os.kill(self.pid_python,   signal.SIGINT)
         
 if __name__ == '__main__':
-    import time
     sp = SpawnSimulator()
     time.sleep(5)
     sp.shutdown()
