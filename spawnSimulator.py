@@ -1,16 +1,25 @@
 # Provide basic goto operations for a manually entered RA/Declination
 
 import os
+import signal
+import time
 
 class SpawnSimulator:
+
     def __init__(self):
-#        pid_nullmodem = os.spawnlp(os.P_NOWAIT, "./nullmodem.sh", "", "")
-        pid_python = os.spawnlp(os.P_NOWAIT, "python", "", "simulator.py")
+        self.pid_nullmodem = os.spawnlp(os.P_NOWAIT, "./nullmodem.sh", "", "")
+        time.sleep(1)
+        self.pid_python = os.spawnlp(os.P_NOWAIT, "python", "", "simulator.py")
         print 'simulator started'
+    def shutdown(self):
+        print 'About to kill null modem task'
+        os.kill(self.pid_nullmodem,0)
         
 if __name__ == '__main__':
     import time
-    SpawnSimulator()
-    time.sleep(120)
+    sp = SpawnSimulator()
+    time.sleep(5)
+    sp.shutdown()
+    
     print 'exit'
     
