@@ -1,7 +1,7 @@
 # The class ObjectRaDec, which is not a very description name is
 # intended to provide sorting of a list of objects for the 'best'
 # observing order.
-from healpy.projaxes import AzimuthalAxes
+#from healpy.projaxes import AzimuthalAxes
 
 # Not sure where this from came from - uness LiClipse added it.
 
