@@ -9,9 +9,15 @@ import cgemInterface
 import messierObjectList
 
 if __name__ == '__main__':
-    
-    print 'spawn the simulator - need to control by an argment'
-    sp = spawnSimulator.SpawnSimulator()
+
+    if input("Enter 1 for simulation 2 for hardware ") == 1:
+        simulate = True
+        print 'Simulate set to true'
+    else:
+        simulate = False
+        print 'Simulate set to false'
+        
+    sp = spawnSimulator.SpawnSimulator(simulate)
     
     # The initializer for cgemInterface will open the serial port.
     # The default is ./pty1 which works with either the simulator
@@ -81,14 +87,9 @@ if __name__ == '__main__':
                         loopControl = False
         index += 1
 
-    print 'call sp.shutdown()'
+    cgem.quitSimulator() # does nothing when operating with telescope
+    cgem.closeSerial()
     sp.shutdown()
 
-    print 'call cgem.quiteSimulator'
-    
-    cgem.quitSimulator() # does nothing when operating with telescope
 
-    print 'call cgem.closeSerial'
-    
-    cgem.closeSerial()
     

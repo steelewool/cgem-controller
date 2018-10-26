@@ -5,16 +5,14 @@ import convertRaDecToCgemUnits
 # Since simulator only runs while we are simulating (duh) it could runs
 # nullmodem.sh before attempting to establish the serial interface.
 
-ser = serial.Serial(
-    port = './pty2',
-    timeout=1)
+serialPort = './pty2'
+ser = serial.Serial(port=serialPort,timeout=1)
 
-class TelescopeSim:
+class Simulator:
   
-  # Not sure if I have to declare these here, but it doesn't hurt to do so.
-  
-  raConversion  = convertRaDecToCgemUnits.CRa()
-  decConversion = convertRaDecToCgemUnits.CDec()
+  def __init__ (self):
+    self.raConversion  = convertRaDecToCgemUnits.CRa()
+    self.decConversion = convertRaDecToCgemUnits.CDec()
 
   def parse_command(self, prefix):
     if prefix == 'r':
@@ -54,28 +52,22 @@ class TelescopeSim:
     elif prefix == 'L':
         ser.write ('0#')
     elif prefix == 'e':
-        # TODO: Store values from GOTO command (r/R) and return that here
-        
-        outputCommand = self.telecopeRaCgem+','+self.telescopeDecGem+'#'
-#        print 'outputCommand : ', outputCommand
+        outputCommand = self.telecopeRaCgem + ',' + self.telescopeDecGem + '#'
         ser.write (outputCommand)
-                                              
-
-#        print 'telescopeRaCgem : ', a.toCgem(), x.toCgem()
-        
     else:
         print "Unknown command"
 
 if __name__ == '__main__':
   done = False
-  sim = TelescopeSim()
+  sim = Simulator()
   
   while not done:
-    cmd = ser.read(1)
-    if cmd != '':
-#      print "Read command-char '{0}'".format(cmd)
-      sim.parse_command(cmd)
-    if cmd == 'q':
-      print "Ready to quit"
+    if ser.isOpen() == False:
       done = True
+    else:
+      cmd = ser.read(1)
+      if cmd != '':
+        sim.parse_command(cmd)
+        if cmd == 'q':
+          done = True
 

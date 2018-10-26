@@ -30,10 +30,9 @@ class CgemInterface:
                                  timeout  = timeoutValue)
         self.ser.write('Ka')
         data = self.ser.read(2)
-#        print 'Read : ', data
+        print 'Read : ', data
             
         if (data != 'a#'):
-            print 'Comm not working and exit'
             commWorking = False
         else:
             commWorking = True
@@ -98,7 +97,6 @@ class CgemInterface:
         self.ser.write('q')
         
     def closeSerial(self):
-        print 'closing serial interface'
         self.ser.close()
 
 if __name__ == '__main__':
