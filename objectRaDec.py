@@ -179,6 +179,7 @@ if __name__ == '__main__':
     from   astropy             import units as u
     from   astropy.coordinates import EarthLocation
     from   astropy.coordinates import SkyCoord
+    from   astropy.coordinates import AltAz
 
     observingPosition = EarthLocation(lat    = ( 34+49/60+32/3600) *u.deg,
                                       lon    =-(118+1 /60+27*3600) *u.deg,
