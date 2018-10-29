@@ -1,6 +1,6 @@
 
 import objectRaDec
-from   objectRaDec import ORa, ODec, OLst, OAlt, OAzi
+from raDecLst import Ra, Dec, Lst, Alt, Azi
 import astropy.time
 from   astropy.time        import Time
 from   astropy             import units as u
@@ -99,15 +99,15 @@ class MessierObjectList:
 
             altAzi = skyCoord.transform_to(AltAz(obstime=date,location=observingPosition))
 
-            # print 'alt : ', altAzi.alt.degree
-            # print 'azi : ', altAzi.az.degree
+            #print 'alt : ', altAzi.alt.degree
+            #print 'azi : ', altAzi.az.degree
             
             newObject = objectRaDec.ObjectRaDec(table[i]['MAIN_ID'],
-                                                 ORa  (ra_hr,   ra_min,  ra_sec),
-                                                 ODec (dec_deg, dec_min, dec_sec),
-                                                 OLst (lst_hr,  lst_min, lst_sec),
-                                                 OAlt (altAzi.alt.degree),
-                                                 OAzi (altAzi.az.degree))
+                                                Ra  (ra_hr,   ra_min,  ra_sec),
+                                                Dec (dec_deg, dec_min, dec_sec),
+                                                Lst (lst_hr,  lst_min, lst_sec),
+                                                Alt (altAzi.alt.degree),
+                                                Azi (altAzi.az.degree))
             
             if (i == 0):
                 self.objectTable = [newObject]
@@ -123,9 +123,12 @@ if __name__ == '__main__':
     print 'main program entered'
     messierObjects = MessierObjectList()
     print messierObjects.objectTable[0].name
+
+    print 'length: ', len(messierObjects.objectTable)
     
     for i in range (len(messierObjects.objectTable)):
-        if (messierObjects.objectTable[i].binNumber > 0):
-            messierObjects.objectTable[i].write()
-            # print 'ra hr: ', messierObjects.objectTable[i].ra.hr
+        #print 'bin: ', messierObjects.objectTable[i].binNumber
+        #if (messierObjects.objectTable[i].binNumber > 0):
+        messierObjects.objectTable[i].write()
+        # print 'ra hr: ', messierObjects.objectTable[i].ra.hr
             

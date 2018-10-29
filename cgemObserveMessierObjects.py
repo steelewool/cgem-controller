@@ -26,8 +26,8 @@ if __name__ == '__main__':
     # or something simular.
     
     cgem       = cgemInterface.CgemInterface()
-    convertRa  = convertRaDecToCgemUnits.CRa()
-    convertDec = convertRaDecToCgemUnits.CDec()
+    convertRa  = convertRaDecToCgemUnits.Ra()
+    convertDec = convertRaDecToCgemUnits.Dec()
     
     # messierObjectList goes out to the simbad database and querys
     # for the Messier Objects. It returns a sorted list of those objects
@@ -65,14 +65,14 @@ if __name__ == '__main__':
                         ra = messierList.objectTable[index].ra
                         dec = messierList.objectTable[index].dec
                         
-                        newRa = convertRaDecToCgemUnits.CRa(float(ra.hr),
-                                                            float(ra.min),
-                                                            float(ra.sec))
+                        newRa = convertRaDecToCgemUnits.Ra(float(ra.hr),
+                                                           float(ra.min),
+                                                           float(ra.sec))
         
                     
-                        newDec = convertRaDecToCgemUnits.CDec(float(dec.deg),
-                                                              float(dec.min),
-                                                              float(dec.sec))
+                        newDec = convertRaDecToCgemUnits.Dec(float(dec.deg),
+                                                             float(dec.min),
+                                                             float(dec.sec))
                         
                         cgem.gotoCommandWithHP (newRa, newDec)
                         telescopeRaDecCgem = cgem.requestHighPrecisionRaDec()
