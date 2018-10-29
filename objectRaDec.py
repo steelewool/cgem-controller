@@ -77,19 +77,10 @@ class ObjectRaDec:
             return 1
         else:
             localHrAngle = self.localHrAngle()
-            #print 'bin, localHrAngle : ', localHrAngle
             # First make sure the object is in the range -6 .. 6
-
-            # hack:
-            #return self.localHrAngle()
-        
-            # The code below is not working - need to FIX
-            
             if ((-6 <= localHrAngle) and (localHrAngle <= 6)): # assign a bin
-                #print 'bin, return ', localHrAngle+8
                 return localHrAngle + 8
             else:
-                #print 'bin, return -1'
                 return -1
 
 # First determine which bin the two objects are in which is based on the LST.
@@ -189,10 +180,6 @@ if __name__ == '__main__':
     lst_min = int(str(meanLST)[positionH+1:positionM])
     lst_sec = int(str(meanLST)[positionM+1:positionM+3])
     
-    #print lst_hr, lst_min, lst_sec
-
-    #print '---------------------'  
-    
     # Grab the Simbad data base
     
     from astroquery.simbad import Simbad
@@ -223,16 +210,11 @@ if __name__ == '__main__':
             decDegMinSec = dec_deg + 'd' + dec_min + 'm' + dec_sec + 's'
         else:
             decDegMinSec = dec_deg + 'd' + dec_min + 'm' + '00' + 's'
-        # print 'raHrMinSec   : ', raHrMinSec
-        # print 'decDegMinSec : ', decDegMinSec
                           
         skyCoord = SkyCoord (raHrMinSec + ' ' + decDegMinSec, frame='icrs')
 
         altAzi = skyCoord.transform_to(AltAz(obstime=date,location=observingPosition))
 
-        #print 'alt : ', altAzi.alt.degree
-        #print 'azi : ', altAzi.az.degree
- 
         newObject = ObjectRaDec (table[i]['MAIN_ID'],
                                  Ra  (ra_hr, ra_min, ra_sec),
                                  Dec (dec_deg, dec_min, dec_sec),
@@ -244,8 +226,6 @@ if __name__ == '__main__':
         else:
             objectTable.append(newObject)
 
-    # print first and last object before sort and after sorting.
-    
     print 'Before sort.'
     
     objectTable[0].write()
