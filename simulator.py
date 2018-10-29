@@ -11,8 +11,8 @@ ser = serial.Serial(port=serialPort,timeout=1)
 class Simulator:
   
   def __init__ (self):
-    self.raConversion  = convertRaDecToCgemUnits.CRa()
-    self.decConversion = convertRaDecToCgemUnits.CDec()
+    self.raConversion  = convertRaDecToCgemUnits.Ra()
+    self.decConversion = convertRaDecToCgemUnits.Dec()
 
   def parse_command(self, prefix):
     if prefix == 'r':
@@ -29,9 +29,9 @@ class Simulator:
       self.telescopeRa = self.raConversion.fromCgem(args[0])
       
       self.telecopeRaCgem = (
-          convertRaDecToCgemUnits.CRa(float(self.telescopeRa[0]),
-                                      float(self.telescopeRa[1]),
-                                      float(self.telescopeRa[2]))).toCgem()
+          convertRaDecToCgemUnits.Ra(float(self.telescopeRa[0]),
+                                     float(self.telescopeRa[1]),
+                                     float(self.telescopeRa[2]))).toCgem()
                                      
 #      print 'self.telescopeRaCgem : ', self.telecopeRaCgem
       
@@ -41,7 +41,7 @@ class Simulator:
       
       self.telescopeDec = self.decConversion.fromCgem(args[1])
       
-      self.telescopeDecGem = (convertRaDecToCgemUnits.CDec
+      self.telescopeDecGem = (convertRaDecToCgemUnits.Dec
                               (float(self.telescopeDec[0]),
                                float(self.telescopeDec[1]),
                                float(self.telescopeDec[2]))).toCgem()
