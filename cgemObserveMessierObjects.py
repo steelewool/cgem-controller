@@ -50,15 +50,17 @@ if __name__ == '__main__':
             loopControl = False
         else:
             if messierList.objectTable[index].bin() > 0:
-                messierList.objectTable[index].write()
-                
+                                
                 alt = messierList.objectTable[index].alt.deg
-                # azi = messierList.objectTable[index].azi.deg
-                
-                # print 'alt : ', alt
-                # print 'azi : ', azi
                 
                 if alt > 20.0:
+                    messierList.objectTable[index].write()
+                    azi = messierList.objectTable[index].azi.deg
+                
+                    print '   alt : ', alt
+                    print '   azi : ', azi
+                    print
+
                     x = input('1 to observe, 2 to skip, 3 to exit ')
                     if x == 1:
                         
