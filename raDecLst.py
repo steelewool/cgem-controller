@@ -6,9 +6,9 @@ class Ra:
         self.min = min
         self.sec = sec
     def getSeconds(self):
-        return ((float(self.hr )  * 60.0 * 60.0) +
-                (float(self.min)  * 60.0)        +
-                (float(self.sec)) * 15.0)
+        return ((float(self.hr )   * 3600.0) +
+                (float(self.min)   *   60.0) +
+                (float(self.sec)))           * 15.0
     # define subtracttion
     def __sub__ (self, y):
         xSeconds = self.getSeconds()
@@ -36,6 +36,12 @@ class Lst:
         self.sec = sec
     def getSeconds(self):
         return ((self.hr * 60.0 * 60.0) + (self.min * 60.0) + self.sec) * 15.0
+
+    # define subtracttion
+    def __sub__ (self, y):
+        xSeconds = self.getSeconds()
+        ySeconds = y.getSeconds()
+        return xSeconds - ySeconds
 
 class Alt:
     def __init__ (self, deg = 0.0):

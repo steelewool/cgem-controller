@@ -11,62 +11,15 @@
 # sense to place in the list - but but is still a deferred design detail.
 # But this makes the
 
-class ORa:
-    def __init__ (self, hr = 0, min = 0, sec = 0):
-        self.hr  = hr
-        self.min = min
-        self.sec = sec
-    def getSeconds(self):
-        return ((float(self.hr) * 60.0 * 60.0) + (float(self.min)  * 60.0) + float(self.sec)) * 15.0
-    # define subtracttion
-    def __sub__ (self, y):
-        xSeconds = self.getSeconds()
-        ySeconds = y.getSeconds()
-        return xSeconds - ySeconds
-    
-class ODec():
-    def __init__ (self, deg = 0, min = 0, sec = 0):
-        self.deg = deg
-        self.min = min
-        self.sec = sec
-    def getSeconds(self):
-        return (float(self.deg) * 60.0 * 60.0) + (float(self.min)  * 60.0) + float(self.sec)
-    def __lt__ (self,y):
-        return self.getSeconds() < y.getSeconds()
-    def __le__ (self,y):
-        return self.getSeconds() <= y.getSeconds()
-    def __eq__ (self,y):
-        return self.getSeconds() == y.getSeconds()
+from raDecLst import Ra, Dec, Lst, Alt, Azi
 
-class OLst:
-    def __init__ (self, hr = 0, min = 0, sec = 0):
-        self.hr  = hr
-        self.min = min
-        self.sec = sec
-    def getSeconds(self):
-        return ((self.hr * 60.0 * 60.0) + (self.min * 60.0) + self.sec) * 15.0
-
-# For altitude and azimuth will use decimal degrees
-
-class OAlt:
-    def __init__ (self, deg = 0.0):
-        self.deg = deg
-    def getSeconds(self):
-        return (float(self.deg) * 60.0 * 60.0)
-    
-class OAzi:
-    def __init__ (self, deg = 0.0):
-        self.deg = deg
-    def getSeconds(self):
-        return (float(self.deg) * 60.0 * 60.0)
-    
 class ObjectRaDec:
     def __init__ (self, name = ' ',
-                  ra  = ORa(),
-                  dec = ODec(),
-                  lst = OLst(),
-                  alt = OAlt(),
-                  azi = OAzi()):
+                  ra  = Ra(),
+                  dec = Dec(),
+                  lst = Lst(),
+                  alt = Alt(),
+                  azi = Azi()):
         self.name      = name
         self.ra        = ra
         self.dec       = dec
@@ -74,16 +27,33 @@ class ObjectRaDec:
         self.alt       = alt
         self.azi       = azi
         self.binNumber = self.bin()
+        print 'self.binNumber : ', self.binNumber
 
 # Need to look up the formula for computing local hour angle. This subtraction
 # could be reversed.
 # Zach - why does the subtraction of a ra and lst work. I would have thought I
 #        needed a cast operator.
+# self looks like the wrong thing to use here:
 
     def localHrAngle(self):
-        return int((self.ra - self.lst)/(3600*15))
+        localHourAngle =(self.ra.getSeconds() - self.lst.getSeconds())/(3600*15)
+        localHourAngle =(self.ra.getSeconds() - self.lst.getSeconds())/(3600*15)
+        print '-------------'
+        print 'ra.hr         : ', self.ra.hr
+        print 'ra.min        : ', self.ra.min
+        print 'ra.sec        : ', self.ra.sec
+        print 'ra seconds    : ', self.ra.getSeconds()
+        print 'lst.hr        : ', self.lst.hr
+        print 'lst.min       : ', self.lst.min
+        print 'lst.sec       : ', self.lst.sec
+        print 'lst.seconds   : ', self.lst.getSeconds()
+        print 'subtraction   : ', self.ra.getSeconds() - self.lst.getSeconds()
+        print 'localHourAngle: ', localHourAngle
+        print '--------------'
+        return int(localHourAngle)
 
-    # This function will the bin value for searching and sorting. #
+    # This functi
+    # on will the bin value for searching and sorting. #
     # Bin  1 is for objects north of 70 degrees declination
     # Bin  2 is for LHA -6
     # Bin  3 is for LHA -5
@@ -110,14 +80,19 @@ class ObjectRaDec:
             return 1
         else:
             localHrAngle = self.localHrAngle()
-#            print 'bin, localHrAngle : ', localHrAngle
+            print 'bin, localHrAngle : ', localHrAngle
             # First make sure the object is in the range -6 .. 6
+
+            # hack:
+            return self.localHrAngle()
+        
+            # The code below is not working - need to FIX
             
             if ((-6 <= localHrAngle) and (localHrAngle <= 6)): # assign a bin
-#                print 'bin, return ', localHrAngle+8
+                print 'bin, return ', localHrAngle+8
                 return localHrAngle + 8
             else:
-#                print 'bin, return -1'
+                print 'bin, return -1'
                 return -1
 
 # First determine which bin the two objects are in which is based on the LST.
@@ -258,15 +233,15 @@ if __name__ == '__main__':
 
         altAzi = skyCoord.transform_to(AltAz(obstime=date,location=observingPosition))
 
-        print 'alt : ', altAzi.alt.degree
-        print 'azi : ', altAzi.az.degree
+        #print 'alt : ', altAzi.alt.degree
+        #print 'azi : ', altAzi.az.degree
  
         newObject = ObjectRaDec (table[i]['MAIN_ID'],
-                                 ORa  (ra_hr, ra_min, ra_sec),
-                                 ODec (dec_deg, dec_min, dec_sec),
-                                 OLst (lst_hr, lst_min, lst_sec),
-                                 OAlt (altAzi.alt.degree),
-                                 OAzi (altAzi.az.degree))
+                                 Ra  (ra_hr, ra_min, ra_sec),
+                                 Dec (dec_deg, dec_min, dec_sec),
+                                 Lst (lst_hr, lst_min, lst_sec),
+                                 Alt (altAzi.alt.degree),
+                                 Azi (altAzi.az.degree))
         if (i == 0):
             objectTable = [newObject]
         else:
@@ -278,7 +253,7 @@ if __name__ == '__main__':
     
     objectTable[0].write()
     objectTable[len(objectTable)-1].write()
-    
+
     objectTable.sort()
     
     # Remove any objects that have a negative bin number
@@ -302,8 +277,8 @@ if __name__ == '__main__':
     # When initializing the object I really only want to use one global LST
     # value, I'm not sure how to implement that in Python.
     
-    object1 = ObjectRaDec('object1', ORa(12,13,14),ODec(1,2,3), OLst(lst_hr, lst_min, lst_sec))
-    object2 = ObjectRaDec(ra = ORa(9,1,2),  dec = ODec(3,4,5), lst = OLst(lst_hr, lst_min, lst_sec))
+    object1 = ObjectRaDec('object1', Ra(12,13,14),Dec(1,2,3), Lst(lst_hr, lst_min, lst_sec))
+    object2 = ObjectRaDec(ra = Ra(9,1,2),  dec = Dec(3,4,5), lst = Lst(lst_hr, lst_min, lst_sec))
     object3 = object2
     
     object1.write()
