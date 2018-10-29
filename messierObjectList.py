@@ -127,8 +127,8 @@ if __name__ == '__main__':
     print 'length: ', len(messierObjects.objectTable)
     
     for i in range (len(messierObjects.objectTable)):
-        print 'bin: ', messierObjects.objectTable[i].binNumber
-        if (messierObjects.objectTable[i].binNumber > 0):
-            messierObjects.objectTable[i].write()
-            # print 'ra hr: ', messierObjects.objectTable[i].ra.hr
+        #print 'bin: ', messierObjects.objectTable[i].binNumber
+        #if (messierObjects.objectTable[i].binNumber > 0):
+        messierObjects.objectTable[i].write()
+        # print 'ra hr: ', messierObjects.objectTable[i].ra.hr
             

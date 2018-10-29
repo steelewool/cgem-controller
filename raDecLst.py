@@ -1,5 +1,4 @@
 
-
 class Ra:
     def __init__ (self, hr = 0, min = 0, sec = 0.0):
         self.hr  = hr

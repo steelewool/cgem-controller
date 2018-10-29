@@ -27,7 +27,6 @@ class ObjectRaDec:
         self.alt       = alt
         self.azi       = azi
         self.binNumber = self.bin()
-        print 'self.binNumber : ', self.binNumber
 
 # Need to look up the formula for computing local hour angle. This subtraction
 # could be reversed.
@@ -38,18 +37,18 @@ class ObjectRaDec:
     def localHrAngle(self):
         localHourAngle =(self.ra.getSeconds() - self.lst.getSeconds())/(3600*15)
         localHourAngle =(self.ra.getSeconds() - self.lst.getSeconds())/(3600*15)
-        print '-------------'
-        print 'ra.hr         : ', self.ra.hr
-        print 'ra.min        : ', self.ra.min
-        print 'ra.sec        : ', self.ra.sec
-        print 'ra seconds    : ', self.ra.getSeconds()
-        print 'lst.hr        : ', self.lst.hr
-        print 'lst.min       : ', self.lst.min
-        print 'lst.sec       : ', self.lst.sec
-        print 'lst.seconds   : ', self.lst.getSeconds()
-        print 'subtraction   : ', self.ra.getSeconds() - self.lst.getSeconds()
-        print 'localHourAngle: ', localHourAngle
-        print '--------------'
+        #print '-------------'
+        #print 'ra.hr         : ', self.ra.hr
+        #print 'ra.min        : ', self.ra.min
+        #print 'ra.sec        : ', self.ra.sec
+        #print 'ra seconds    : ', self.ra.getSeconds()
+        #print 'lst.hr        : ', self.lst.hr
+        #print 'lst.min       : ', self.lst.min
+        #print 'lst.sec       : ', self.lst.sec
+        #print 'lst.seconds   : ', self.lst.getSeconds()
+        #print 'subtraction   : ', self.ra.getSeconds() - self.lst.getSeconds()
+        #print 'localHourAngle: ', localHourAngle
+        #print '--------------'
         return int(localHourAngle)
 
     # This functi
@@ -75,24 +74,22 @@ class ObjectRaDec:
     def bin (self):
         # original I was using 70, but for experimenting will change to 65
         if (float(self.dec.deg) > 65.0):
-#            print 'self.dec.deg: ', self.dec.deg
-#            print 'bin, return 1'
             return 1
         else:
             localHrAngle = self.localHrAngle()
-            print 'bin, localHrAngle : ', localHrAngle
+            #print 'bin, localHrAngle : ', localHrAngle
             # First make sure the object is in the range -6 .. 6
 
             # hack:
-            return self.localHrAngle()
+            #return self.localHrAngle()
         
             # The code below is not working - need to FIX
             
             if ((-6 <= localHrAngle) and (localHrAngle <= 6)): # assign a bin
-                print 'bin, return ', localHrAngle+8
+                #print 'bin, return ', localHrAngle+8
                 return localHrAngle + 8
             else:
-                print 'bin, return -1'
+                #print 'bin, return -1'
                 return -1
 
 # First determine which bin the two objects are in which is based on the LST.
@@ -192,9 +189,9 @@ if __name__ == '__main__':
     lst_min = int(str(meanLST)[positionH+1:positionM])
     lst_sec = int(str(meanLST)[positionM+1:positionM+3])
     
-    print lst_hr, lst_min, lst_sec
+    #print lst_hr, lst_min, lst_sec
 
-    print '---------------------'  
+    #print '---------------------'  
     
     # Grab the Simbad data base
     
