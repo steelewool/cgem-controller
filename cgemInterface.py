@@ -1,4 +1,5 @@
 # Imports from standard lib
+import keyboard
 import serial
 import commands
 import time
@@ -68,6 +69,13 @@ class CgemInterface:
             
         gotoInProgress = True
         while (gotoInProgress):
+
+            if keyboard.is_pressed('space'):
+                print 'Detected a key got pressed'
+                self.cancelGoto()
+                # some key got pressed
+                # send command to stop gotoCommand
+                gotoInProgress = False
             time.sleep(1)
             self.ser.write('L')
                 
@@ -79,7 +87,12 @@ class CgemInterface:
 
     def gotoCommandWithLP (self, ra, dec):
         print 'Not implemented'
-                            
+
+    def cancelGoto (self):
+        self.ser.write ('M')
+        result = self.readSerial(1)
+        return result
+    
     def requestHighPrecisionRaDec (self):
         self.ser.write ('e')
         result = self.readSerial(18);
