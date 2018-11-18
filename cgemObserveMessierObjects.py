@@ -10,13 +10,18 @@ import messierObjectList
 
 if __name__ == '__main__':
 
+    # Request input as to if simulation or using telescope hardware
+    
     if input("Enter 1 for simulation 2 for hardware ") == 1:
         simulate = True
         print 'Simulate set to true'
     else:
         simulate = False
         print 'Simulate set to false'
-        
+
+    # This will either spawn a shell program for setting up the ports
+    # for a simulator or for debugging and talking to the telescope.
+    
     sp = spawnSimulator.SpawnSimulator(simulate)
     
     # The initializer for cgemInterface will open the serial port.
@@ -103,9 +108,10 @@ if __name__ == '__main__':
         print 'setTime and sort are both being called'
         print
         
-        messierList.setTime()
-        messierList.sort()
+        messierList.updateObjectTable()
 
+    # Done - shut down and clean up
+    
     cgem.quitSimulator() # does nothing when operating with telescope
     cgem.closeSerial()
     sp.shutdown()

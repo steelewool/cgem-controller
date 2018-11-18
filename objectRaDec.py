@@ -14,13 +14,18 @@
 from raDecLst import Ra, Dec, Lst, Alt, Azi
 
 class ObjectRaDec:
-    def __init__ (self, name = ' ',
+    def __init__ (self,
+                  name = ' ',
+                  tableRa = 0.0,
+                  tableDec = 0.0,
                   ra  = Ra(),
                   dec = Dec(),
                   lst = Lst(),
                   alt = Alt(),
                   azi = Azi()):
         self.name      = name
+        self.tableRa   = tableRa
+        self.tableDec  = tableDec
         self.ra        = ra
         self.dec       = dec
         self.lst       = lst
@@ -28,6 +33,13 @@ class ObjectRaDec:
         self.azi       = azi
         self.binNumber = self.bin()
 
+    def updateLst(self,lst):
+        self.lst = lst
+
+    def updateAltAzi (self, alt, azi):
+        self.alt = alt
+        self.azi = azi
+        
     def localHrAngle(self):
         localHourAngle =(self.ra.getSeconds() - self.lst.getSeconds())/(3600*15)
         if localHourAngle > 12:
