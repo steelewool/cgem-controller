@@ -7,9 +7,9 @@
 
 # from pyraf.iraffunctions import substr
 
-# As of 9/25/18 I have the LST embedded in the ObjectRaDec object. It may make more
-# sense to place in the list - but but is still a deferred design detail.
-# But this makes the
+# As of 9/25/18 I have the LST embedded in the ObjectRaDec object.
+# It may make more sense to place in the list -
+# but but is still a deferred design detail.
 
 from raDecLst import Ra, Dec, Lst, Alt, Azi
 
@@ -28,31 +28,14 @@ class ObjectRaDec:
         self.azi       = azi
         self.binNumber = self.bin()
 
-# Need to look up the formula for computing local hour angle. This subtraction
-# could be reversed.
-# Zach - why does the subtraction of a ra and lst work. I would have thought I
-#        needed a cast operator.
-# self looks like the wrong thing to use here:
-
     def localHrAngle(self):
         localHourAngle =(self.ra.getSeconds() - self.lst.getSeconds())/(3600*15)
-        localHourAngle =(self.ra.getSeconds() - self.lst.getSeconds())/(3600*15)
-        #print '-------------'
-        #print 'ra.hr         : ', self.ra.hr
-        #print 'ra.min        : ', self.ra.min
-        #print 'ra.sec        : ', self.ra.sec
-        #print 'ra seconds    : ', self.ra.getSeconds()
-        #print 'lst.hr        : ', self.lst.hr
-        #print 'lst.min       : ', self.lst.min
-        #print 'lst.sec       : ', self.lst.sec
-        #print 'lst.seconds   : ', self.lst.getSeconds()
-        #print 'subtraction   : ', self.ra.getSeconds() - self.lst.getSeconds()
-        #print 'localHourAngle: ', localHourAngle
-        #print '--------------'
+        if localHourAngle > 12:
+            localHourAngle = localHourAngle - 24
         return int(localHourAngle)
 
-    # This functi
-    # on will the bin value for searching and sorting. #
+    # This function will the bin value for searching and sorting.
+    #
     # Bin  1 is for objects north of 70 degrees declination
     # Bin  2 is for LHA -6
     # Bin  3 is for LHA -5
