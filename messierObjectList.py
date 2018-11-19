@@ -1,6 +1,6 @@
 
 import objectRaDec
-from raDecLst import Ra, Dec, Lst, Alt, Azi
+from   raDecLst import Ra, Dec, Lst, Alt, Azi
 import astropy.time
 from   astropy.time        import Time
 from   astropy             import units as u
@@ -9,51 +9,23 @@ from   astropy.coordinates import SkyCoord
 from   astropy.coordinates import AltAz
 from   datetime import date
 
-
 class MessierObjectList:
     
     # Initialzation logic to create the the sorted list
     # As of right now I'm setting the time internally
-    
+
+           
     def __init__(self):
         
-        # Hard wired to Frazier Park. Need to add lat/lon/height as an
-        # argument to the class.
+        self.setLocalTime()
         
-        observingPosition = EarthLocation(
-            lat    = ( 34.0 + 49.0/60.0 + 32.0/3600.0) * u.deg,
-            lon    =-(118.0 +  1.0/60.0 + 27.0*3600.0) * u.deg,
-            height = (5000 * 0.3048)                   * u.m)
-        
-        date = astropy.time.Time(astropy.time.Time.now(),
-                                 scale='utc',
-                                 location=observingPosition)
-        
-        meanLST = date.sidereal_time('mean')
-        print 'meanLST : ', meanLST
-
-        # Use the 'h' and 'm' to extract the hour, minute, and second
-        # from the meanLST
-        
-        positionH = str(meanLST).find('h')
-        positionM = str(meanLST).find('m')
-        
-        # Extract the hour, minute, and second from the mean LST.
-        # Be nice if there were methods in the astropy package.
-    
-        lst_hr  = int(str(meanLST)[0          :positionH])
-        lst_min = int(str(meanLST)[positionH+1:positionM])
-        lst_sec = int(str(meanLST)[positionM+1:positionM+3])
-    
-        # print lst_hr, lst_min, lst_sec
-   
         # Grab the Simbad data base
     
         from astroquery.simbad import Simbad
 
         # This query will get all of the Messier objects. Note that the table
-        # isn't modified - but instead I copy the data to the objectTable list
-        # which does get sorted my observability.
+        # isn't modified - but instead I copy the data to the objectTable
+        # list which does get sorted my observability.
     
         table = Simbad.query_object ('M *', wildcard=True, verbose=False)
         
@@ -61,74 +33,145 @@ class MessierObjectList:
         # the query above and moves the objects into the array objectTable.
         
         for i in range(len(table)):
-            ra      = table[i]['RA']
-            dec     = table[i]['DEC']
+            self.tableRa  = table[i]['RA']
+            self.tableDec = table[i]['DEC']
+            self.extractRaDec (self.tableRa, self.tableDec)
             
-            # print 'ra from simbad query  : ', ra
-            # print 'dec from simbad query : ', dec
-            
-            # These substring operations have me concernedNeed to debug
-            # to make things are working correctly.
-            
-            # This works correctly because the objects from simbad query
-            # come in a very fixed format.
-            
-            ra_hr   = ra[0:2]
-            ra_min  = ra[3:5]
-            ra_sec  = ra[6:8]
-            if ra_sec == '':
-                ra_sec = 0
-            dec_deg = dec[0:3]
-            dec_min = dec[4:6]
-            dec_sec = dec[7:12]
-            if dec_sec == '':
-                dec_sec = 0
-                
-            # Need to calculate the altitude and azimuth for each of the
-            # objects here.
-            
-            raHrMinSec   = ra_hr   + 'h' + ra_min  + 'm' + ra_sec  + 's'
-            if dec_sec > 0:
-                decDegMinSec = dec_deg + 'd' + dec_min + 'm' + dec_sec + 's'
-            else:
-                decDegMinSec = dec_deg + 'd' + dec_min + 'm' + '00' + 's'
-            # print 'raHrMinSec   : ', raHrMinSec
-            # print 'decDegMinSec : ', decDegMinSec
-                          
-            skyCoord = SkyCoord (raHrMinSec + ' ' + decDegMinSec, frame='icrs')
+            skyCoord = SkyCoord (self.raHrMinSec + ' ' + self.decDegMinSec,
+                                 frame='icrs')
 
-            altAzi = skyCoord.transform_to(AltAz(obstime=date,location=observingPosition))
+            self.altAzi = skyCoord.transform_to(AltAz(obstime=self.dateTime,
+                                                 location=self.observingPosition))
 
-            #print 'alt : ', altAzi.alt.degree
-            #print 'azi : ', altAzi.az.degree
-            
             newObject = objectRaDec.ObjectRaDec(table[i]['MAIN_ID'],
-                                                Ra  (ra_hr,   ra_min,  ra_sec),
-                                                Dec (dec_deg, dec_min, dec_sec),
-                                                Lst (lst_hr,  lst_min, lst_sec),
-                                                Alt (altAzi.alt.degree),
-                                                Azi (altAzi.az.degree))
-            
+                                                self.tableRa,
+                                                self.tableDec,
+                                                Ra  (self.ra_hr, self.ra_min, self.ra_sec),
+                                                Dec (self.dec_deg, self.dec_min, self.dec_sec),
+                                                Lst (self.lst_hr,
+                                                     self.lst_min,
+                                                     self.lst_sec),
+                                                Alt (self.altAzi.alt.degree),
+                                                Azi (self.altAzi.az.degree))
+
             if (i == 0):
                 self.objectTable = [newObject]
             else:
                 self.objectTable.append(newObject)
 
         # Sort the objects into a best fit for observing
+
+        self.sort()
+
+    def extractRaDec (self, ra, dec):
+        # print 'ra from simbad query  : ', ra
+        # print 'dec from simbad query : ', dec
+            
+        # These substring operations have me concernedNeed to debug
+        # to make things are working correctly.
+            
+        # This works correctly because the objects from simbad query
+        # come in a very fixed format.
+            
+        self.ra_hr   = ra[0:2]
+        self.ra_min  = ra[3:5]
+        self.ra_sec  = ra[6:8]
+        if self.ra_sec == '':
+            self.ra_sec = 0
+        self.dec_deg = dec[0:3]
+        self.dec_min = dec[4:6]
+        self.dec_sec = dec[7:12]
+        if self.dec_sec == '':
+            self.dec_sec = 0
+                
+        # Need to calculate the altitude and azimuth for each of the
+        # objects here.
+            
+        self.raHrMinSec   = self.ra_hr   + 'h' + self.ra_min  + 'm' + self.ra_sec  + 's'
+        if self.dec_sec > 0:
+            self.decDegMinSec = self.dec_deg + 'd' + self.dec_min + 'm' + self.dec_sec + 's'
+        else:
+            self.decDegMinSec = self.dec_deg + 'd' + self.dec_min + 'm' + '00' + 's'
         
-        self.objectTable.sort()
+    def setLocalTime(self):
+        # Hard wired to Frazier Park. Need to add lat/lon/height as an
+        # argument to the class.
+
+        # Set the latitude, longitude, and elevation of the
+        # position of the observer.
+
+        self.observingPosition = EarthLocation(
+            lat    = ( 34.0 + 49.0/60.0 + 32.0/3600.0) * u.deg,
+            lon    =-(118.0 +  1.0/60.0 + 27.0*3600.0) * u.deg,
+            height = (5000 * 0.3048)                   * u.m)
+
+        # Get the current time
+        
+        self.dateTime = astropy.time.Time(astropy.time.Time.now(),
+                                 scale='utc',
+                                 location=self.observingPosition)
+        
+        self.meanLST = self.dateTime.sidereal_time('mean')
+        print 'meanLST : ', self.meanLST
+
+        # Use the 'h' and 'm' to extract the hour, minute, and second
+        # from the meanLST
+        
+        self.positionH = str(self.meanLST).find('h')
+        self.positionM = str(self.meanLST).find('m')
+        
+        # Extract the hour, minute, and second from the mean LST.
+        # Be nice if there were methods in the astropy package.
     
+        self.lst_hr  = int(str(self.meanLST)[0          :self.positionH])
+        self.lst_min = int(str(self.meanLST)[self.positionH+1:self.positionM])
+        self.lst_sec = int(str(self.meanLST)[self.positionM+1:self.positionM+3])
+
+    # Sorting is based upon local hour angle and the RA and Declination of
+    # the object. Before sorting the LST, altitude, azimuth of the objects MUST
+    # be updated.
+    
+    def sort(self):
+        self.objectTable.sort()
+
+    def updateLstOfObjectTable(self):
+        for i in range(len(self.objectTable)):
+            self.setLocalTime()
+            self.objectTable[i].updateLst(Lst(self.lst_hr, self.lst_min, self.lst_sec))
+
+    def updateAltAziOfObjectTable(self):
+        for i in range(len(self.objectTable)):
+            self.extractRaDec(self.objectTable[i].tableRa, self.objectTable[i].tableDec)
+            
+            skyCoord = SkyCoord (self.raHrMinSec + ' ' + self.decDegMinSec,
+                                 frame='icrs')
+
+            self.altAzi = skyCoord.transform_to(AltAz(obstime=self.dateTime,
+                                                 location=self.observingPosition))
+            self.objectTable[i].updateAltAzi(self.altAzi.alt, self.altAzi.az);
+
+    def updateObjectTable (self):
+        self.updateLstOfObjectTable()
+        self.updateAltAziOfObjectTable()
+        self.sort()
+        
 if __name__ == '__main__':
         
-    print 'main program entered'
+    print 'messierObjectList main program entered'
+
     messierObjects = MessierObjectList()
     print messierObjects.objectTable[0].name
 
     print 'length: ', len(messierObjects.objectTable)
     
     for i in range (len(messierObjects.objectTable)):
-        #print 'bin: ', messierObjects.objectTable[i].binNumber
-        #if (messierObjects.objectTable[i].binNumber > 0):
         messierObjects.objectTable[i].write()
-        # print 'ra hr: ', messierObjects.objectTable[i].ra.hr
-            
+
+    messierObjects.updateLstOfObjectTable()
+    messierObjects.updateAltAziOfObjectTable()
+    messierObjects.sort()
+
+    messierObjects.updateObjectTable()
+    
+    for i in range (len(messierObjects.objectTable)):
+        messierObjects.objectTable[i].write()

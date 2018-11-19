@@ -10,13 +10,18 @@ import messierObjectList
 
 if __name__ == '__main__':
 
+    # Request input as to if simulation or using telescope hardware
+    
     if input("Enter 1 for simulation 2 for hardware ") == 1:
         simulate = True
         print 'Simulate set to true'
     else:
         simulate = False
         print 'Simulate set to false'
-        
+
+    # This will either spawn a shell program for setting up the ports
+    # for a simulator or for debugging and talking to the telescope.
+    
     sp = spawnSimulator.SpawnSimulator(simulate)
     
     # The initializer for cgemInterface will open the serial port.
@@ -35,60 +40,78 @@ if __name__ == '__main__':
     
     # As of 10/21/18 I was adding the altitude and azimuth of each
     # object in the list.
-    
+
     messierList = messierObjectList.MessierObjectList()
     
-    # Print the fist object in the list for debugging.
-    
-    # print messierList.objectTable[0].name
+    loopOverAllMessierObjects = True
+    while loopOverAllMessierObjects:
+        
+        # Print the fist object in the list for debugging.    
+        # print messierList.objectTable[0].name
 
-    loopControl = True
-    index       = 0
-    while loopControl:
-        x = 0
-        if index == len(messierList.objectTable):
-            loopControl = False
-        else:
-            if messierList.objectTable[index].bin() > 0:
+        loopOverMessierObjects = True
+        index       = 0
+        while loopOverMessierObjects:
+            x = 0
+            if index == len(messierList.objectTable):
+                loopOverMessierObjects = False
+            else:
+                if messierList.objectTable[index].bin() > 0:
                                 
-                alt = messierList.objectTable[index].alt.deg
+                    alt = messierList.objectTable[index].alt.deg
                 
-                if alt > 20.0:
-                    messierList.objectTable[index].write()
-                    azi = messierList.objectTable[index].azi.deg
+                    if alt > 20.0:
+                        messierList.objectTable[index].write()
+                        azi = messierList.objectTable[index].azi.deg
                 
-                    print '   alt : ', alt
-                    print '   azi : ', azi
-                    print
+                        print '   alt : ', alt
+                        print '   azi : ', azi
+                        print
 
-                    x = input('1 to observe, 2 to skip, 3 to exit ')
-                    if x == 1:
+                        x = input('1 to observe, 2 to skip, 3 to exit ')
+                        if x == 1:
                         
-                        ra = messierList.objectTable[index].ra
-                        dec = messierList.objectTable[index].dec
+                            ra = messierList.objectTable[index].ra
+                            dec = messierList.objectTable[index].dec
                         
-                        newRa = convertRaDecToCgemUnits.Ra(float(ra.hr),
-                                                           float(ra.min),
-                                                           float(ra.sec))
+                            newRa = convertRaDecToCgemUnits.Ra(float(ra.hr),
+                                                               float(ra.min),
+                                                               float(ra.sec))
         
                     
-                        newDec = convertRaDecToCgemUnits.Dec(float(dec.deg),
-                                                             float(dec.min),
-                                                             float(dec.sec))
+                            newDec = convertRaDecToCgemUnits.Dec(float(dec.deg),
+                                                                 float(dec.min),
+                                                                 float(dec.sec))
                         
-                        cgem.gotoCommandWithHP (newRa, newDec)
-                        telescopeRaDecCgem = cgem.requestHighPrecisionRaDec()
-                        args = telescopeRaDecCgem.split(',',2)
-                        raFromCgem = convertRa.fromCgem(args[0])
-                        decFromCgem = convertDec.fromCgem(args[1])
-                        print 'RA  : ', raFromCgem
-                        print 'Dec : ', decFromCgem
-                        print
-                        print
-                    elif x == 3:
-                        loopControl = False
-        index += 1
+                            cgem.gotoCommandWithHP (newRa, newDec)
+                            telescopeRaDecCgem = cgem.requestHighPrecisionRaDec()
+                            args = telescopeRaDecCgem.split(',',2)
+                            raFromCgem = convertRa.fromCgem(args[0])
+                            decFromCgem = convertDec.fromCgem(args[1])
+                            print 'RA  : ', raFromCgem
+                            print 'Dec : ', decFromCgem
+                            print
+                            print
+                        elif x == 3:
+                            loopOverMessierObjects = False
+            index += 1
 
+        print
+        print 'Finished the list one time, loop again'
+        print
+
+        y = input('1 to loop again, 2 to exit')
+        if y == 2:
+            loopOverAllMessierObjects = False
+
+        print
+        print 'setTime and sort are both being called'
+        print
+        
+        messierList.updateObjectTable()
+
+    # Done - shut down and clean up
+    
     cgem.quitSimulator() # does nothing when operating with telescope
     cgem.closeSerial()
     sp.shutdown()
