@@ -17,7 +17,6 @@ class Simulator:
   def parse_command(self, prefix):
     if prefix == 'r':
       commandText = ser.read(20)
-#      print "Read command parameters: '{0}'".format(commandText)
 
       # Split up the two arguments which are separated by a ','.
       
@@ -33,8 +32,6 @@ class Simulator:
                                      float(self.telescopeRa[1]),
                                      float(self.telescopeRa[2]))).toCgem()
                                      
-#      print 'self.telescopeRaCgem : ', self.telecopeRaCgem
-      
       # If the declination is outside of the range -90 to +90 then
       # it needs to be converted back. The telescopeDec variable
       # needs to be corrected before calling the toCgem method.

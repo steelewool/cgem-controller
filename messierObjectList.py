@@ -27,46 +27,60 @@ class MessierObjectList:
         # isn't modified - but instead I copy the data to the objectTable
         # list which does get sorted my observability.
     
-        table = Simbad.query_object ('M *', wildcard=True, verbose=False)
-        
+        tableM   = Simbad.query_object ('M *', wildcard=True, verbose=False)
+        tableNGC = Simbad.query_object ('NGC [ -4][ -9][ -9][ -9]', wildcard=True, verbose=False)
+        tableG12 = Simbad.query_criteria('umag<12')
+
         # This loop goes through the table of messier objects obtained from
         # the query above and moves the objects into the array objectTable.
-        
-        for i in range(len(table)):
-            self.tableRa  = table[i]['RA']
-            self.tableDec = table[i]['DEC']
-            self.extractRaDec (self.tableRa, self.tableDec)
-            
-            skyCoord = SkyCoord (self.raHrMinSec + ' ' + self.decDegMinSec,
-                                 frame='icrs')
 
-            self.altAzi = skyCoord.transform_to(AltAz(obstime=self.dateTime,
-                                                 location=self.observingPosition))
-
-            newObject = objectRaDec.ObjectRaDec(table[i]['MAIN_ID'],
-                                                self.tableRa,
-                                                self.tableDec,
-                                                Ra  (self.ra_hr, self.ra_min, self.ra_sec),
-                                                Dec (self.dec_deg, self.dec_min, self.dec_sec),
-                                                Lst (self.lst_hr,
-                                                     self.lst_min,
-                                                     self.lst_sec),
-                                                Alt (self.altAzi.alt.degree),
-                                                Azi (self.altAzi.az.degree))
-
-            if (i == 0):
-                self.objectTable = [newObject]
+        for t in range(0,3):
+            if t == 0:
+                table = tableM
+            elif t == 1:
+                table = tableNGC
             else:
-                self.objectTable.append(newObject)
+                table = tableG12
+                
+            for i in range(len(table)):
+
+                self.tableRa  = table[i]['RA']
+                self.tableDec = table[i]['DEC']
+
+                # print i, self.tableRa, self.tableDec
+
+                if self.tableRa == '' or self.tableDec == '':
+                    print 'Error in RA or Dec, skip, name: ', table[i]['MAIN_ID']
+                else:
+                    self.extractRaDec (self.tableRa, self.tableDec)
+            
+                    skyCoord = SkyCoord (self.raHrMinSec + ' ' + self.decDegMinSec,
+                                         frame='icrs')
+
+                    self.altAzi = skyCoord.transform_to(AltAz(obstime=self.dateTime,
+                                                          location=self.observingPosition))
+
+                    newObject = objectRaDec.ObjectRaDec(table[i]['MAIN_ID'],
+                                                    self.tableRa,
+                                                    self.tableDec,
+                                                    Ra  (self.ra_hr, self.ra_min, self.ra_sec),
+                                                    Dec (self.dec_deg, self.dec_min, self.dec_sec),
+                                                    Lst (self.lst_hr,
+                                                         self.lst_min,
+                                                         self.lst_sec),
+                                                    Alt (self.altAzi.alt.degree),
+                                                    Azi (self.altAzi.az.degree))
+
+                if (i == 0) and t == 0:
+                    self.objectTable = [newObject]
+                else:
+                    self.objectTable.append(newObject)
 
         # Sort the objects into a best fit for observing
 
         self.sort()
 
     def extractRaDec (self, ra, dec):
-        # print 'ra from simbad query  : ', ra
-        # print 'dec from simbad query : ', dec
-            
         # These substring operations have me concernedNeed to debug
         # to make things are working correctly.
             
@@ -75,19 +89,34 @@ class MessierObjectList:
             
         self.ra_hr   = ra[0:2]
         self.ra_min  = ra[3:5]
-        self.ra_sec  = ra[6:8]
-        if self.ra_sec == '':
+
+        if len(ra) < 6:
             self.ra_sec = 0
+        else:
+            self.ra_sec  = ra[6:8]
+            if self.ra_sec == '':
+                self.ra_sec = 0
+
+                # print 'length ra: ', len(ra), 'length dec: ', len(dec)
+        
         self.dec_deg = dec[0:3]
         self.dec_min = dec[4:6]
-        self.dec_sec = dec[7:12]
-        if self.dec_sec == '':
+
+        if len(dec) < 6:
             self.dec_sec = 0
+        else:
+            self.dec_sec = dec[7:12]
+            if self.dec_sec == '':
+                self.dec_sec = 0
                 
         # Need to calculate the altitude and azimuth for each of the
         # objects here.
+
+        if self.ra_sec > 0:
+            self.raHrMinSec   = self.ra_hr   + 'h' + self.ra_min  + 'm' + self.ra_sec  + 's'
+        else:
+            self.raHrMinSec   = self.ra_hr   + 'h' + self.ra_min  + 'm' +  '00' + 's'
             
-        self.raHrMinSec   = self.ra_hr   + 'h' + self.ra_min  + 'm' + self.ra_sec  + 's'
         if self.dec_sec > 0:
             self.decDegMinSec = self.dec_deg + 'd' + self.dec_min + 'm' + self.dec_sec + 's'
         else:
@@ -112,7 +141,6 @@ class MessierObjectList:
                                  location=self.observingPosition)
         
         self.meanLST = self.dateTime.sidereal_time('mean')
-        print 'meanLST : ', self.meanLST
 
         # Use the 'h' and 'm' to extract the hour, minute, and second
         # from the meanLST
@@ -167,11 +195,11 @@ if __name__ == '__main__':
     for i in range (len(messierObjects.objectTable)):
         messierObjects.objectTable[i].write()
 
-    messierObjects.updateLstOfObjectTable()
-    messierObjects.updateAltAziOfObjectTable()
-    messierObjects.sort()
+#    messierObjects.updateLstOfObjectTable()
+#    messierObjects.updateAltAziOfObjectTable()
+#    messierObjects.sort()
 
-    messierObjects.updateObjectTable()
+#    messierObjects.updateObjectTable()
     
-    for i in range (len(messierObjects.objectTable)):
-        messierObjects.objectTable[i].write()
+#    for i in range (len(messierObjects.objectTable)):
+#        messierObjects.objectTable[i].write()

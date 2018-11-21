@@ -62,10 +62,8 @@ class CgemInterface:
         raToCgem  = ra.toCgem()
         decToCgem = dec.toCgem()
         self.ser.write ('r'+raToCgem+','+decToCgem)
-#        print 'gotoCommand: r'+raToCgem+','+decToCgem
 
         data = self.readSerial(1)
-#        print 'Read after gotoCommand:',data
             
         gotoInProgress = True
         while (gotoInProgress):
@@ -80,7 +78,7 @@ class CgemInterface:
             self.ser.write('L')
                 
             data = self.readSerial(2)
-#            print 'Result of L command:', data
+
             if (data == '0#'):
                 print 'Goto Finished'
                 gotoInProgress = False

@@ -46,9 +46,6 @@ if __name__ == '__main__':
     loopOverAllMessierObjects = True
     while loopOverAllMessierObjects:
         
-        # Print the fist object in the list for debugging.    
-        # print messierList.objectTable[0].name
-
         loopOverMessierObjects = True
         index       = 0
         while loopOverMessierObjects:
@@ -97,18 +94,13 @@ if __name__ == '__main__':
             index += 1
 
         print
-        print 'Finished the list one time, loop again'
+        print 'Finished the list one time, loop again?'
         print
 
-        y = input('1 to loop again, 2 to exit')
-        if y == 2:
+        if input('1 to loop again, 2 to exit ') == 1:
+            messierList.updateObjectTable()
+        else:
             loopOverAllMessierObjects = False
-
-        print
-        print 'setTime and sort are both being called'
-        print
-        
-        messierList.updateObjectTable()
 
     # Done - shut down and clean up
     

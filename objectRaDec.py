@@ -132,6 +132,8 @@ class ObjectRaDec:
 
 if __name__ == '__main__':
 
+    print 'Running objectRaDec main program'
+    
     import astropy.time
     from   astropy.time        import Time
     from   astropy             import units as u
@@ -240,11 +242,6 @@ if __name__ == '__main__':
             print 'LHA       : ', objectTable[i].localHrAngle()
             objectTable[i].write()
 
-#    print 'Bin number: ', objectTable[len(objectTable)-1].bin()
-#    print 'Bin number: ', objectTable[len(objectTable)-1].binNumber
-#    print 'LHA       : ', objectTable[len(objectTable)-1].localHrAngle()
-#    objectTable[len(objectTable)-1].write()
-       
     print '---------------------'
     # When initializing the object I really only want to use one global LST
     # value, I'm not sure how to implement that in Python.
