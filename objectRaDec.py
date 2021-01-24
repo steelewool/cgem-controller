@@ -92,10 +92,11 @@ class ObjectRaDec:
         if (self.bin() == y.bin()): # use declination to sort
             # if bin is an odd number then use <= to sort
             # if bin is even use >= to sort
+            #print ('self.dec.deg: ', self.dec.deg, 'y.dec: ', y.dec.deg)
             if ((self.bin() % 2) == 0):
-                return self.dec <= y.dec
+                return self.dec.deg <= y.dec.deg
             else:
-                return y.dec <= self.dec
+                return y.dec.deg <= self.dec.deg
         else: # bins are not equal use bin number to sort
             return self.bin() < y.bin()
         
@@ -120,12 +121,12 @@ class ObjectRaDec:
 # Yet another questions, whey am I having to use getLst() instead of lst?
         
     def write(self):
-        print '   Bin number      : ' + str(self.bin())
-        print '   Name            : ' + self.name
-        print '   RA   hr min sec : ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
-        print '   Dec deg min sec : ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
-        print '   Local Hour Angle: ' + str(self.localHrAngle())
-        print '   LST  hr min sec : ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec)
+        #print '   Bin number      : ' + str(self.bin())
+        #print '   Name            : ' + self.name
+        #print '   RA   hr min sec : ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
+        #print '   Dec deg min sec : ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
+        #print '   Local Hour Angle: ' + str(self.localHrAngle())
+        #print '   LST  hr min sec : ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec)
         print
 
 # Using the paradigm supplied by Zach to be able to test this class
@@ -143,24 +144,24 @@ if __name__ == '__main__':
                                       lon    =-(118+1 /60+27*3600) *u.deg,
                                       height = (5000 * 0.3048)     *u.m)
     
-    print 'observingPosition            : ', observingPosition
-    print 'astropy.time.Time.now()      : ', astropy.time.Time.now()
+    #print 'observingPosition            : ', observingPosition
+    #print 'astropy.time.Time.now()      : ', astropy.time.Time.now()
 
     date = astropy.time.Time(astropy.time.Time.now(),
                              scale='utc',
                              location=observingPosition)
     
-    print 'date                         : ', date
-    print 'date.now()                   : ', date.now()
-    print 'date.sidereal_time(mean)     : ', date.sidereal_time('mean')
-    print 'date.sidereal_time(apparent) : ', date.sidereal_time('apparent')
+    #print 'date                         : ', date
+    #print 'date.now()                   : ', date.now()
+    #print 'date.sidereal_time(mean)     : ', date.sidereal_time('mean')
+    #print 'date.sidereal_time(apparent) : ', date.sidereal_time('apparent')
 
 # As pointed out in issue 62 the extraction of LST was not being done
 # correctly here. This is also done in messierObjectList and perhaps
 # other places.
 
     meanLST = date.sidereal_time('mean')
-    print 'meanLST                      : ', meanLST
+    #print 'meanLST                      : ', meanLST
 
     # Extract the hour, minute, and second from the mean LST.
     # Be nice if there were methods in the astropy package.
@@ -201,7 +202,7 @@ if __name__ == '__main__':
             dec_sec = 0
             
         raHrMinSec   = ra_hr   + 'h' + ra_min  + 'm' + ra_sec  + 's'
-        if dec_sec > 0:
+        if float(dec_sec) > 0:
             decDegMinSec = dec_deg + 'd' + dec_min + 'm' + dec_sec + 's'
         else:
             decDegMinSec = dec_deg + 'd' + dec_min + 'm' + '00' + 's'
@@ -221,7 +222,7 @@ if __name__ == '__main__':
         else:
             objectTable.append(newObject)
 
-    print 'Before sort.'
+    #print 'Before sort.'
     
     objectTable[0].write()
     objectTable[len(objectTable)-1].write()
@@ -230,14 +231,14 @@ if __name__ == '__main__':
     
     # Remove any objects that have a negative bin number
     
-    print 'After sort.'
+    #print 'After sort.'
 
     for i in range(len(objectTable)):
         if (objectTable[i].binNumber > 0):
-            print 'Index     : ', i
-            print 'Bin number: ', objectTable[i].bin()
-            print 'Bin number: ', objectTable[i].binNumber
-            print 'LHA       : ', objectTable[i].localHrAngle()
+            #print 'Index     : ', i
+            #print 'Bin number: ', objectTable[i].bin()
+            #print 'Bin number: ', objectTable[i].binNumber
+            #print 'LHA       : ', objectTable[i].localHrAngle()
             objectTable[i].write()
 
 #    print 'Bin number: ', objectTable[len(objectTable)-1].bin()
@@ -245,7 +246,7 @@ if __name__ == '__main__':
 #    print 'LHA       : ', objectTable[len(objectTable)-1].localHrAngle()
 #    objectTable[len(objectTable)-1].write()
        
-    print '---------------------'
+    #print '---------------------'
     # When initializing the object I really only want to use one global LST
     # value, I'm not sure how to implement that in Python.
     
@@ -257,21 +258,21 @@ if __name__ == '__main__':
     object2.write()
     object3.write()
     
-    print 'subtract ra          : ', object1.ra - object2.ra
-    print 'object1.localHrAngle : ', object1.localHrAngle()
-    print 'object2.localHrAngle : ', object2.localHrAngle()
-    print 'object3.localHrAngle : ', object3.localHrAngle()
-    print 'object1.bin          : ', object1.bin()
-    print 'object1.ra.getSeconds() : ', object1.ra.getSeconds()
+    #print 'subtract ra          : ', object1.ra - object2.ra
+    #print 'object1.localHrAngle : ', object1.localHrAngle()
+    #print 'object2.localHrAngle : ', object2.localHrAngle()
+    #print 'object3.localHrAngle : ', object3.localHrAngle()
+    #print 'object1.bin          : ', object1.bin()
+    #print 'object1.ra.getSeconds() : ', object1.ra.getSeconds()
     
-    print 'testing == operator'
+    #print 'testing == operator'
     
     if (object3 == object2):
-        print 'equal is True'
+        print ('equal is True')
     else:
-        print 'equal is False'
+        print ('equal is False')
 
     if (object1 < object2):
-        print 'less than true'
+        print ('less than true')
     else:
-        print 'less than false'
+        print ('less than false')

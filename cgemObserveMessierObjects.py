@@ -12,25 +12,34 @@ if __name__ == '__main__':
 
     # Request input as to if simulation or using telescope hardware
     
-    if input("Enter 1 for simulation 2 for hardware ") == 1:
+    if input("Enter 1 for simulation 2 for hardware ") == '1':
         simulate = True
-        print 'Simulate set to true'
+        print ('Simulate set to true')
     else:
         simulate = False
-        print 'Simulate set to false'
+        print ('Simulate set to false')
 
     # This will either spawn a shell program for setting up the ports
     # for a simulator or for debugging and talking to the telescope.
+
+    print ('spawnSimulator')
     
     sp = spawnSimulator.SpawnSimulator(simulate)
+
+    print ('Done with spawnSimulator.SpawnSimulator, with argument: ', simulate)
     
     # The initializer for cgemInterface will open the serial port.
     # The default is ./pty1 which works with either the simulator
     # using nullmodem.sh or when using socat. If talking directly
     # to real hardware will want to set port = '/dev/ttyUSB0'
     # or something simular.
+
+    print ('Invoke cgemInterface.CgemInterface()')
     
     cgem       = cgemInterface.CgemInterface()
+
+    print ('Done with cgemInterface.CgemInterface()')
+    
     convertRa  = convertRaDecToCgemUnits.Ra()
     convertDec = convertRaDecToCgemUnits.Dec()
     
@@ -42,12 +51,14 @@ if __name__ == '__main__':
     # object in the list.
 
     messierList = messierObjectList.MessierObjectList()
+
+    print ('Loop over all messier objects.')
     
     loopOverAllMessierObjects = True
     while loopOverAllMessierObjects:
         
         # Print the fist object in the list for debugging.    
-        # print messierList.objectTable[0].name
+        print ('First Messier object: ', messierList.objectTable[0].name)
 
         loopOverMessierObjects = True
         index       = 0
@@ -59,16 +70,20 @@ if __name__ == '__main__':
                 if messierList.objectTable[index].bin() > 0:
                                 
                     alt = messierList.objectTable[index].alt.deg
-                
+
                     if alt > 20.0:
                         messierList.objectTable[index].write()
                         azi = messierList.objectTable[index].azi.deg
-                
-                        print '   alt : ', alt
-                        print '   azi : ', azi
+
+                        print ('  Name : ', messierList.objectTable[index].name)
+                        print ('   alt : ', alt)
+                        print ('   azi : ', azi)
                         print
 
-                        x = input('1 to observe, 2 to skip, 3 to exit ')
+                        # Grab the input value and attempt to convert it to an integer
+                        
+                        x = int(input('1 to observe, 2 to skip, 3 to exit '))
+                        print ('x: ', x)
                         if x == 1:
                         
                             ra = messierList.objectTable[index].ra
@@ -84,33 +99,40 @@ if __name__ == '__main__':
                                                                  float(dec.sec))
                         
                             cgem.gotoCommandWithHP (newRa, newDec)
+
+                            print ('Invoking requestHighPrecision')
                             telescopeRaDecCgem = cgem.requestHighPrecisionRaDec()
                             args = telescopeRaDecCgem.split(',',2)
                             raFromCgem = convertRa.fromCgem(args[0])
                             decFromCgem = convertDec.fromCgem(args[1])
-                            print 'RA  : ', raFromCgem
-                            print 'Dec : ', decFromCgem
-                            print
+                            print ('RA  : ', raFromCgem)
+                            print ('Dec : ', decFromCgem)
                             print
                         elif x == 3:
-                            loopOverMessierObjects = False
+                            loopOverAllMessierObjects = False
+                            print ('Setting loopOverAllMessierObjects to :',
+                                   loopOverAllMessierObjects)
             index += 1
 
         print
-        print 'Finished the list one time, loop again'
+        print ('Finished the list one time, loop again')
         print
 
-        y = input('1 to loop again, 2 to exit')
+        # Attempt to convert this to an integer
+        
+        y = int(input('1 to loop again, 2 to exit'))
         if y == 2:
             loopOverAllMessierObjects = False
-
-        print
-        print 'setTime and sort are both being called'
-        print
+            print ('setting loopOverAllMessierObjects to: ',
+                   loopOverAllMessierObjects)
+            
+        print ('updateObjectTable')
         
         messierList.updateObjectTable()
 
     # Done - shut down and clean up
+
+    print ('Quitting, closing simulator, and serial interfaces.')
     
     cgem.quitSimulator() # does nothing when operating with telescope
     cgem.closeSerial()

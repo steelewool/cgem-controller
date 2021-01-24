@@ -1,3 +1,13 @@
+2021-01-2x
+
+python3 objectRaDec.py
+WARNING: AstropyDeprecationWarning: astropy.extern.six will be removed in 4.0, use the six module directly if it is still needed [astropy.extern.six]
+Traceback (most recent call last):
+  File "objectRaDec.py", line 204, in <module>
+    if dec_sec > 0:
+TypeError: '>' not supported between instances of 'str' and 'int'
+pi@raspberrypi4-1:~/git/cgem-controller $ 
+
 git checkout simulator
 
 Changed port to ./pty1

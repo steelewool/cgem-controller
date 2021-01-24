@@ -3,7 +3,7 @@
 import convertRaDecToCgemUnits
 import cgemInterface
 import serial
-import commands
+import command
 import time
 
 # Initialize the CgemInterface with a False - this will need to be updated
@@ -13,7 +13,7 @@ cgem = cgemInterface.CgemInterface()
 ra  = convertRaDecToCgemUnits.Ra()
 dec = convertRaDecToCgemUnits.Dec()
     
-print 'Enter a negative number for the RA hours wnd the loop will exit.'
+print ('Enter a negative number for the RA hours wnd the loop will exit.')
 
 loopControl = True
 while loopControl:
@@ -21,8 +21,8 @@ while loopControl:
     
 # Touch base, with Zach, see if using an exit() here would by python like?
 
-    if ra.hr <= -1:
-        print 'User specified time to quit'
+    if int(ra.hr) <= -1:
+        print ('User specified time to quit')
         loopControl = False
     else:
         ra.min  = input ('raMin  : ')
@@ -32,12 +32,12 @@ while loopControl:
         dec.min = input ('decMin : ')
         dec.sec = input ('decSec : ')
         
-        print 'dec.deg : ', dec.deg
+        print ('dec.deg : ', dec.deg)
 
-        print 'Execute the goto command:'
+        print ('Execute the goto command:')
 
         cgem.gotoCommandWithHP (ra, dec)
-        print cgem.requestHighPrecisionRaDec()
+        #print cgem.requestHighPrecisionRaDec()
 
 cgem.quitSimulator()
 cgem.closeSerial()

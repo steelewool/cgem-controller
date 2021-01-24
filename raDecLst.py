@@ -4,6 +4,7 @@ class Ra:
         self.hr  = hr
         self.min = min
         self.sec = sec
+
     def getSeconds(self):
         return ((float(self.hr )   * 3600.0) +
                 (float(self.min)   *   60.0) +
@@ -18,6 +19,7 @@ class Dec():
     def __init__ (self, deg = 0, min = 0, sec = 0.0):
         self.deg = deg
         self.min = min
+        
         self.sec = sec
     def getSeconds(self):
         return (float(self.deg) * 60.0 * 60.0) + (float(self.min)  * 60.0) + float(self.sec)

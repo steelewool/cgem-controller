@@ -1,0 +1,18 @@
+2021/01/23 21:12:09 socat[27070] N PTY is /dev/pts/1
+2021/01/23 21:12:09 socat[27070] N opening character device "/dev/ttyUSB0" for reading and writing
+  FD  type	device	inode	mode	links	uid	gid	rdev	size	blksize	blocks	atime				mtime				ctime				cloexec	flags	sigown	sigio
+   5: chrdev	0,6	1111	020666	1	0	5	5,2	0	4096	0	Sat Jan 23 21:12:09 2021	Sat Jan 23 21:12:09 2021	Sat Jan 23 16:49:39 2021	1	x000002	0	0	(no STREAMS modules)	/dev/ptmx 	IFLAGS=00000000 OFLAGS=00000000 CFLAGS=000008bd LFLAGS=00000000 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^@ cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: IN,OUT,; FIONREAD=2
+   7: chrdev	0,6	23918	020660	1	0	20	188,0	0	4096	0	Sat Jan 23 17:16:57 2021	Sat Jan 23 21:06:03 2021	Sat Jan 23 17:16:57 2021	1	x000402	0	0	(no STREAMS modules)	/dev/ttyUSB0 	IFLAGS=00000000 OFLAGS=00000004 CFLAGS=00000cbd LFLAGS=00000a30 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^A cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: OUT,
+2021/01/23 21:12:09 socat[27070] N starting data transfer loop with FDs [5,5] and [7,7]
+> 2021/01/23 21:12:09.892425  length=2 from=0 to=1
+Ka> 2021/01/23 21:12:23.665219  length=18 from=2 to=19
+r69EE8D00,318CCD00> 2021/01/23 21:12:24.666947  length=1 from=20 to=20
+e> 2021/01/23 21:18:36.363159  length=2 from=21 to=22
+Ka> 2021/01/23 21:18:37.365939  length=18 from=23 to=40
+r69EE8D00,318CCD00> 2021/01/23 21:18:38.367427  length=1 from=41 to=41
+e> 2021/01/23 21:18:50.390791  length=1 from=42 to=42
+q> 2021/01/23 21:22:24.867119  length=2 from=43 to=44
+Ka> 2021/01/23 21:23:40.526391  length=2 from=45 to=46
+Ka> 2021/01/23 21:23:53.758683  length=18 from=47 to=64
+r69EE8D00,318CCD00> 2021/01/23 21:24:05.926181  length=1 from=65 to=65
+q

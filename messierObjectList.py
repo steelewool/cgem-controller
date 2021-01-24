@@ -12,11 +12,47 @@ from   datetime import date
 class MessierObjectList:
     
     # Initialzation logic to create the the sorted list
+
     # As of right now I'm setting the time internally
 
-           
-    def __init__(self):
+    def setLocalTime(self):
+
+        # Hard wired to Frazier Park. Need to add lat/lon/height as an
+        # argument to the class.
+
+        # Set the latitude, longitude, and elevation of the
+        # position of the observer.
+
+        self.observingPosition = EarthLocation(
+            lat    = ( 34.0 + 49.0/60.0 + 32.0/3600.0) * u.deg,
+            lon    =-(118.0 +  1.0/60.0 + 27.0*3600.0) * u.deg,
+            height = (5000 * 0.3048)                   * u.m)
+
+        # Get the current time
         
+        self.dateTime = astropy.time.Time(astropy.time.Time.now(),
+                                 scale='utc',
+                                 location=self.observingPosition)
+
+        self.meanLST = self.dateTime.sidereal_time('mean')
+
+        #print ('meanLST : ', self.meanLST)
+
+        # Use the 'h' and 'm' to extract the hour, minute, and second
+        # from the meanLST
+        
+        self.positionH = str(self.meanLST).find('h')
+        self.positionM = str(self.meanLST).find('m')
+        
+        # Extract the hour, minute, and second from the mean LST.
+        # Be nice if there were methods in the astropy package.
+    
+        self.lst_hr  = int(str(self.meanLST)[0          :self.positionH])
+        self.lst_min = int(str(self.meanLST)[self.positionH+1:self.positionM])
+        self.lst_sec = int(str(self.meanLST)[self.positionM+1:self.positionM+3])
+
+    def __init__(self):
+
         self.setLocalTime()
         
         # Grab the Simbad data base
@@ -62,10 +98,10 @@ class MessierObjectList:
         # Sort the objects into a best fit for observing
 
         self.sort()
-
+        
     def extractRaDec (self, ra, dec):
-        # print 'ra from simbad query  : ', ra
-        # print 'dec from simbad query : ', dec
+        print ('ra from simbad query  : ', ra)
+        print ('dec from simbad query : ', dec)
             
         # These substring operations have me concernedNeed to debug
         # to make things are working correctly.
@@ -88,44 +124,10 @@ class MessierObjectList:
         # objects here.
             
         self.raHrMinSec   = self.ra_hr   + 'h' + self.ra_min  + 'm' + self.ra_sec  + 's'
-        if self.dec_sec > 0:
+        if float(self.dec_sec) > 0:
             self.decDegMinSec = self.dec_deg + 'd' + self.dec_min + 'm' + self.dec_sec + 's'
         else:
             self.decDegMinSec = self.dec_deg + 'd' + self.dec_min + 'm' + '00' + 's'
-        
-    def setLocalTime(self):
-        # Hard wired to Frazier Park. Need to add lat/lon/height as an
-        # argument to the class.
-
-        # Set the latitude, longitude, and elevation of the
-        # position of the observer.
-
-        self.observingPosition = EarthLocation(
-            lat    = ( 34.0 + 49.0/60.0 + 32.0/3600.0) * u.deg,
-            lon    =-(118.0 +  1.0/60.0 + 27.0*3600.0) * u.deg,
-            height = (5000 * 0.3048)                   * u.m)
-
-        # Get the current time
-        
-        self.dateTime = astropy.time.Time(astropy.time.Time.now(),
-                                 scale='utc',
-                                 location=self.observingPosition)
-        
-        self.meanLST = self.dateTime.sidereal_time('mean')
-        print 'meanLST : ', self.meanLST
-
-        # Use the 'h' and 'm' to extract the hour, minute, and second
-        # from the meanLST
-        
-        self.positionH = str(self.meanLST).find('h')
-        self.positionM = str(self.meanLST).find('m')
-        
-        # Extract the hour, minute, and second from the mean LST.
-        # Be nice if there were methods in the astropy package.
-    
-        self.lst_hr  = int(str(self.meanLST)[0          :self.positionH])
-        self.lst_min = int(str(self.meanLST)[self.positionH+1:self.positionM])
-        self.lst_sec = int(str(self.meanLST)[self.positionM+1:self.positionM+3])
 
     # Sorting is based upon local hour angle and the RA and Declination of
     # the object. Before sorting the LST, altitude, azimuth of the objects MUST
@@ -156,13 +158,12 @@ class MessierObjectList:
         self.sort()
         
 if __name__ == '__main__':
-        
-    print 'messierObjectList main program entered'
 
     messierObjects = MessierObjectList()
-    print messierObjects.objectTable[0].name
 
-    print 'length: ', len(messierObjects.objectTable)
+    print (messierObjects.objectTable[0].name)
+
+    print ('length: ', len(messierObjects.objectTable))
     
     for i in range (len(messierObjects.objectTable)):
         messierObjects.objectTable[i].write()
