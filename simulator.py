@@ -55,7 +55,7 @@ class Simulator:
       ser.write("#")
     elif prefix == 'K':
         argument = ser.read(1)
-        print (ser.write with argument: ', argument)
+        print ('ser.write with argument: ', argument)
         ser.write (argument + '#')
     elif prefix == 'L':
         ser.write ('0#')
