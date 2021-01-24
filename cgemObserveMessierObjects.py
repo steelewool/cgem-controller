@@ -19,8 +19,9 @@ if __name__ == '__main__':
         simulate = False
         print ('Simulate set to false')
 
-    # This will either spawn a shell program for setting up the ports
-    # for a simulator or for debugging and talking to the telescope.
+    # This will either spawn a shell program for setting up the
+    # ports for a simulator or for debugging and talking to the
+    # telescope.
 
     print ('spawnSimulator')
     

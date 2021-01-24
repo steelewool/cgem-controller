@@ -71,7 +71,8 @@ if __name__ == '__main__':
   done = False
   sim = Simulator()
 
-  print ('Enter while loop')
+  prin
+  t ('Enter while loop')
   
   while not done:
     if ser.isOpen() == False:

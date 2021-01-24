@@ -18,7 +18,7 @@ import convertRaDecToCgemUnits
 # 2018-10-12 removed the useSerial argument.
 
 class CgemInterface:
-    
+
     # The initializer defaults to .pty1 which is used in the
     # simulation (nullmodel.sh) and when socat is used for debugging
     
@@ -34,19 +34,12 @@ class CgemInterface:
                                  baudrate =         9600,
                                  timeout  = timeoutValue)
 
-        print ('try self.ser.write with b Ka')
         
-        self.ser.write(b'Ka')
-        data = self.ser.read(2)
-        print ('Read : ', data)
-            
-        if (data != 'a#'):
-            commWorking = False
-        else:
-            commWorking = True
+        # Continuing with the software does not make a lot of sense if the comm
+        # is not working. But, currently the software just charges ahead.
     
     # 'length' should include the final delimiter in the expected response
-    
+
     def readSerial(self, length):
         output = ""
         nullCount = 0
@@ -60,6 +53,28 @@ class CgemInterface:
         if nullCount == 10:
             print ('ERROR: Unable to complete read operation; no response from serial device')
         return output
+
+    # testcharacter is not being used until I get the details of
+    # sending and receiving data worked out. For now, I'll just
+    # send a hard wired 'a' character
+    
+    def echoCommand (self, testCharacter):
+
+        print ("in echoCommand")
+        
+        self.ser.write(b'Ka')
+        response = self.ser.read(2)
+        #response = self.readSerial(2)
+
+        print ('response: ', response)
+        
+        if (response != b'a#'):
+            commWorking = False
+        else:
+            commWorking = True
+        print ('Setting commWorking flag to :', commWorking)
+
+    # Go to a RA/Dec position using the high precision mode.
     
     def gotoCommandWithHP (self, ra, dec):
         
@@ -122,10 +137,6 @@ class CgemInterface:
         print ('In requestHighPrecisionRaDec, result: ', result)
         findHashTag = result.find('#')
         print ('in requestHighPrecisionRaDec, findHashTag:', findHashTag)
-        if findHashTag < 0:
-            result = self.readSerial(18)
-            print ('second read, result: ', result)
-            findHashTag = result.find('#')
         if findHashTag > 0:                        
             result = result[0:findHashTag]
         return result
@@ -146,20 +157,21 @@ class CgemInterface:
 if __name__ == '__main__':
     
     cgemInterface = CgemInterface()
+
     
-    ra  = convertRaDecToCgemUnits.Ra()
-    dec = convertRaDecToCgemUnits.Dec()
+    #ra  = convertRaDecToCgemUnits.Ra()
+    #dec = convertRaDecToCgemUnits.Dec()
     
-    ra.hr = 15
-    ra.min = 14
-    ra.sec = 13
+    #ra.hr = 15
+    #ra.min = 14
+    #ra.sec = 13
     
-    dec.deg = 0
-    dec.min = 20
-    dec.min = 10
+    #dec.deg = 0
+    #dec.min = 20
+    #dec.min = 10
     
-    cgemInterface.gotoCommandWithHP (ra, dec)
-    print ('result of move:', cgemInterface.requestHighPrecisionRaDec())
+    #cgemInterface.gotoCommandWithHP (ra, dec)
+    #print ('result of move:', cgemInterface.requestHighPrecisionRaDec())
 
     cgemInterface.quitSimulator()
     
