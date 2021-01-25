@@ -38,41 +38,63 @@ class CgemInterface:
         # Continuing with the software does not make a lot of sense if the comm
         # is not working. But, currently the software just charges ahead.
     
-    # 'length' should include the final delimiter in the expected response
-
-    def readSerial(self, length):
-        output = ""
-        nullCount = 0
-        while len(output) < length and nullCount < 10:
-            output = output.strip("#")
-            newContent = str(self.ser.read_until('#'))
-            output += newContent
-            if newContent == "":
-                nullCount += 1
-        # Log errors to console for now
-        if nullCount == 10:
-            print ('ERROR: Unable to complete read operation; no response from serial device')
-        return output
-
     # testcharacter is not being used until I get the details of
     # sending and receiving data worked out. For now, I'll just
     # send a hard wired 'a' character
     
     def echoCommand (self, testCharacter):
 
-        print ("in echoCommand")
-        
         self.ser.write(b'Ka')
-        response = self.ser.read(2)
-        #response = self.readSerial(2)
 
-        print ('response: ', response)
+        # The mechanism of just using the raw ser.read command to read
+        # data from the telescope seems a lot less complicated that using
+        # a general read command (like readSerial). Unless there is some
+        # error recover logic I can think of just stripping off the last
+        # hashtag character (#) seems easy enough.
         
+        response = self.ser.read(2)
+        print ('In echoCommand, response: ', response)
+        return response
+
+    def commWorking(self):
+        response = self.echoCommand('a')
         if (response != b'a#'):
-            commWorking = False
+            commWorkingFlag = False
         else:
-            commWorking = True
-        print ('Setting commWorking flag to :', commWorking)
+            commWorkingFlag = True
+        return commWorkingFlag
+    
+    def alignmentComplete (self):
+        self.ser.write(b'J')
+        response = self.ser.read(2)
+        print ('In alignmentComplete, response    : ', response)
+        print ('In alignmentComplete, response[0] : ', response[0])
+        if response[0] == '0':
+            alignment = False
+        else:
+            alignment = True
+        return alignment
+
+    def gotoInProgress (self):
+        self.ser.write(b'L')
+        response = self.ser.read(2)
+        if response[0] == '0':
+            gotoInProgessFlag = False
+        else:
+            gotoInProgressFlag = True
+        return gotoInProgressFlag
+
+    def getLocation (self):
+        self.ser.write(b'w')
+        return self.ser.read(9)
+
+    def getTime (self):
+        self.ser.write(b'h')
+        return self.ser.read(9)
+
+    def getTrackingMode (self):
+        self.ser.write (b't')
+        return self.ser.read(2)
 
     # Go to a RA/Dec position using the high precision mode.
     
@@ -94,7 +116,7 @@ class CgemInterface:
         writeString = 'r'+raToCgem+','+decToCgem
         self.ser.write (b'r69EE8D00,318CCD00')
 
-        data = self.readSerial(1)
+        data = self.ser.read(1)
         print ('Read after gotoCommand:',data)
             
         gotoInProgress = True
@@ -115,7 +137,7 @@ class CgemInterface:
             
 #            self.ser.write(b'L')
                 
-#            data = self.readSerial(2)
+#            data = self.ser.read(2)
 #            print 'Result of L command:', data
 #            if (data == '0#'):
 #                print ('Goto Finished')
@@ -127,28 +149,28 @@ class CgemInterface:
     def cancelGoto (self):
         print ('self.ser.write M')
         self.ser.write (b'M')
-        result = self.readSerial(1)
+        result = self.ser.read(1)
         return result
-    
+
+    # The function requestionHighPrecisionRaDec should actually
+    # be retruning the RA and Dec and have this additional logic
+    # embedded in the function.
+        
     def requestHighPrecisionRaDec (self):
-        print ('self.ser.write e')
         self.ser.write (b'e')
-        result = self.readSerial(18)
-        print ('In requestHighPrecisionRaDec, result: ', result)
-        findHashTag = result.find('#')
-        print ('in requestHighPrecisionRaDec, findHashTag:', findHashTag)
-        if findHashTag > 0:                        
-            result = result[0:findHashTag]
+        result = self.ser.read(18)
+        #findHashTag = result.find('#')
+        #print ('in requestHighPrecisionRaDec, findHashTag:', findHashTag)
+        #if findHashTag > 0:                        
+        #    result = result[0:findHashTag]
         return result
     
     def requestLowPrecisionRaDec (self):
-        print ('self.ser.write E')
-        ser.write (b'E')
-        result = self.readSerial(10)
+        self.ser.write (b'E')
+        result = self.ser.read(10)
         return result       
 
     def quitSimulator (self):
-        print ('self.ser.write q')
         self.ser.write(b'q')
         
     def closeSerial(self):

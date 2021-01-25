@@ -14,17 +14,13 @@ if __name__ == '__main__':
     
     if input("Enter 1 for simulation 2 for hardware ") == '1':
         simulate = True
-        print ('Simulate set to true')
     else:
         simulate = False
-        print ('Simulate set to false')
 
     # This will either spawn a shell program for setting up the
     # ports for a simulator or for debugging and talking to the
     # telescope.
 
-    print ('spawnSimulator')
-    
     sp = spawnSimulator.SpawnSimulator(simulate)
 
     print ('Done with spawnSimulator.SpawnSimulator, with argument: ', simulate)

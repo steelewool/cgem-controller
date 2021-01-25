@@ -1,5 +1,6 @@
 import serial
 import spawnSimulator
+import convertRaDecToCgemUnits
 import cgemInterface
 import time
 
@@ -9,37 +10,48 @@ if __name__ == '__main__':
     
     if input("Enter 1 for simulation 2 for hardware ") == '1':
         simulate = True
-        print ('Simulate set to true')
     else:
         simulate = False
-        print ('Simulate set to false')
 
     sp = spawnSimulator.SpawnSimulator(simulate)
 
-    cgemInterface = cgemInterface.CgemInterface()
+    cgem = cgemInterface.CgemInterface()
 
-    cgemInterface.echoCommand('a')
+    print ('commWorkingFlag : ', cgem.commWorking())
+    print ('aligment        : ', cgem.alignmentComplete())
+    print ('gotoInProgress  : ', cgem.gotoInProgress())
+    print ('location        : ', cgem.getLocation())
+    print ('time            : ', cgem.getTime())
     
+    convertRa  = convertRaDecToCgemUnits.Ra()
+    convertDec = convertRaDecToCgemUnits.Dec()
+    
+    # The function requestionHighPrecisionRaDec should actually
+    # be retruning the RA and Dec and have this additional logic
+    # embedded in the function.
+    
+    telescopeRaDecCgem = cgem.requestHighPrecisionRaDec()
+    print ('telescopeRaDecCgem: ', telescopeRaDecCgem)
+    #args = telescopeRaDecCgem.split(',',2)
+    #print ('args 0 & 1: ', args[0], ' ', args[1])
+    
+#    raFromCgem = convertRa.fromCgem(args[0])
+#    decFromCgem = convertDec.fromCgem(args[1])
+#    print ('RA  : ', raFromCgem)
+#    print ('Dec : ', decFromCgem)
+
+    telescopeRaDecCgem = cgem.requestLowPrecisionRaDec()
+    print ('telescopeRaDecCgem: ', telescopeRaDecCgem)
+    #args = telescopeRaDecCgem.split(',',2)
+    #print ('args 0 & 1: ', args[0], ' ', args[1])
+
     # Done - shut down and clean up
 
-    time.sleep(5)
+    time.sleep(1)
 
     print ('Quitting, closing simulator, and serial interfaces.')
 
-    cgemInterface.quitSimulator() # does nothing when operating with telescope
-    cgemInterface.closeSerial()
+    cgem.quitSimulator() # does nothing when operating with telescope
+    cgem.closeSerial()
     sp.shutdown()
 
-# OLD CODE:
-
-#ser = serial.Serial(port='./pty1', timeout=5)
-
-#cgemInterface = cgemInterface.CgemInterface(True)
-
-#ser.write(r'r39DDDD00,1ED80000')
-#print ('Response:', ser.read(1))
-#ser.write(r'L')
-#print ('Response:', ser.read(2))
-# For now, embed the close command in here
-# Eventually, the testbed should spawn/close the null modem & simulator
-#ser.write('q')

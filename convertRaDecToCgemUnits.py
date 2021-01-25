@@ -37,10 +37,7 @@ class CgemConverter(object):
     oneTwelthArcSeconds = fullCircleSec * 12.0
     conversionFactor    = softwareResolution / oneTwelthArcSeconds
 
-    # This only works when instantiating child classes (Ra and Dec)
-    # This is crashing in python3.
     def __init__(self, args={}):
-        print ('in CgemConverter __init__')
         #for k,v in args.iteritems():
         #    setattr(self, k, v)
         self.toCgem()
@@ -50,7 +47,6 @@ class Ra(CgemConverter):
     raCgemUnits = '0'
     
     def __init__ (self, hr=0, min=0, sec=0):
-        print ('convertRaDecToCgemUnits __init__ of Ra class')
         #args = locals()
         #super(Ra, args.pop('self')).__init__(args)
         self.hr  = hr
@@ -58,8 +54,6 @@ class Ra(CgemConverter):
         self.sec = sec
     
     def toCgem(self):
-        print ('Ra.toCgem')
-
         self.raInSeconds = (float(self.hr) * 3600 + float(self.min)  * 60.0 + float(self.sec)) * 15.0
 
         print ('self.raInSeconds: ', self.raInSeconds)
@@ -95,8 +89,6 @@ class Ra(CgemConverter):
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
 
-        #print 'strGotoValue  : ', strGotoValue
-        
         # for some unknown reason, at least to me, and 'L' is being added
         # to the strGotoValue.
 
@@ -104,7 +96,6 @@ class Ra(CgemConverter):
         print ('positionL: ', positionL)
         if positionL > 0:
             strGotoValue = strGotoValue[0:positionL]
-        #print 'strGotoValue: ', strGotoValue
         return str.upper(strGotoValue)
 
     def fromCgem(self, cgemUnits):
@@ -246,8 +237,6 @@ if __name__ == '__main__':
     min  = input ('raMin  : ')
     sec  = input ('raSec  : ')
 
-    print ('assign ra to Ra *hr,min,sec*')
-    
     ra = Ra(hr, min, sec)
     
     deg = input ('decDeg : ')
@@ -259,12 +248,6 @@ if __name__ == '__main__':
     print ('RA   hr min sec      : ', ra.hr,   ' ', ra.min,  ' ', ra.sec)
     print ('Dec deg min sec      : ', dec.deg, ' ', dec.min, ' ', dec.sec)
     
-    try:
-        #print 'write to the serial: ', 'r' + ra.toCgem() + ',' + dec.toCgem()
-        print
-    except:
-        print ('failure in conversion to cgem')
-        
     try:
         print ('calling ra.toCgem')
         raCgemUnits  = ra.toCgem()
