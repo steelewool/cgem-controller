@@ -22,6 +22,7 @@ if __name__ == '__main__':
     print ('gotoInProgress  : ', cgem.gotoInProgress())
     print ('location        : ', cgem.getLocation())
     print ('time            : ', cgem.getTime())
+    print ('tracking mode   : ', cgem.getTrackingMode())
     
     convertRa  = convertRaDecToCgemUnits.Ra()
     convertDec = convertRaDecToCgemUnits.Dec()

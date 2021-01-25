@@ -14,20 +14,14 @@ class SpawnSimulator:
     
     def __init__(self, simulate=True):
 
-        print ('in SpawnSimulator __init__')
-
         self.simulate = simulate
         if self.simulate == True:
 
-            print ('Spawn nullmodem.sh with P_NOWAIT')
-            
             self.pid_modem = os.spawnlp(os.P_NOWAIT,
                                         "./nullmodem.sh", " ", " ")
 
             # Check that both pty1 and pty2 files exist before continuing
 
-            print ('Check file existance.')
-            
             checkFileExistance = True
             while checkFileExistance:
                 checkFileExistance1 = os.path.exists("pty1")
@@ -35,19 +29,13 @@ class SpawnSimulator:
                 checkFileExistance  = not(checkFileExistance1 and
                                           checkFileExistance2)
 
-            print ('spawn python3')
             self.pid_python = os.spawnlp(os.P_NOWAIT,
                                          "python3", " ", "simulator.py")
         else:
-            print ('spawn debugTty.sh')
-            
             self.pid_modem = os.spawnlp(os.P_NOWAIT,
                                             "./debugTty.sh", " ", " ")
-
-            print ('done spawing debugTty.sh')
             
             # Check that both pty1 and /dev/ttyUSB0 exists before continuing
-            print ('Checking file existance.')
             
             checkFileExistance = True
             while checkFileExistance:
@@ -55,12 +43,8 @@ class SpawnSimulator:
                 checkFileExistance2 = os.path.exists("/dev/ttyUSB0")
                 checkFileExistance  = not(checkFileExistance1 and
                                           checkFileExistance2)
-        print ('about to exit spawnSimulator initialization.')
-
     def shutdown(self):
-        print ('shutdown running')
         if self.simulate == True:
-#            time.sleep(1)
             os.kill(self.pid_python, signal.SIGSTOP)
         os.kill(self.pid_modem, signal.SIGSTOP);
 
