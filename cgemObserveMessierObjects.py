@@ -37,8 +37,8 @@ if __name__ == '__main__':
 
     print ('Done with cgemInterface.CgemInterface()')
     
-    convertRa  = convertRaDecToCgemUnits.Ra()
-    convertDec = convertRaDecToCgemUnits.Dec()
+    convertRa  = convertRaDecToCgemUnits.ConvertRa()
+    convertDec = convertRaDecToCgemUnits.ConvertDec()
     
     # messierObjectList goes out to the simbad database and querys
     # for the Messier Objects. It returns a sorted list of those objects
@@ -83,15 +83,15 @@ if __name__ == '__main__':
                         print ('x: ', x)
                         if x == 1:
                         
-                            ra = messierList.objectTable[index].ra
-                            dec = messierList.objectTable[index].dec
+                            convertRa = messierList.objectTable[index].ra
+                            convertDec = messierList.objectTable[index].dec
                         
-                            newRa = convertRaDecToCgemUnits.Ra(float(ra.hr),
+                            newRa = convertRaDecToCgemUnits.ConvertRa(float(ra.hr),
                                                                float(ra.min),
                                                                float(ra.sec))
         
                     
-                            newDec = convertRaDecToCgemUnits.Dec(float(dec.deg),
+                            newDec = convertRaDecToCgemUnits.ConvertDec(float(dec.deg),
                                                                  float(dec.min),
                                                                  float(dec.sec))
                         

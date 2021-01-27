@@ -14,8 +14,8 @@ class Simulator:
 
   def __init__ (self):
     print ('class Simulator __init__')
-    self.raConversion  = convertRaDecToCgemUnits.Ra()
-    self.decConversion = convertRaDecToCgemUnits.Dec()
+    self.raConversion  = convertRaDecToCgemUnits.ConvertRa()
+    self.decConversion = convertRaDecToCgemUnits.ConvertDec()
     print ('exit __init__')
 
   def parse_command(self, prefix):
@@ -71,8 +71,7 @@ if __name__ == '__main__':
   done = False
   sim = Simulator()
 
-  prin
-  t ('Enter while loop')
+  print ('Enter while loop')
   
   while not done:
     if ser.isOpen() == False:

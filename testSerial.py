@@ -24,8 +24,8 @@ if __name__ == '__main__':
     print ('time            : ', cgem.getTime())
     print ('tracking mode   : ', cgem.getTrackingMode())
     
-    convertRa  = convertRaDecToCgemUnits.Ra()
-    convertDec = convertRaDecToCgemUnits.Dec()
+    convertRa  = convertRaDecToCgemUnits.ConvertRa()
+    convertDec = convertRaDecToCgemUnits.ConvertDec()
     
     # The function requestionHighPrecisionRaDec should actually
     # be retruning the RA and Dec and have this additional logic
