@@ -1,3 +1,42 @@
+1/27/21
+
+Enter 1 for simulation 2 for hardware 2
+in commWorking
+In echoCommand
+In echoCommand, response:  b'a#'
+commWorkingFlag :  True
+In alignmentComplete
+In alignmentComplete, response    :  b'\x01#'
+In alignmentComplete, response[0] :  1
+aligment        :  True
+In gotoInProgress
+correct response
+gotoInProgress response:  b'0#'
+response[0]:  48
+gotoInProgress  :  True
+in rtcGetLocation
+correct length response
+response length:  9
+get location, bytes 1-8:  34   49   32   0   119   1   54   1
+location        :  [34.82555555555556, 34, 49, 32, 0, 119.03166666666667, 119, 1, 54, 1]
+In getTime
+getTime response:  b'\x15\x00\x1a\x01\x1b\x15\xf8\x00#'
+get time response:  b'\x15\x00\x1a\x01\x1b\x15\xf8\x00#'
+get time, bytes 1-8:  21   0   26   1   27   21   248   0
+time            :  [21, 0, 26, 1, 27, 2021, 8, False]
+In requestHighPrecisionRaDec
+requestHighPrecisionRaDec, bytes 1-17:  49   68   52   57   56   66   48   48   44   50   48   66   67   56   66   48   48
+telescopeRaDecCgem:  b'1D498B00,20BC8B00#'
+In requestLowPrecisionRaDec
+requestLowPrecisionRaDec, bytes 1-9:  49   68   52   65   44   50   48   66   68
+telescopeRaDecCgem:  b'1D498B00,20BC8B00#'
+Quitting, closing simulator, and serial interfaces.
+
+
+
+1/25/21
+
+
 In echoCommand, response:  b'a#'
 commWorkingFlag :  True
 In alignmentComplete, response    :  b'\x01#'

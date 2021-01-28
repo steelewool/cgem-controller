@@ -7,6 +7,8 @@ import time
 import sys
 
 # Provide the interface to the Cgem controller via the serial interface.
+# All of the commands to read & write data to and from the CGEM telesope
+# are implement here.
 
 import convertRaDecToCgemUnits
 
@@ -42,12 +44,12 @@ class CgemInterface:
     # sending and receiving data worked out. For now, I'll just
     # send a hard wired 'a' character
 
-    def serialRead (self, timeout, bytes):
-        time.sleep(timeout)
+    def serialRead (self, waitTime, bytes):
+        time.sleep(waitTime)
         return self.ser.read(bytes)
     
     def echoCommand (self, testCharacter):
-
+        print ('In echoCommand')
         self.ser.write(b'Ka')
 
         # The mechanism of just using the raw ser.read command to read
@@ -56,12 +58,17 @@ class CgemInterface:
         # error recover logic I can think of just stripping off the last
         # hashtag character (#) seems easy enough.
         
-        response = self.serialRead(3,2)
+        response = self.serialRead(waitTime=3,bytes=2)
         print ('In echoCommand, response: ', response)
         return response
 
     def commWorking(self):
+ #       print ('in commWorking')
         response = self.echoCommand('a')
+        if len(response) != 2:
+            print ('incorrect length response')
+            return 'Comm Failure ' + str(len(response))
+
         if (response != b'a#'):
             commWorkingFlag = False
         else:
@@ -69,11 +76,17 @@ class CgemInterface:
         return commWorkingFlag
     
     def alignmentComplete (self):
+ #       print ('In alignmentComplete')
         self.ser.write(b'J')
-        response = self.serialRead(3,2)
-        print ('In alignmentComplete, response    : ', response)
-        print ('In alignmentComplete, response[0] : ', response[0])
-        if response[0] == '0':
+        response = self.serialRead(waitTime=3,bytes=2)
+        if len(response) != 2:
+            print ('Incorrect response length')
+            return 'Comm Failure ' + str(len(response))
+
+#        print ('In alignmentComplete, response    : ', response)
+#        print ('In alignmentComplete, response[0] : ', response[0])
+
+        if response[0] == 0:
             alignment = False
         else:
             alignment = True
@@ -81,64 +94,149 @@ class CgemInterface:
 
     def gotoInProgress (self):
         self.ser.write(b'L')
-        response = self.serialRead(3,2)
-        if response[0] == '0':
-            gotoInProgessFlag = False
+        response = self.serialRead(waitTime=3,bytes=2)
+        if len(response) != 2:
+            print ('incorrect response length in gotoInProgress')
+            return 'Comm Failure ' + str(len(response))
+        if response[0] == 0:
+            gotoInProgessFlag = True
         else:
-            gotoInProgressFlag = True
+            gotoInProgressFlag = False
         return gotoInProgressFlag
 
-    def getLocation (self):
+    def rtcGetLocation (self):
         self.ser.write(b'w')
-        response = self.serialRead(3,9)
-        print ('get location, bytes 1-8: ',
-               response[0], ' ',
-               response[1], ' ',
-               response[2], ' ',
-               response[3], ' ',
-               response[4], ' ',
-               response[5], ' ',
-               response[6], ' ',
-               response[7])
-        latitude = float(response[0]) + float(response[1])/60.0 + float(response[2])/3600.0
+        response = self.serialRead(waitTime=4,bytes=9)
+        if len(response) != 9:
+            print ('incorrect length response')
+            return 'Comm Failure ' + str(len(response))
+        latitude = float(response[0])+float(response[1])/60.0+float(response[2])/3600.0
+        longitude = float(response[4])+float(response[5])/60.0+float(response[6])/3600.0
         if response[3] == '1':
             latitude = latitude*-1.0
-        longitude = float(response[4]) + float(response[5])/60.0 + float(response[6])/3600.0
+            longitude = float(response[4])+float(response[5])/60.0+float(response[6])/3600.0
         if response[7] == '1':
             longitude = longitude*-1.0
         return [latitude,  response[0], response[1], response[2], response[3],
                 longitude, response[4], response[5], response[6], response[7]]
     
     def getTime (self):
+#        print ('In getTime')
         self.ser.write(b'h')
-        response = self.serialRead(3,9)
-        print ('get time response: ', response)
-        print ('get time, bytes 1-8: ',
-               response[0], ' ',
-               response[1], ' ',
-               response[2], ' ',
-               response[3], ' ',
-               response[4], ' ',
-               response[5], ' ',
-               response[6], ' ',
-               response[7])
+        response = self.serialRead(waitTime=3,bytes=9)
+#        print ('getTime response: ', response)
+        if len(response) != 9:
+            print ('Incorrect response length')
+            return 'Comm Failure ' + str(len(response))
+
+#        print ('get time response: ', response)
+#        print ('get time, bytes 1-8: ',
+#               response[0], ' ',
+#               response[1], ' ',
+#               response[2], ' ',
+#               response[3], ' ',
+#               response[4], ' ',
+#               response[5], ' ',
+#               response[6], ' ',
+#               response[7])
+
         hour  = int(response[0])
         min   = int(response[1])
         sec   = int(response[2])
         month = int(response[3])
         day   = int(response[4])
         year  = int(response[5])+2000
-        gmt   = int(response[6])
+        gmt   = 256-int(response[6])
         if response[7] == '0':
             standardTime = True
         else:
             standardTime = False
         return [hour,min,sec,month,day,year,gmt,standardTime]
 
+#    def rtcGetYear (self):
+#        print ('in rtcGetYear')
+#        baseCommand = 'P'+chr(1)+chr(178)+chr(4)+chr(0)+chr(0)+chr(0)+chr(2)
+#        command = baseCommand.encode('utf-8')
+#        self.ser.write(command)
+#        response = self.serialRead(waitTime=3,bytes=3)
+#        print ('rtcGetYear len(response): ', len(response))
+#        if len(response) != 3:
+#            print('Incorrect response length')
+#            return 'Comm Failure'
+#
+#        print ('Year: ', response)
+#        return [response[0], response[1]]
+
+    def rtcSetYear (self, x, y):
+        print ('In rtcSetYear. x,y: ', x, ',', y)
+        baseCommand = 'P'+chr(3)+chr(178)+chr(132)+chr(int(x)*256)+chr(int(year))+chr(0)+chr(0)
+        command = baseCommand.encode('utf-8')
+        self.ser.write(command)
+        response = self.serialRead(waitTime=3,bytes=1)
+        print ('rtcSetTime: ', response)
+
+#    def rtcGetDate (self):
+#        print ('In rtcGetDate')
+#        baseCommand = 'P'+chr(1)+chr(178)+chr(3)+chr(0)+chr(0)+chr(0)+chr(2)
+#        command = baseCommand.encode('utf-8')
+#        self.ser.write(command)
+#        response = self.serialRead(waitTime=3,bytes=3)
+#        print ('rtcGetDate len(response): ', len(response))
+#        if len(response) != 3:
+#            print ('Incorrect response length')
+#            return 'Comm Failure'
+#        print ('Date: ', response)
+#        return [response[0], response[1]]
+
+    def rtcSetDate (self, month, year):
+        print ('in rtcSetDate');
+        baseCommand = 'P'+chr(3)+chr(178)+chr(131)+chr(int(month))+chr(int(year))+chr(0)+chr(0)
+        command = baseCommand.encode('utf-8')
+        self.ser.write(command)
+        response = self.serialRead(waitTime=3,bytes=1)
+        if len(response) != 1:
+            print ('Incorrect response length')
+            return 'Comm Failure ' + str(len(response))
+        print ('rtcSetTime: ', response)
+        return [response[0]]
+
+#    def rtcGetTime (self):
+#        print ('In rtcGetTime')
+#        baseCommand = 'P'+chr(1)+chr(178)+chr(51)+chr(0)+chr(0)+chr(0)+chr(3)
+#        command = baseCommand.encode('utf-8')
+#        self.ser.write(command)
+#        response = self.serialRead(waitTime=4,bytes=4)
+#        print ('rtcGetTime len(response): ', len(response))
+#        
+#        if len(response) != 4:
+#            print ('Incorrect length response')
+#            return 'Comm Failure'
+#
+#        print ('response length: ', len(response))        
+#        if response[4] == '#':
+#            print ('response[4]: ', response[4])
+#        else:
+#            print ('response[4] was NOT a #')
+#        print ('Time (hr,min,sec): ',
+#               response[0], response[1], response[3])
+#        return [response[0], response[1], response[2]]
+
+    def rtcSetTime (self, hour, min, sec):
+        print ('In rtcSetTime')
+        baseCommand = 'P'+chr(4)+chr(178)+chr(179)+chr(int(hour))+chr(int(min))+chr(int(sec))+chr(0)
+        command = baseCommand.encode('utf-8')
+        self.ser.write(command)
+        response = self.serialRead(waitTime=3,bytes=1)
+        print ('rtcSetTime len(response): ', len(response))
+        print ('rtcSetTime: ', response)
+
     def getTrackingMode (self):
         self.ser.write (b't')
-        response = self.serialRead(3,2)
-        print ('getTrackingMode, response: ', response)
+        response = self.serialRead(waitTime=3,bytes=2)
+        if len(response) != 2:
+            print ('Incorrect response length')
+            return 'Comm Failure ' + str(len(response))
+
         trackingMode = 'Undefined'
         if response[0] == 0:
             trackingMode = 'Off'
@@ -153,6 +251,7 @@ class CgemInterface:
     # Go to a RA/Dec position using the high precision mode.
     
     def gotoCommandWithHP (self, ra, dec):
+        print ('In gotoCommandWithHP')
         
         # Since I'm using the results of toGem for debugging
         # I only to the conversion once and then use the variables
@@ -211,47 +310,36 @@ class CgemInterface:
     # embedded in the function.
         
     def requestHighPrecisionRaDec (self):
+        print ('In requestHighPrecisionRaDec')
         self.ser.write (b'e')
-        response = self.serialRead(3,18)
-        print ('requestHighPrecisionRaDec, bytes 1-17: ',
-               response [0], ' ',
-               response [1], ' ',
-               response [2], ' ',
-               response [3], ' ',
-               response [4], ' ',
-               response [5], ' ',
-               response [6], ' ',
-               response [7], ' ',
-               response [8], ' ',
-               response [9], ' ',
-               response[10], ' ',
-               response[11], ' ',
-               response[12], ' ',
-               response[13], ' ',
-               response[14], ' ',
-               response[15], ' ',
-               response[16])
-               
-        #findHashTag = response.find('#')
-        #print ('in requestHighPrecisionRaDec, findHashTag:', findHashTag)
-        #if findHashTag > 0:                        
-        #    response = response[0:findHashTag]
-        return response
+        response = self.serialRead(waitTime=3,bytes=18)
+        if len(response) != 18:
+            print ('Incorrect response length')
+            return 'Comm Failure ' + str(len(response))
+
+        commaLocation = response.find(b',')
+        hashTagLocation = response.find(b'#')
+        raHex = response[0:commaLocation]
+        decHex = response[commaLocation+1:hashTagLocation]
+        print ('raHex, decHex ', raHex, ' ', decHex)
+
+        return [raHex, decHex]
     
     def requestLowPrecisionRaDec (self):
+        print ('In requestLowPrecisionRaDec')
         self.ser.write (b'E')
         response = self.serialRead(3,10)
-        print ('requestLowPrecisionRaDec, bytes 1-9: ',
-               response[0], ' ',
-               response[1], ' ',
-               response[2], ' ',
-               response[3], ' ',
-               response[4], ' ',
-               response[5], ' ',
-               response[6], ' ',
-               response[7], ' ',
-               response[8])
-        return response       
+        if len(response) != 10:
+            print ('Incorrect response length')
+            return 'Comm Failure ' + str(len(response))
+
+        commaLocation = response.find(b',')
+        hashTagLocation = response.find(b'#')
+        raHex = response[0:commaLocation]
+        decHex = response[commaLocation+1:hashTagLocation]
+        print ('raHex, decHex ', raHex, ' ', decHex)
+
+        return [raHex, decHex]
 
     def quitSimulator (self):
         self.ser.write(b'q')

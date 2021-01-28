@@ -15,14 +15,21 @@ if __name__ == '__main__':
 
     sp = spawnSimulator.SpawnSimulator(simulate)
 
-    cgem = cgemInterface.CgemInterface()
+    cgemI = cgemInterface.CgemInterface()
 
-    print ('commWorkingFlag : ', cgem.commWorking())
-    print ('aligment        : ', cgem.alignmentComplete())
-    print ('gotoInProgress  : ', cgem.gotoInProgress())
-    print ('location        : ', cgem.getLocation())
-    print ('time            : ', cgem.getTime())
-    print ('tracking mode   : ', cgem.getTrackingMode())
+    print ('commWorkingFlag : ', cgemI.commWorking())
+    print ('aligment        : ', cgemI.alignmentComplete())
+    print ('gotoInProgress  : ', cgemI.gotoInProgress())
+
+    # cgemI.rtcGetLocation working as of 1/25/21
+    print ('RTC location    : ', cgemI.rtcGetLocation())
+
+    # cgemI.getTime working as of 1/25/21
+    print ('time            : ', cgemI.getTime())
+
+#   rtcGetTime not working as of 1/27/21
+#    print ('rtc time        : ', cgemI.rtcGetTime())
+    print ('tracking mode   : ', cgemI.getTrackingMode())
     
     convertRa  = convertRaDecToCgemUnits.ConvertRa()
     convertDec = convertRaDecToCgemUnits.ConvertDec()
@@ -31,28 +38,24 @@ if __name__ == '__main__':
     # be retruning the RA and Dec and have this additional logic
     # embedded in the function.
     
-    telescopeRaDecCgem = cgem.requestHighPrecisionRaDec()
-    print ('telescopeRaDecCgem: ', telescopeRaDecCgem)
-    #args = telescopeRaDecCgem.split(',',2)
-    #print ('args 0 & 1: ', args[0], ' ', args[1])
+    telescopeRaDecCgemI = cgemI.requestHighPrecisionRaDec()
+    print ('telescopeRaDecCgem: ', telescopeRaDecCgemI)
     
 #    raFromCgem = convertRa.fromCgem(args[0])
 #    decFromCgem = convertDec.fromCgem(args[1])
 #    print ('RA  : ', raFromCgem)
 #    print ('Dec : ', decFromCgem)
 
-    telescopeRaDecCgem = cgem.requestLowPrecisionRaDec()
-    print ('telescopeRaDecCgem: ', telescopeRaDecCgem)
-    #args = telescopeRaDecCgem.split(',',2)
-    #print ('args 0 & 1: ', args[0], ' ', args[1])
-
+    telescopeRaDecCgemI = cgemI.requestLowPrecisionRaDec()
+    print ('telescopeRaDecCgem: ', telescopeRaDecCgemI)
+    
     # Done - shut down and clean up
 
     time.sleep(1)
 
     print ('Quitting, closing simulator, and serial interfaces.')
 
-    cgem.quitSimulator() # does nothing when operating with telescope
-    cgem.closeSerial()
+    cgemI.quitSimulator() # does nothing when operating with telescope
+    cgemI.closeSerial()
     sp.shutdown()
 
