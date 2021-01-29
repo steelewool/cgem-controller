@@ -53,7 +53,6 @@ class CgemInterface:
         return self.ser.read(bytes)
     
     def echoCommand (self, testCharacter):
-        print ('In echoCommand')
         self.ser.write(b'Ka')
 
         # The mechanism of just using the raw ser.read command to read
@@ -63,11 +62,9 @@ class CgemInterface:
         # hashtag character (#) seems easy enough.
         
         response = self.serialRead(waitTime=3,bytes=2)
-        print ('In echoCommand, response: ', response)
         return response
 
     def commWorking(self):
- #       print ('in commWorking')
         response = self.echoCommand('a')
         if len(response) != 2:
             print ('incorrect length response')
@@ -99,14 +96,10 @@ class CgemInterface:
             return 'Comm Failure ' + str(len(response))
         print ('gotoInProgress response[0]: ', response[0])
 
-        # A '0' indicates that the motion is in progress.
-        # A '1' indicates that the motion has completed.
-        # My attempt at using '0' or 48 are both not working.
-
         if response[0] == 48:
-            gotoInProgressFlag = True
-        else:
             gotoInProgressFlag = False
+        else:
+            gotoInProgressFlag = True
         return gotoInProgressFlag
 
     def rtcGetLocation (self):
@@ -145,35 +138,6 @@ class CgemInterface:
             standardTime = False
         return [hour,min,sec,month,day,year,gmt,standardTime]
 
-    def rtcSetYear (self, x, y):
-        print ('In rtcSetYear. x,y: ', x, ',', y)
-        baseCommand = 'P'+chr(3)+chr(178)+chr(132)+chr(int(x)*256)+chr(int(year))+chr(0)+chr(0)
-        command = baseCommand.encode('utf-8')
-        self.ser.write(command)
-        response = self.serialRead(waitTime=3,bytes=1)
-        print ('rtcSetTime: ', response)
-
-    def rtcSetDate (self, month, year):
-        print ('in rtcSetDate');
-        baseCommand = 'P'+chr(3)+chr(178)+chr(131)+chr(int(month))+chr(int(year))+chr(0)+chr(0)
-        command = baseCommand.encode('utf-8')
-        self.ser.write(command)
-        response = self.serialRead(waitTime=3,bytes=1)
-        if len(response) != 1:
-            print ('Incorrect response length')
-            return 'Comm Failure ' + str(len(response))
-        print ('rtcSetTime: ', response)
-        return [response[0]]
-
-    def rtcSetTime (self, hour, min, sec):
-        print ('In rtcSetTime')
-        baseCommand = 'P'+chr(4)+chr(178)+chr(179)+chr(int(hour))+chr(int(min))+chr(int(sec))+chr(0)
-        command = baseCommand.encode('utf-8')
-        self.ser.write(command)
-        response = self.serialRead(waitTime=3,bytes=1)
-        print ('rtcSetTime len(response): ', len(response))
-        print ('rtcSetTime: ', response)
-
     def getTrackingMode (self):
         self.ser.write (b't')
         response = self.serialRead(waitTime=3,bytes=2)
@@ -195,7 +159,6 @@ class CgemInterface:
     # Go to a RA/Dec position using the high precision mode.
     
     def gotoCommandWithHP (self, ra, dec):
-        print ('In gotoCommandWithHP')
         
         # I only to the conversion once and then use the variables
         # raToCgem and decToCgem in the serial write and the print
@@ -254,12 +217,28 @@ class CgemInterface:
         motionFlag = self.gotoInProgress()
         print ('motionFlag: ', motionFlag)
         
-        gotoInProgressFlag = True
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+        
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
 
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+        
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+        
+        gotoInProgressFlag = True
 
     def gotoCommandWithLP (self, ra, dec):
         print ('Not implemented')
 
+    # The cancel goto command has NOT been tested.
+    
     def cancelGoto (self):
         print ('self.ser.write M')
         self.ser.write (b'M')

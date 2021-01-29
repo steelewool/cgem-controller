@@ -67,12 +67,6 @@ if __name__ == '__main__':
     
     # Try and drive the telescope:
 
-    # These conversion are returning the following and need to be
-    # fixed before I try sending motion commands with them.
-    
-    #newRa  :  <convertRaDecToCgemUnits.ConvertRa object at 0xb653f1d0>
-    #newDec :  <convertRaDecToCgemUnits.ConvertDec object at 0xb653f190>
-
     newRa = convertRaDecToCgemUnits.ConvertRa(float( 3),
                                               float(21),
                                               float(52)).toCgem()

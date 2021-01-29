@@ -67,30 +67,9 @@ if __name__ == '__main__':
         print ('Dec : ', decFromCgem)
     except:
         print ('requestHighPrecisionRaDec failed')
-
-#    try:
-#        cgemI.gotoCommandWithHP (raHex, decHex)
-#    except:
-#        print ('gotoCommandWithHP failed')
     
     telescopeRaDecCgemI = cgemI.requestLowPrecisionRaDec()
     print ('telescopeRaDecCgem: ', telescopeRaDecCgemI)
-
-    # Try and drive the telescope:
-
-    newRa = convertRaDecToCgemUnits.ConvertRa(float(21),
-                                              float( 0),
-                                              float( 0))
-        
-                    
-    newDec = convertRaDecToCgemUnits.ConvertDec(float( 0),
-                                                float( 0),
-                                                float( 0))
-
-    print ('newRa  : ', newRa)
-    print ('newDec : ', newDec)
-
-#    cgemI.gotoCommandWithHP (newRa, newDec)
     
     # Done - shut down and clean up
 

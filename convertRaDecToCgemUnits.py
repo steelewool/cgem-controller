@@ -69,59 +69,28 @@ class ConvertRa(CgemConverter):
         self.raInSeconds = (float(self.hr) * 3600 + float(self.min)  * 60.0 + float(self.sec)) * 15.0
         
         if int(self.hr) < 0 or int(self.hr) > 23:
-            print ('hr is out of range')
             raise RaError.message('hour out of range')
         if int(self.min) < 0 or int(self.min) > 59:
-            print ('min is out of range')
             raise RaError.message('min out of range')
         if float(self.sec) < 0.0 or float(self.sec) > 59.99:
-            print ('sec is out of range')
             raise RaError.message('sec out of range')
         if float(self.raInSeconds) < 0.0:
-            print ('ra is less than 0.0')
             raise RaError.message('seconds less than 0')
         if float(self.raInSeconds) >= 86400*15.0:
-            print ('ra is greater than 24 hours')
             raise RaError.message('seconds > 86400 seconds')
 
-        #print ('done with a set of if statements looking for an Ra error')
-        
         gotoValue = self.raInSeconds * 12.0 * CgemConverter.conversionFactor
         hexGotoValue = hex(int(gotoValue) << 8)
         strGotoValue = str(hexGotoValue)[2:]
         addCharacters = 8-len(strGotoValue)
 
-        print ('gotoValue     : ', gotoValue)
-        print ('hexGotoValue  : ', hexGotoValue)
-        print ('strGotoValue  : ', strGotoValue)
-        print ('addCharacters : ', addCharacters)
-        
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
 
-        # for some unknown reason, at least to me, and 'L' is being added
-        # to the strGotoValue.
-
-        #positionL = str(strGotoValue).find('L')
-        #print ('positionL: ', positionL)
-        #if positionL > 0:
-        #    strGotoValue = strGotoValue[0:positionL]
         return str.upper(strGotoValue)
 
     def fromCgem(self, cgemUnits):
-        #print ('Inside of Ra.fromCgem, cgemUnits: ', cgemUnits)
-        # The following is the original line of code that was failing
-        # in python3
-        
         x = (int(cgemUnits,16)) >> 8
-
-        #print ('cgemUnits: ', cgemUnits)
-        #print ('x        : ', x)
-
-        #x = int(cgemUnits) >> 8
-
-        #print ('x: ', x)
-
         seconds = x / 15.0 / 12.0 / CgemConverter.conversionFactor
         xhr = int(seconds / 3600.0)
         xmin = int((seconds - (xhr * 3600.0)) / 60.0)
@@ -130,7 +99,6 @@ class ConvertRa(CgemConverter):
         return [xhr, xmin, xsec]
 
     def getSeconds(self):
-        #print ('Inside of Ra.getSeconds')
         return ((float(self.hr )   * 3600.0) +
                 (float(self.min)   *   60.0) +
                 (float(self.sec))) *   15.0
@@ -153,24 +121,15 @@ class ConvertRa(CgemConverter):
 # __eq__
 
 class ConvertDec(CgemConverter):
-    #deg = 0.0
-    #min = 0.0
-    #sec = 0.0
     decCgemUnits = '0'
     
     def __init__ (self, deg=0, min=0, sec=0):
-        #args = locals()
-        #super(Dec, args.pop('self')).__init__(args)
         self.deg = deg
         self.min = min
         self.sec = sec
         
     def toCgem(self):
-
-        #print ('Inside of Dec.toCgem')
-        
         decNeg = False;
-        #print ('self.deg : ', self.deg)
         
         if int(self.deg) < 0:
             decNeg = True
@@ -187,12 +146,9 @@ class ConvertDec(CgemConverter):
             decNeg = True
             self.sec = -int(self.sec)
         if  int(self.sec) < 0 or int(self.sec) >= 60:
-            print ('self.sec : ', self.sec)
             raise DecError.msg('sec out of range')
 
         self.decInSeconds    =  abs(float(self.deg)) * 60.0 * 60.0 + float(self.min) * 60.0 + float(self.sec)
-
-        #print ('self.decInSeconds : ', self.decInSeconds)
 
         if decNeg:
             self.decInSeconds = (360.0 * 60.0 * 60.0) - float(self.decInSeconds)
@@ -204,31 +160,12 @@ class ConvertDec(CgemConverter):
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue       
 
-        #positionL = str(strGotoValue).find('L')
-        #print ('positionL: ', positionL)
-        #if positionL > 0:
-        #    strGotoValue = strGotoValue[0:positionL]
-        #print ('strGotoValue: ', str.upper(strGotoValue))
-
         return str.upper(strGotoValue)
 
     def fromCgem (self, cgemUnits):
-        #print ('Inside of Dec.fromCgem')
-        
-        # The following is the original line of code that was failing
-        # in python3
-
         x = int(cgemUnits,16) >> 8
         
-        #print ('cgemUnits: ', cgemUnits)
-
-        #x = int(cgemUnits) >> 8
-
-        #print ('x: ', x)
-        
         seconds = int(x / 12.0 / CgemConverter.conversionFactor)
-
-        #print ('Dec.fromCgem seconds: ', seconds)
 
         if seconds > 180.0*60.0*60.0:
             seconds = seconds - (360.0*60.0*60.0)
@@ -324,11 +261,8 @@ if __name__ == '__main__':
     except:
         print ('dec.toCgem failed')
 
-    print ()
-    print ()
     
     print ('Doing a translation to RA/Dec from numbers from telescope')
-    print ()
     
     cgemRa  = 'C78DC600'
     cgemDec = '1C6B1D00'
