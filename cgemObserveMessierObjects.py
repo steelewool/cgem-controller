@@ -87,13 +87,13 @@ if __name__ == '__main__':
                             convertDec = messierList.objectTable[index].dec
                         
                             newRa = convertRaDecToCgemUnits.ConvertRa(float(ra.hr),
-                                                               float(ra.min),
-                                                               float(ra.sec))
+                                                                      float(ra.min),
+                                                                      float(ra.sec))
         
                     
                             newDec = convertRaDecToCgemUnits.ConvertDec(float(dec.deg),
-                                                                 float(dec.min),
-                                                                 float(dec.sec))
+                                                                        float(dec.min),
+                                                                        float(dec.sec))
 
                             print ('newRa  : ', newRa)
                             print ('newDec : ', newDec)

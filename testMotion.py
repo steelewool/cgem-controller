@@ -1,3 +1,7 @@
+# This program was created by copying testSerial.py.
+# I used the vesion from commit
+# 705263d1b9618d6fe2daa54f083975277939f76e
+
 import serial
 import spawnSimulator
 import convertRaDecToCgemUnits
@@ -5,30 +9,19 @@ import cgemInterface
 import time
 
 if __name__ == '__main__':
+
+    # Hardware this to work only with actual hardware
     
-    # Request input as to if simulation or using telescope hardware
-    
-    if input("Enter 1 for simulation 2 for hardware ") == '1':
-        simulate = True
-    else:
-        simulate = False
+    simulate = False
 
     sp = spawnSimulator.SpawnSimulator(simulate)
 
     cgemI = cgemInterface.CgemInterface()
 
-    print ('Comm Working Flag : ', cgemI.commWorking())
     print ('Aligment          : ', cgemI.alignmentComplete())
-    print ('GotoInProgress    : ', cgemI.gotoInProgress())
 
-    # cgemI.rtcGetLocation working as of 1/25/21
-    print ('RTC location      : ', cgemI.rtcGetLocation())
-
-    # cgemI.getTime working as of 1/25/21
-    print ('Time              : ', cgemI.getTime())
-
-#   rtcGetTime not working as of 1/27/21
-    print ('Tracking mode     : ', cgemI.getTrackingMode())
+    # Not sure with these definitions are necessary,
+    # but they might shorthand the code.
     
     convertRa  = convertRaDecToCgemUnits.ConvertRa()
     convertDec = convertRaDecToCgemUnits.ConvertDec()
@@ -59,34 +52,45 @@ if __name__ == '__main__':
         raFromCgem = convertRa.fromCgem(telescopeRaDecCgemI[0])
         decFromCgem = convertDec.fromCgem(telescopeRaDecCgemI[1])
 
-        print ('RA  : ', raFromCgem)
-        print ('Dec : ', decFromCgem)
+        print ('RA (hr,  min, sec) : ', raFromCgem)
+        print ('Dec(deg, min, sec) : ', decFromCgem)
     except:
         print ('requestHighPrecisionRaDec failed')
 
     try:
+        print ('Calling gotoCommandWithHP')
+        print ('     raHex  : ', raHex)
+        print ('     decHex : ', decHex)
         cgemI.gotoCommandWithHP (raHex, decHex)
     except:
         print ('gotoCommandWithHP failed')
     
-    telescopeRaDecCgemI = cgemI.requestLowPrecisionRaDec()
-    print ('telescopeRaDecCgem: ', telescopeRaDecCgemI)
-
     # Try and drive the telescope:
 
-    newRa = convertRaDecToCgemUnits.ConvertRa(float(21),
-                                              float( 0),
-                                              float( 0))
+    # These conversion are returning the following and need to be
+    # fixed before I try sending motion commands with them.
+    
+    #newRa  :  <convertRaDecToCgemUnits.ConvertRa object at 0xb653f1d0>
+    #newDec :  <convertRaDecToCgemUnits.ConvertDec object at 0xb653f190>
+
+    newRa = convertRaDecToCgemUnits.ConvertRa(float( 3),
+                                              float(21),
+                                              float(52)).toCgem()
         
-                    
-    newDec = convertRaDecToCgemUnits.ConvertDec(float( 0),
-                                                float( 0),
-                                                float( 0))
+    newRaHex = newRa.encode('utf-8')
+    
+    newDec = convertRaDecToCgemUnits.ConvertDec(float(89),
+                                                float(57),
+                                                float(37)).toCgem()
 
-    print ('newRa  : ', newRa)
-    print ('newDec : ', newDec)
-
-    cgemI.gotoCommandWithHP (newRa, newDec)
+    newDecHex = newDec.encode('utf-8')
+    
+    print ('newRa     : ', newRa)
+    print ('newDec    : ', newDec)
+    print ('newRaHex  : ', newRaHex)
+    print ('newDecHex : ', newDecHex)
+    
+    cgemI.gotoCommandWithHP (newRaHex, newDecHex)
     
     # Done - shut down and clean up
 

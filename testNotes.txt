@@ -1,3 +1,57 @@
+1/29/21
+
+python3 testMotion.py 
+Aligment          :  True
+In requestHighPrecisionRaDec
+raHex, decHex  b'DAC16300'   b'3B7FC600'
+telescopeRaDecCgem:  [b'DAC16300', b'3B7FC600']
+RA (hr,  min, sec) :  [20, 30, 29]
+Dec(deg, min, sec) :  [83, 40, 14]
+Calling gotoCommandWithHP
+     raHex  :  b'DAC16300'
+     decHex :  b'3B7FC600'
+In gotoCommandWithHP
+writeString :  b'rDAC16300,3B7FC600'
+Read after gotoCommand: b'#'
+motionFlag:  False
+motionFlag:  False
+motionFlag:  False
+motionFlag:  False
+newRa  :  <convertRaDecToCgemUnits.ConvertRa object at 0xb65131d0>
+newDec :  <convertRaDecToCgemUnits.ConvertDec object at 0xb6513190>
+Quitting, closing simulator, and serial interfaces.
+
+1/28/21
+
+Things look like they are starting to work. Here is the output from
+testSerial.
+
+commit 705263d1b9618d6fe2daa54f083975277939f76e
+
+python3 testSerial.py 
+Enter 1 for simulation 2 for hardware 2
+In echoCommand
+In echoCommand, response:  b'a#'
+Comm Working Flag :  True
+Aligment          :  True
+GotoInProgress    :  False
+RTC location      :  [34.82555555555556, 34, 49, 32, 0, 119.03166666666667, 119, 1, 54, 1]
+Time              :  [20, 21, 44, 1, 28, 2021, 8, False]
+Tracking mode     :  Undefined
+In requestHighPrecisionRaDec
+raHex, decHex  b'DC468B00'   b'236CA400'
+telescopeRaDecCgem:  [b'DC468B00', b'236CA400']
+RA  :  [20, 39, 3]
+Dec :  [49, 48, 55]
+In gotoCommandWithHP
+writeString :  b'rDC468B00,236CA400'
+Read after gotoCommand: b'#'
+In requestLowPrecisionRaDec
+raHex, decHex  b'DECF'   b'259C'
+telescopeRaDecCgem:  [b'DECF', b'259C']
+Quitting, closing simulator, and serial interfaces.
+
+
 1/27/21
 
 Enter 1 for simulation 2 for hardware 2

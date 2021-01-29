@@ -37,11 +37,23 @@ class CgemConverter(object):
     oneTwelthArcSeconds = fullCircleSec * 12.0
     conversionFactor    = softwareResolution / oneTwelthArcSeconds
 
+# The for loop below worked in the older version of Python.
+# At the current time 1/29/21 I'm not even sure of what this logic
+# was supposed to do.
+
     def __init__(self, args={}):
         #for k,v in args.iteritems():
         #    setattr(self, k, v)
         self.toCgem()
         self.fromCgem(cgemUnits = '0')
+
+# The class CovertRa handles conversion to and from cgem units for
+# the RA. The methods defined in the class are:
+# __init__
+# toCgem
+# fromCgem
+# getSeconds
+# __sub__
 
 class ConvertRa(CgemConverter):
     raCgemUnits = '0'
@@ -79,10 +91,10 @@ class ConvertRa(CgemConverter):
         strGotoValue = str(hexGotoValue)[2:]
         addCharacters = 8-len(strGotoValue)
 
-        #print ('gotoValue     : ', gotoValue)
-        #print ('hexGotoValue  : ', hexGotoValue)
-        #print ('strGotoValue  : ', strGotoValue)
-        #print ('addCharacters : ', addCharacters)
+        print ('gotoValue     : ', gotoValue)
+        print ('hexGotoValue  : ', hexGotoValue)
+        print ('strGotoValue  : ', strGotoValue)
+        print ('addCharacters : ', addCharacters)
         
         for i in range (0,addCharacters):
             strGotoValue = '0' + strGotoValue
@@ -130,6 +142,16 @@ class ConvertRa(CgemConverter):
         ySeconds = y.getSeconds()
         return xSeconds - ySeconds
     
+# The class CovertDec handles conversion to and from cgem units for
+# the Dec. The methods defined in the class are:
+# __init__
+# toCgem
+# fromCgem
+# getSeconds
+# __lt__
+# __le__
+# __eq__
+
 class ConvertDec(CgemConverter):
     #deg = 0.0
     #min = 0.0
@@ -228,6 +250,12 @@ class ConvertDec(CgemConverter):
     def __eq__ (self,y):
         return self.getSeconds() == y.getSeconds()
 
+# The class CovertLst handles conversion to seconds.
+# The methods defined in the class are:
+# __init__
+# getSeconds
+# __sub__
+
 class ConvertLst:
     def __init__ (self, hr = 0, min = 0, sec = 0.0):
         self.hr  = hr
@@ -243,12 +271,22 @@ class ConvertLst:
         ySeconds = y.getSeconds()
         return xSeconds - ySeconds
 
+# The class CovertAlt handles conversions to sectonds.
+# The methods defined in the class are:
+# __init__
+# getSeconds
+
 class ConvertAlt:
     def __init__ (self, deg = 0.0):
         self.deg = deg
     def getSeconds(self):
         return (float(self.deg) * 60.0 * 60.0)
     
+# The class CovertAzi handles conversions to sectonds.
+# The methods defined in the class are:
+# __init__
+# getSeconds
+
 class ConvertAzi:
     def __init__ (self, deg = 0.0):
         self.deg = deg

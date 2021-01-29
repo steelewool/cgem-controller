@@ -80,16 +80,11 @@ class CgemInterface:
         return commWorkingFlag
     
     def alignmentComplete (self):
- #       print ('In alignmentComplete')
         self.ser.write(b'J')
         response = self.serialRead(waitTime=3,bytes=2)
         if len(response) != 2:
             print ('Incorrect response length')
             return 'Comm Failure ' + str(len(response))
-
-#        print ('In alignmentComplete, response    : ', response)
-#        print ('In alignmentComplete, response[0] : ', response[0])
-
         if response[0] == 0:
             alignment = False
         else:
@@ -98,11 +93,17 @@ class CgemInterface:
 
     def gotoInProgress (self):
         self.ser.write(b'L')
-        response = self.serialRead(waitTime=3,bytes=2)
+        response = self.serialRead(waitTime=2,bytes=2)
         if len(response) != 2:
             print ('incorrect response length in gotoInProgress')
             return 'Comm Failure ' + str(len(response))
-        if response[0] == 0:
+        print ('gotoInProgress response[0]: ', response[0])
+
+        # A '0' indicates that the motion is in progress.
+        # A '1' indicates that the motion has completed.
+        # My attempt at using '0' or 48 are both not working.
+        
+        if response[0] == 48:
             gotoInProgessFlag = True
         else:
             gotoInProgressFlag = False
@@ -210,12 +211,17 @@ class CgemInterface:
 
         data = self.serialRead(3,1)
         print ('Read after gotoCommand:',data)
-        
-        #gotoInProgress = True
+
+        if data == b'#':
+            print ('Valid response, a #')
+        else:
+            print ('Invalid response not a #')
+            
+        gotoInProgressFlag = True
 
         #Getting an error that I must be root to use keyboard.is_pressed.
         
-#        while (gotoInProgress):
+#        while (gotoInProgressFlag):
 
 #            if keyboard.is_pressed('space'):
 #                print ('Detected a key got pressed')
@@ -223,17 +229,33 @@ class CgemInterface:
 #                # some key got pressed
 #                # send command to stop gotoCommand
 #                gotoInProgress = False
-#            time.sleep(1)
 
-#            print ('self.ser.write L')
-            
-#            self.ser.write(b'L')
-                
-#            data = self.serialRead(3,2)
-#            print 'Result of L command:', data
-#            if (data == '0#'):
-#                print ('Goto Finished')
-#                gotoInProgress = False
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+        
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+        
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+        
+        motionFlag = self.gotoInProgress()
+        print ('motionFlag: ', motionFlag)
+        
+        gotoInProgressFlag = True
+
 
     def gotoCommandWithLP (self, ra, dec):
         print ('Not implemented')
