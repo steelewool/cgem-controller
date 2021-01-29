@@ -102,9 +102,9 @@ class CgemInterface:
         # A '0' indicates that the motion is in progress.
         # A '1' indicates that the motion has completed.
         # My attempt at using '0' or 48 are both not working.
-        
+
         if response[0] == 48:
-            gotoInProgessFlag = True
+            gotoInProgressFlag = True
         else:
             gotoInProgressFlag = False
         return gotoInProgressFlag

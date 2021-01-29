@@ -4,6 +4,10 @@ import convertRaDecToCgemUnits
 import cgemInterface
 import time
 
+# This program tests the basic serial functions. Originally I had
+# motion commands embedded in this code. But those are being removed
+# and will live in the test program testMotion.py.
+
 if __name__ == '__main__':
     
     # Request input as to if simulation or using telescope hardware
@@ -64,10 +68,10 @@ if __name__ == '__main__':
     except:
         print ('requestHighPrecisionRaDec failed')
 
-    try:
-        cgemI.gotoCommandWithHP (raHex, decHex)
-    except:
-        print ('gotoCommandWithHP failed')
+#    try:
+#        cgemI.gotoCommandWithHP (raHex, decHex)
+#    except:
+#        print ('gotoCommandWithHP failed')
     
     telescopeRaDecCgemI = cgemI.requestLowPrecisionRaDec()
     print ('telescopeRaDecCgem: ', telescopeRaDecCgemI)
@@ -86,7 +90,7 @@ if __name__ == '__main__':
     print ('newRa  : ', newRa)
     print ('newDec : ', newDec)
 
-    cgemI.gotoCommandWithHP (newRa, newDec)
+#    cgemI.gotoCommandWithHP (newRa, newDec)
     
     # Done - shut down and clean up
 
