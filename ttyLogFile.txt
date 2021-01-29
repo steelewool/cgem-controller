@@ -1,73 +1,75 @@
-2021/01/28 12:50:31 socat[5148] N PTY is /dev/pts/1
-2021/01/28 12:50:31 socat[5148] N opening character device "/dev/ttyUSB0" for reading and writing
+2021/01/28 18:19:58 socat[3827] N PTY is /dev/pts/1
+2021/01/28 18:19:58 socat[3827] N opening character device "/dev/ttyUSB0" for reading and writing
   FD  type	device	inode	mode	links	uid	gid	rdev	size	blksize	blocks	atime				mtime				ctime				cloexec	flags	sigown	sigio
-   5: chrdev	0,6	1111	020666	1	0	5	5,2	0	4096	0	Thu Jan 28 12:50:27 2021	Thu Jan 28 12:50:27 2021	Thu Jan 28 12:34:53 2021	1	x000002	0	0	(no STREAMS modules)	/dev/ptmx 	IFLAGS=00000000 OFLAGS=00000000 CFLAGS=000008bd LFLAGS=00000000 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^@ cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: IN,OUT,; FIONREAD=2
-   7: chrdev	0,6	11467	020660	1	0	20	188,0	0	4096	0	Thu Jan 28 12:44:02 2021	Thu Jan 28 12:44:09 2021	Thu Jan 28 12:34:54 2021	1	x000402	0	0	(no STREAMS modules)	/dev/ttyUSB0 	IFLAGS=00000000 OFLAGS=00000004 CFLAGS=00000cbd LFLAGS=00000a30 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^A cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: OUT,
-2021/01/28 12:50:31 socat[5148] N starting data transfer loop with FDs [5,5] and [7,7]
-> 2021/01/28 12:50:31.946473  length=2 from=0 to=1
-Ka< 2021/01/28 12:50:31.950129  length=1 from=0 to=0
-a< 2021/01/28 12:50:31.951161  length=1 from=1 to=1
-#> 2021/01/28 12:50:34.942716  length=1 from=2 to=2
-J< 2021/01/28 12:50:34.945437  length=1 from=2 to=2
-.< 2021/01/28 12:50:34.946468  length=1 from=3 to=3
-#> 2021/01/28 12:50:37.946232  length=1 from=3 to=3
-L< 2021/01/28 12:50:37.948884  length=1 from=4 to=4
-0< 2021/01/28 12:50:37.949915  length=1 from=5 to=5
-#> 2021/01/28 12:50:40.949732  length=1 from=4 to=4
-w< 2021/01/28 12:50:40.954745  length=1 from=6 to=6
-"< 2021/01/28 12:50:40.955755  length=1 from=7 to=7
-1< 2021/01/28 12:50:40.956792  length=1 from=8 to=8
- < 2021/01/28 12:50:40.957843  length=1 from=9 to=9
-.< 2021/01/28 12:50:40.958877  length=1 from=10 to=10
-w< 2021/01/28 12:50:40.959917  length=1 from=11 to=11
-.< 2021/01/28 12:50:40.960970  length=1 from=12 to=12
-6< 2021/01/28 12:50:40.962000  length=1 from=13 to=13
-.< 2021/01/28 12:50:40.963066  length=1 from=14 to=14
-#> 2021/01/28 12:50:44.954254  length=1 from=5 to=5
-h< 2021/01/28 12:50:44.962504  length=1 from=15 to=15
-\r< 2021/01/28 12:50:44.964495  length=1 from=16 to=16
-/< 2021/01/28 12:50:44.964737  length=1 from=17 to=17
-3< 2021/01/28 12:50:44.965622  length=1 from=18 to=18
-.< 2021/01/28 12:50:44.966685  length=1 from=19 to=19
-.< 2021/01/28 12:50:44.967712  length=1 from=20 to=20
-.< 2021/01/28 12:50:44.968726  length=1 from=21 to=21
-.< 2021/01/28 12:50:44.969755  length=1 from=22 to=22
-.< 2021/01/28 12:50:44.970795  length=1 from=23 to=23
-#> 2021/01/28 12:50:47.955176  length=1 from=6 to=6
-t< 2021/01/28 12:50:47.957890  length=1 from=24 to=24
-.< 2021/01/28 12:50:47.958891  length=1 from=25 to=25
-#> 2021/01/28 12:50:50.959044  length=1 from=7 to=7
-e< 2021/01/28 12:50:50.993707  length=1 from=26 to=26
-C< 2021/01/28 12:50:50.994702  length=1 from=27 to=27
-7< 2021/01/28 12:50:50.995739  length=1 from=28 to=28
-5< 2021/01/28 12:50:50.996777  length=1 from=29 to=29
-8< 2021/01/28 12:50:50.997813  length=1 from=30 to=30
-2< 2021/01/28 12:50:50.998852  length=1 from=31 to=31
-1< 2021/01/28 12:50:50.999892  length=1 from=32 to=32
-0< 2021/01/28 12:50:51.000939  length=1 from=33 to=33
-0< 2021/01/28 12:50:51.001978  length=1 from=34 to=34
-,< 2021/01/28 12:50:51.003346  length=1 from=35 to=35
-1< 2021/01/28 12:50:51.004446  length=1 from=36 to=36
-C< 2021/01/28 12:50:51.005445  length=1 from=37 to=37
-7< 2021/01/28 12:50:51.006454  length=1 from=38 to=38
-6< 2021/01/28 12:50:51.007492  length=1 from=39 to=39
-1< 2021/01/28 12:50:51.008532  length=1 from=40 to=40
-C< 2021/01/28 12:50:51.009569  length=1 from=41 to=41
-0< 2021/01/28 12:50:51.010643  length=1 from=42 to=42
-0< 2021/01/28 12:50:51.011680  length=1 from=43 to=43
-#> 2021/01/28 12:50:53.962451  length=1 from=8 to=8
-E< 2021/01/28 12:50:53.997152  length=1 from=44 to=44
-C< 2021/01/28 12:50:53.998147  length=1 from=45 to=45
-7< 2021/01/28 12:50:53.999184  length=1 from=46 to=46
-5< 2021/01/28 12:50:54.000217  length=1 from=47 to=47
-8< 2021/01/28 12:50:54.001258  length=1 from=48 to=48
-,< 2021/01/28 12:50:54.002825  length=1 from=49 to=49
-1< 2021/01/28 12:50:54.003866  length=1 from=50 to=50
-C< 2021/01/28 12:50:54.004967  length=1 from=51 to=51
-7< 2021/01/28 12:50:54.005959  length=1 from=52 to=52
-6< 2021/01/28 12:50:54.006979  length=1 from=53 to=53
-#> 2021/01/28 12:50:57.966734  length=1 from=9 to=9
-q2021/01/28 12:50:58 socat[5148] N socat_signal(): handling signal 1
-2021/01/28 12:50:58 socat[5148] N exiting on signal 1
-2021/01/28 12:50:58 socat[5148] N socat_signal(): finishing signal 1
-2021/01/28 12:50:58 socat[5148] N exit(129)
+   5: chrdev	0,6	1111	020666	1	0	5	5,2	0	4096	0	Thu Jan 28 18:19:55 2021	Thu Jan 28 18:19:55 2021	Thu Jan 28 18:09:55 2021	1	x000002	0	0	(no STREAMS modules)	/dev/ptmx 	IFLAGS=00000000 OFLAGS=00000000 CFLAGS=000008bd LFLAGS=00000000 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^@ cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: IN,OUT,; FIONREAD=2
+   7: chrdev	0,6	12726	020660	1	0	20	188,0	0	4096	0	Thu Jan 28 18:17:28 2021	Thu Jan 28 18:17:30 2021	Thu Jan 28 18:09:56 2021	1	x000402	0	0	(no STREAMS modules)	/dev/ttyUSB0 	IFLAGS=00000000 OFLAGS=00000004 CFLAGS=00000cbd LFLAGS=00000a30 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^A cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: OUT,
+2021/01/28 18:19:58 socat[3827] N starting data transfer loop with FDs [5,5] and [7,7]
+> 2021/01/28 18:19:58.166010  length=2 from=0 to=1
+Ka< 2021/01/28 18:19:58.169880  length=1 from=0 to=0
+a< 2021/01/28 18:19:58.170845  length=1 from=1 to=1
+#> 2021/01/28 18:20:01.159488  length=1 from=2 to=2
+J< 2021/01/28 18:20:01.162256  length=1 from=2 to=2
+.< 2021/01/28 18:20:01.163241  length=1 from=3 to=3
+#> 2021/01/28 18:20:04.162984  length=1 from=3 to=3
+L< 2021/01/28 18:20:04.165837  length=1 from=4 to=4
+0< 2021/01/28 18:20:04.166866  length=1 from=5 to=5
+#> 2021/01/28 18:20:07.166478  length=1 from=4 to=4
+w< 2021/01/28 18:20:07.171537  length=1 from=6 to=6
+"< 2021/01/28 18:20:07.172577  length=1 from=7 to=7
+1< 2021/01/28 18:20:07.173608  length=1 from=8 to=8
+ < 2021/01/28 18:20:07.174646  length=1 from=9 to=9
+.< 2021/01/28 18:20:07.175683  length=1 from=10 to=10
+w< 2021/01/28 18:20:07.176723  length=1 from=11 to=11
+.< 2021/01/28 18:20:07.177807  length=1 from=12 to=12
+6< 2021/01/28 18:20:07.178810  length=1 from=13 to=13
+.< 2021/01/28 18:20:07.179859  length=1 from=14 to=14
+#> 2021/01/28 18:20:11.171155  length=1 from=5 to=5
+h< 2021/01/28 18:20:11.179763  length=1 from=15 to=15
+.< 2021/01/28 18:20:11.180785  length=1 from=16 to=16
+.< 2021/01/28 18:20:11.181839  length=1 from=17 to=17
+.< 2021/01/28 18:20:11.182885  length=1 from=18 to=18
+.< 2021/01/28 18:20:11.183911  length=1 from=19 to=19
+.< 2021/01/28 18:20:11.184994  length=1 from=20 to=20
+.< 2021/01/28 18:20:11.186004  length=1 from=21 to=21
+.< 2021/01/28 18:20:11.187056  length=1 from=22 to=22
+.< 2021/01/28 18:20:11.188072  length=1 from=23 to=23
+#> 2021/01/28 18:20:14.174694  length=1 from=6 to=6
+t< 2021/01/28 18:20:14.177140  length=1 from=24 to=24
+.< 2021/01/28 18:20:14.178170  length=1 from=25 to=25
+#> 2021/01/28 18:20:17.178338  length=1 from=7 to=7
+e< 2021/01/28 18:20:17.213429  length=1 from=26 to=26
+D< 2021/01/28 18:20:17.214376  length=1 from=27 to=27
+C< 2021/01/28 18:20:17.215390  length=1 from=28 to=28
+D< 2021/01/28 18:20:17.216431  length=1 from=29 to=29
+3< 2021/01/28 18:20:17.217471  length=1 from=30 to=30
+6< 2021/01/28 18:20:17.218503  length=1 from=31 to=31
+4< 2021/01/28 18:20:17.219545  length=1 from=32 to=32
+0< 2021/01/28 18:20:17.220584  length=1 from=33 to=33
+0< 2021/01/28 18:20:17.221652  length=1 from=34 to=34
+,< 2021/01/28 18:20:17.223004  length=1 from=35 to=35
+2< 2021/01/28 18:20:17.224052  length=1 from=36 to=36
+2< 2021/01/28 18:20:17.225054  length=1 from=37 to=37
+7< 2021/01/28 18:20:17.226107  length=1 from=38 to=38
+F< 2021/01/28 18:20:17.227133  length=1 from=39 to=39
+B< 2021/01/28 18:20:17.228180  length=1 from=40 to=40
+E< 2021/01/28 18:20:17.229229  length=1 from=41 to=41
+0< 2021/01/28 18:20:17.230256  length=1 from=42 to=42
+0< 2021/01/28 18:20:17.231289  length=1 from=43 to=43
+#> 2021/01/28 18:20:20.182315  length=18 from=8 to=25
+rDCD36400,227FBE00< 2021/01/28 18:20:20.240192  length=1 from=44 to=44
+#> 2021/01/28 18:20:23.185855  length=1 from=26 to=26
+E< 2021/01/28 18:20:23.227492  length=1 from=45 to=45
+D< 2021/01/28 18:20:23.228468  length=1 from=46 to=46
+F< 2021/01/28 18:20:23.229515  length=1 from=47 to=47
+5< 2021/01/28 18:20:23.230558  length=1 from=48 to=48
+8< 2021/01/28 18:20:23.231608  length=1 from=49 to=49
+,< 2021/01/28 18:20:23.233270  length=1 from=50 to=50
+2< 2021/01/28 18:20:23.234296  length=1 from=51 to=51
+4< 2021/01/28 18:20:23.235331  length=1 from=52 to=52
+A< 2021/01/28 18:20:23.236363  length=1 from=53 to=53
+4< 2021/01/28 18:20:23.237544  length=1 from=54 to=54
+#> 2021/01/28 18:20:27.190512  length=1 from=27 to=27
+q2021/01/28 18:20:27 socat[3827] N socat_signal(): handling signal 1
+2021/01/28 18:20:27 socat[3827] N exiting on signal 1
+2021/01/28 18:20:27 socat[3827] N socat_signal(): finishing signal 1
+2021/01/28 18:20:27 socat[3827] N exit(129)

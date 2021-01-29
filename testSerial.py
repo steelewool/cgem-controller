@@ -17,19 +17,18 @@ if __name__ == '__main__':
 
     cgemI = cgemInterface.CgemInterface()
 
-    print ('commWorkingFlag : ', cgemI.commWorking())
-    print ('aligment        : ', cgemI.alignmentComplete())
-    print ('gotoInProgress  : ', cgemI.gotoInProgress())
+    print ('Comm Working Flag : ', cgemI.commWorking())
+    print ('Aligment          : ', cgemI.alignmentComplete())
+    print ('GotoInProgress    : ', cgemI.gotoInProgress())
 
     # cgemI.rtcGetLocation working as of 1/25/21
-    print ('RTC location    : ', cgemI.rtcGetLocation())
+    print ('RTC location      : ', cgemI.rtcGetLocation())
 
     # cgemI.getTime working as of 1/25/21
-    print ('time            : ', cgemI.getTime())
+    print ('Time              : ', cgemI.getTime())
 
 #   rtcGetTime not working as of 1/27/21
-#    print ('rtc time        : ', cgemI.rtcGetTime())
-    print ('tracking mode   : ', cgemI.getTrackingMode())
+    print ('Tracking mode     : ', cgemI.getTrackingMode())
     
     convertRa  = convertRaDecToCgemUnits.ConvertRa()
     convertDec = convertRaDecToCgemUnits.ConvertDec()
@@ -37,15 +36,26 @@ if __name__ == '__main__':
     # The function requestionHighPrecisionRaDec should actually
     # be retruning the RA and Dec and have this additional logic
     # embedded in the function.
-    
-    telescopeRaDecCgemI = cgemI.requestHighPrecisionRaDec()
-    print ('telescopeRaDecCgem: ', telescopeRaDecCgemI)
-    
-#    raFromCgem = convertRa.fromCgem(args[0])
-#    decFromCgem = convertDec.fromCgem(args[1])
-#    print ('RA  : ', raFromCgem)
-#    print ('Dec : ', decFromCgem)
 
+    try:
+        telescopeRaDecCgemI = cgemI.requestHighPrecisionRaDec()
+        raHex = telescopeRaDecCgemI[0]
+        decHex = telescopeRaDecCgemI[1]
+        print ('telescopeRaDecCgem: ', telescopeRaDecCgemI)
+    
+        raFromCgem = convertRa.fromCgem(telescopeRaDecCgemI[0])
+        decFromCgem = convertDec.fromCgem(telescopeRaDecCgemI[1])
+
+        print ('RA  : ', raFromCgem)
+        print ('Dec : ', decFromCgem)
+    except:
+        print ('requestHighPrecisionRaDec failed')
+
+    try:
+        cgemI.gotoCommandWithHP (raHex, decHex)
+    except:
+        print ('gotoCommandWithHP failed')
+    
     telescopeRaDecCgemI = cgemI.requestLowPrecisionRaDec()
     print ('telescopeRaDecCgem: ', telescopeRaDecCgemI)
     

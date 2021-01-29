@@ -54,11 +54,7 @@ class ConvertRa(CgemConverter):
         self.sec = sec
     
     def toCgem(self):
-        #print ('in Ra.toCgem')
-        
         self.raInSeconds = (float(self.hr) * 3600 + float(self.min)  * 60.0 + float(self.sec)) * 15.0
-
-        #print ('self.raInSeconds: ', self.raInSeconds)
         
         if int(self.hr) < 0 or int(self.hr) > 23:
             print ('hr is out of range')
@@ -465,4 +461,13 @@ if __name__ == '__main__':
 
     print ()
     print ()
-    
+
+    raHex       = b'C7582100'
+    raFromCgem  = ra.fromCgem(raHex)
+    print ('raFromCgem: ', raFromCgem)
+
+    decHex      = b'1C761C00'
+    decFromCgem = dec.fromCgem(decHex)
+    print ('decFromCgem: ', decFromCgem)
+
+

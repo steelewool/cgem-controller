@@ -12,12 +12,16 @@ import sys
 
 import convertRaDecToCgemUnits
 
+
 # Zach is working on a simulator. My thought is that I should be able
 #      to accept as input to the CgemClass a string for setting the port
 #      value. Util that is working I'll continue using the useSerial flag
 #      to jump around any ser commands.
 
 # 2018-10-12 removed the useSerial argument.
+
+convertRa  = convertRaDecToCgemUnits.ConvertRa()
+convertDec = convertRaDecToCgemUnits.ConvertDec()
 
 class CgemInterface:
 
@@ -121,24 +125,11 @@ class CgemInterface:
                 longitude, response[4], response[5], response[6], response[7]]
     
     def getTime (self):
-#        print ('In getTime')
         self.ser.write(b'h')
         response = self.serialRead(waitTime=3,bytes=9)
-#        print ('getTime response: ', response)
         if len(response) != 9:
             print ('Incorrect response length')
             return 'Comm Failure ' + str(len(response))
-
-#        print ('get time response: ', response)
-#        print ('get time, bytes 1-8: ',
-#               response[0], ' ',
-#               response[1], ' ',
-#               response[2], ' ',
-#               response[3], ' ',
-#               response[4], ' ',
-#               response[5], ' ',
-#               response[6], ' ',
-#               response[7])
 
         hour  = int(response[0])
         min   = int(response[1])
@@ -153,20 +144,6 @@ class CgemInterface:
             standardTime = False
         return [hour,min,sec,month,day,year,gmt,standardTime]
 
-#    def rtcGetYear (self):
-#        print ('in rtcGetYear')
-#        baseCommand = 'P'+chr(1)+chr(178)+chr(4)+chr(0)+chr(0)+chr(0)+chr(2)
-#        command = baseCommand.encode('utf-8')
-#        self.ser.write(command)
-#        response = self.serialRead(waitTime=3,bytes=3)
-#        print ('rtcGetYear len(response): ', len(response))
-#        if len(response) != 3:
-#            print('Incorrect response length')
-#            return 'Comm Failure'
-#
-#        print ('Year: ', response)
-#        return [response[0], response[1]]
-
     def rtcSetYear (self, x, y):
         print ('In rtcSetYear. x,y: ', x, ',', y)
         baseCommand = 'P'+chr(3)+chr(178)+chr(132)+chr(int(x)*256)+chr(int(year))+chr(0)+chr(0)
@@ -174,19 +151,6 @@ class CgemInterface:
         self.ser.write(command)
         response = self.serialRead(waitTime=3,bytes=1)
         print ('rtcSetTime: ', response)
-
-#    def rtcGetDate (self):
-#        print ('In rtcGetDate')
-#        baseCommand = 'P'+chr(1)+chr(178)+chr(3)+chr(0)+chr(0)+chr(0)+chr(2)
-#        command = baseCommand.encode('utf-8')
-#        self.ser.write(command)
-#        response = self.serialRead(waitTime=3,bytes=3)
-#        print ('rtcGetDate len(response): ', len(response))
-#        if len(response) != 3:
-#            print ('Incorrect response length')
-#            return 'Comm Failure'
-#        print ('Date: ', response)
-#        return [response[0], response[1]]
 
     def rtcSetDate (self, month, year):
         print ('in rtcSetDate');
@@ -199,27 +163,6 @@ class CgemInterface:
             return 'Comm Failure ' + str(len(response))
         print ('rtcSetTime: ', response)
         return [response[0]]
-
-#    def rtcGetTime (self):
-#        print ('In rtcGetTime')
-#        baseCommand = 'P'+chr(1)+chr(178)+chr(51)+chr(0)+chr(0)+chr(0)+chr(3)
-#        command = baseCommand.encode('utf-8')
-#        self.ser.write(command)
-#        response = self.serialRead(waitTime=4,bytes=4)
-#        print ('rtcGetTime len(response): ', len(response))
-#        
-#        if len(response) != 4:
-#            print ('Incorrect length response')
-#            return 'Comm Failure'
-#
-#        print ('response length: ', len(response))        
-#        if response[4] == '#':
-#            print ('response[4]: ', response[4])
-#        else:
-#            print ('response[4] was NOT a #')
-#        print ('Time (hr,min,sec): ',
-#               response[0], response[1], response[3])
-#        return [response[0], response[1], response[2]]
 
     def rtcSetTime (self, hour, min, sec):
         print ('In rtcSetTime')
@@ -253,25 +196,21 @@ class CgemInterface:
     def gotoCommandWithHP (self, ra, dec):
         print ('In gotoCommandWithHP')
         
-        # Since I'm using the results of toGem for debugging
         # I only to the conversion once and then use the variables
         # raToCgem and decToCgem in the serial write and the print
-        
-        raToCgem  = ra.toCgem()
-        decToCgem = dec.toCgem()
-
-        print ('gotoCommand: r'+raToCgem+','+decToCgem)
 
         # Having errors getting this to write to the telescope,
         # will try in two steps.
         # self.ser.write ('r'+raToCgem+','+decToCgem)
 
-        writeString = 'r'+raToCgem+','+decToCgem
-        self.ser.write (b'r69EE8D00,318CCD00')
+        writeString = b'r'+ra+b','+dec
+        print ('writeString : ', writeString)
+
+        self.ser.write (writeString)
 
         data = self.serialRead(3,1)
         print ('Read after gotoCommand:',data)
-            
+        
         #gotoInProgress = True
 
         #Getting an error that I must be root to use keyboard.is_pressed.
@@ -350,7 +289,6 @@ class CgemInterface:
 if __name__ == '__main__':
     
     cgemInterface = CgemInterface()
-
     
     #ra  = convertRaDecToCgemUnits.Ra()
     #dec = convertRaDecToCgemUnits.Dec()

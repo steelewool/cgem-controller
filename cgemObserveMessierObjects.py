@@ -94,7 +94,10 @@ if __name__ == '__main__':
                             newDec = convertRaDecToCgemUnits.ConvertDec(float(dec.deg),
                                                                  float(dec.min),
                                                                  float(dec.sec))
-                        
+
+                            print ('newRa  : ', newRa)
+                            print ('newDec : ', newDec)
+                            
                             cgem.gotoCommandWithHP (newRa, newDec)
 
                             print ('Invoking requestHighPrecision')
