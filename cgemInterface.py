@@ -12,7 +12,6 @@ import sys
 
 import convertRaDecToCgemUnits
 
-
 # Zach is working on a simulator. My thought is that I should be able
 #      to accept as input to the CgemClass a string for setting the port
 #      value. Util that is working I'll continue using the useSerial flag
@@ -180,11 +179,11 @@ class CgemInterface:
         else:
             print ('Invalid response not a #')
             
-        gotoInProgressFlag = True
-
+        gotoInProgressFlag   = True
+        gotoInProgressCounter = 10
         #Getting an error that I must be root to use keyboard.is_pressed.
         
-#        while (gotoInProgressFlag):
+        while (gotoInProgressFlag):
 
 #            if keyboard.is_pressed('space'):
 #                print ('Detected a key got pressed')
@@ -193,47 +192,12 @@ class CgemInterface:
 #                # send command to stop gotoCommand
 #                gotoInProgress = False
 
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-        
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-        
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-        
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-        
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-        
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-        
-        motionFlag = self.gotoInProgress()
-        print ('motionFlag: ', motionFlag)
-        
-        gotoInProgressFlag = True
-
+            gotoInProgressFlag = self.gotoInProgress()
+            print ('gotoInProgressFlag : ', gotoInProgressFlag)
+            gotoInProgressCounter = gotoInProgressCounter - 1
+            if (gotoInProgressCounter == 0):
+                gotoInProgressFlag = False
+                
     def gotoCommandWithLP (self, ra, dec):
         print ('Not implemented')
 

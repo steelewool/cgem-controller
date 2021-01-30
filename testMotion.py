@@ -95,4 +95,3 @@ if __name__ == '__main__':
     cgemI.quitSimulator() # does nothing when operating with telescope
     cgemI.closeSerial()
     sp.shutdown()
-

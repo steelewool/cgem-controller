@@ -10,19 +10,15 @@ import messierObjectList
 
 if __name__ == '__main__':
 
-    # Request input as to if simulation or using telescope hardware
+    # Hard wired for actual hardware
     
-    if input("Enter 1 for simulation 2 for hardware ") == '1':
-        simulate = True
-    else:
-        simulate = False
+    simulate = False
 
     # This will either spawn a shell program for setting up the
     # ports for a simulator or for debugging and talking to the
     # telescope.
 
     sp = spawnSimulator.SpawnSimulator(simulate)
-
     print ('Done with spawnSimulator.SpawnSimulator, with argument: ', simulate)
     
     # The initializer for cgemInterface will open the serial port.
@@ -59,7 +55,7 @@ if __name__ == '__main__':
 
         loopOverMessierObjects = True
         index       = 0
-        while loopOverMessierObjects:
+        while (loopOverMessierObjects):
             x = 0
             if index == len(messierList.objectTable):
                 loopOverMessierObjects = False
@@ -77,7 +73,8 @@ if __name__ == '__main__':
                         print ('   azi : ', azi)
                         print
 
-                        # Grab the input value and attempt to convert it to an integer
+                        # Grab the input value and attempt to convert it to
+                        # an integer
                         
                         x = int(input('1 to observe, 2 to skip, 3 to exit '))
                         print ('x: ', x)
@@ -85,33 +82,36 @@ if __name__ == '__main__':
                         
                             convertRa = messierList.objectTable[index].ra
                             convertDec = messierList.objectTable[index].dec
-                        
-                            newRa = convertRaDecToCgemUnits.ConvertRa(float(ra.hr),
-                                                                      float(ra.min),
-                                                                      float(ra.sec))
+
+                            newRa = convertRaDecToCgemUnits.ConvertRa(float(convertRa.hr),
+                                                                      float(convertRa.min),
+                                                                      float(convertRa.sec)).toCgem()
         
                     
-                            newDec = convertRaDecToCgemUnits.ConvertDec(float(dec.deg),
-                                                                        float(dec.min),
-                                                                        float(dec.sec))
+                            newDec = convertRaDecToCgemUnits.ConvertDec(float(convertDec.deg),
+                                                                        float(convertDec.min),
+                                                                        float(convertDec.sec)).toCgem()
 
-                            print ('newRa  : ', newRa)
-                            print ('newDec : ', newDec)
+                            newRaHex  = newRa.encode('utf-8')
+                            newDecHex = newDec.encode('utf-8')
+
+                            print ('newRaHex  : ', newRaHex)
+                            print ('newDecHex : ', newDecHex)
                             
-                            cgem.gotoCommandWithHP (newRa, newDec)
+                            print ('Invoking gotoCommandWithHP')
+                            cgem.gotoCommandWithHP (newRaHex, newDecHex)
 
-                            print ('Invoking requestHighPrecision')
                             telescopeRaDecCgem = cgem.requestHighPrecisionRaDec()
-                            args = telescopeRaDecCgem.split(',',2)
-                            raFromCgem = convertRa.fromCgem(args[0])
-                            decFromCgem = convertDec.fromCgem(args[1])
-                            print ('RA  : ', raFromCgem)
-                            print ('Dec : ', decFromCgem)
-                            print
+                            print ('telescopeRaDecCgem:', telescopeRaDecCgem)
+#                            args = telescopeRaDecCgem.split(',',2)
+#                            raFromCgem = convertRa.fromCgem(args[0])
+#                            decFromCgem = convertDec.fromCgem(args[1])
+#                            print ('RA  : ', raFromCgem)
+#                            print ('Dec : ', decFromCgem)
                         elif x == 3:
-                            loopOverAllMessierObjects = False
-                            print ('Setting loopOverAllMessierObjects to :',
-                                   loopOverAllMessierObjects)
+                            loopOverMessierObjects = False
+                            print ('Setting loopOverMessierObjects to :',
+                                   loopOverMessierObjects)
             index += 1
 
         print
@@ -123,8 +123,8 @@ if __name__ == '__main__':
         y = int(input('1 to loop again, 2 to exit'))
         if y == 2:
             loopOverAllMessierObjects = False
-            print ('setting loopOverAllMessierObjects to: ',
-                   loopOverAllMessierObjects)
+            print ('setting loopOverMessierObjects to: ',
+                   loopOverMessierObjects)
             
         print ('updateObjectTable')
         
