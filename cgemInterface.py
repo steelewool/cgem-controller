@@ -93,8 +93,6 @@ class CgemInterface:
         if len(response) != 2:
             print ('incorrect response length in gotoInProgress')
             return 'Comm Failure ' + str(len(response))
-        print ('gotoInProgress response[0]: ', response[0])
-
         if response[0] == 48:
             gotoInProgressFlag = False
         else:
@@ -174,13 +172,13 @@ class CgemInterface:
         data = self.serialRead(3,1)
         print ('Read after gotoCommand:',data)
 
-        if data == b'#':
-            print ('Valid response, a #')
-        else:
-            print ('Invalid response not a #')
+#        if data == b'#':
+#            print ('Valid response, a #')
+#        else:
+#            print ('Invalid response not a #')
             
         gotoInProgressFlag   = True
-        gotoInProgressCounter = 10
+        gotoInProgressCounter = 20
         #Getting an error that I must be root to use keyboard.is_pressed.
         
         while (gotoInProgressFlag):
@@ -192,8 +190,7 @@ class CgemInterface:
 #                # send command to stop gotoCommand
 #                gotoInProgress = False
 
-            gotoInProgressFlag = self.gotoInProgress()
-            print ('gotoInProgressFlag : ', gotoInProgressFlag)
+            gotoInProgressFlag    = self.gotoInProgress()
             gotoInProgressCounter = gotoInProgressCounter - 1
             if (gotoInProgressCounter == 0):
                 gotoInProgressFlag = False

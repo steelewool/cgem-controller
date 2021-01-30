@@ -76,21 +76,21 @@ if __name__ == '__main__':
                         # Grab the input value and attempt to convert it to
                         # an integer
                         
-                        x = int(input('1 to observe, 2 to skip, 3 to exit '))
+                        x = int(input('1 to observe, 2 to skip, 3 to exit : '))
                         print ('x: ', x)
                         if x == 1:
                         
-                            convertRa = messierList.objectTable[index].ra
-                            convertDec = messierList.objectTable[index].dec
+                            objectRa = messierList.objectTable[index].ra
+                            objectDec = messierList.objectTable[index].dec
 
-                            newRa = convertRaDecToCgemUnits.ConvertRa(float(convertRa.hr),
-                                                                      float(convertRa.min),
-                                                                      float(convertRa.sec)).toCgem()
+                            newRa = convertRaDecToCgemUnits.ConvertRa(float(objectRa.hr),
+                                                                      float(objectRa.min),
+                                                                      float(objectRa.sec)).toCgem()
         
                     
-                            newDec = convertRaDecToCgemUnits.ConvertDec(float(convertDec.deg),
-                                                                        float(convertDec.min),
-                                                                        float(convertDec.sec)).toCgem()
+                            newDec = convertRaDecToCgemUnits.ConvertDec(float(objectDec.deg),
+                                                                        float(objectDec.min),
+                                                                        float(objectDec.sec)).toCgem()
 
                             newRaHex  = newRa.encode('utf-8')
                             newDecHex = newDec.encode('utf-8')
@@ -114,13 +114,11 @@ if __name__ == '__main__':
                                    loopOverMessierObjects)
             index += 1
 
-        print
         print ('Finished the list one time, loop again')
-        print
 
         # Attempt to convert this to an integer
         
-        y = int(input('1 to loop again, 2 to exit'))
+        y = int(input('1 to loop again, 2 to exit : '))
         if y == 2:
             loopOverAllMessierObjects = False
             print ('setting loopOverMessierObjects to: ',
