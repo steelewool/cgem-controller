@@ -83,6 +83,9 @@ if __name__ == '__main__':
                             objectRa = messierList.objectTable[index].ra
                             objectDec = messierList.objectTable[index].dec
 
+                            print ('object RA  (hr:min:sec)  : ', objectRa.hr,   ':', objectRa.min,  ':', objectRa.sec)
+                            print ('object Dec (deg:min:sec) : ', objectDec.deg, ':', objectDec.min, ':', objectDec.sec)
+
                             newRa = convertRaDecToCgemUnits.ConvertRa(float(objectRa.hr),
                                                                       float(objectRa.min),
                                                                       float(objectRa.sec)).toCgem()
