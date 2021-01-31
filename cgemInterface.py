@@ -14,8 +14,8 @@ import convertRaDecToCgemUnits
 
 # Zach is working on a simulator. My thought is that I should be able
 #      to accept as input to the CgemClass a string for setting the port
-#      value. Util that is working I'll continue using the useSerial flag
-#      to jump around any ser commands.
+#      value. Until that is working I'll continue using the useSerial flag
+#      to jump around any serial commands.
 
 # 2018-10-12 removed the useSerial argument.
 
@@ -178,7 +178,13 @@ class CgemInterface:
 #            print ('Invalid response not a #')
             
         gotoInProgressFlag   = True
-        gotoInProgressCounter = 20
+
+        # 1/31/21 Increased the gotoInProgress flag from 20 to 30 to resolve
+        # issue #96. for some long motions the telescope did not finish
+        # in the 20 count.
+        
+        gotoInProgressCounter = 30
+
         #Getting an error that I must be root to use keyboard.is_pressed.
         
         while (gotoInProgressFlag):
