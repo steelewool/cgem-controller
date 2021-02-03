@@ -1,0 +1,1102 @@
+b'M  55'
+length:  110
+object Number :  1
+Bin number      : -1
+Name            : b'M  55'
+RA   hr min sec : 19:39:59
+Dec deg min sec : -30:57:59
+Local Hour Angle: 2
+LST  hr min sec : 17:39:15
+Altitude        : 18
+Azimuth         : 152
+
+object Number :  2
+Bin number      : -1
+Name            : b'M  83'
+RA   hr min sec : 13:37:00
+Dec deg min sec : -29:51:00
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 3
+Azimuth         : 228
+
+object Number :  3
+Bin number      : -1
+Name            : b'M  68'
+RA   hr min sec : 12:39:27
+Dec deg min sec : -26:44:27
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : -3
+Azimuth         : 239
+
+object Number :  4
+Bin number      : -1
+Name            : b'M  79'
+RA   hr min sec : 05:24:10
+Dec deg min sec : -24:31:10
+Local Hour Angle: -12
+LST  hr min sec : 17:39:15
+Altitude        : -79
+Azimuth         : 17
+
+object Number :  5
+Bin number      : -1
+Name            : b'NGC  2447'
+RA   hr min sec : 07:44:30
+Dec deg min sec : -23:51:30
+Local Hour Angle: -9
+LST  hr min sec : 17:39:15
+Altitude        : -60
+Azimuth         : 283
+
+object Number :  6
+Bin number      : -1
+Name            : b'M  30'
+RA   hr min sec : 21:40:22
+Dec deg min sec : -23:10:22
+Local Hour Angle: 4
+LST  hr min sec : 17:39:15
+Altitude        : 8
+Azimuth         : 125
+
+object Number :  7
+Bin number      : -1
+Name            : b'M  41'
+RA   hr min sec : 06:46:01
+Dec deg min sec : -20:45:01
+Local Hour Angle: -10
+LST  hr min sec : 17:39:15
+Altitude        : -69
+Azimuth         : 308
+
+object Number :  8
+Bin number      : -1
+Name            : b'NGC  2422'
+RA   hr min sec : 07:36:35
+Dec deg min sec : -14:29:35
+Local Hour Angle: -10
+LST  hr min sec : 17:39:15
+Altitude        : -56
+Azimuth         : 299
+
+object Number :  9
+Bin number      : -1
+Name            : b'NGC  2437'
+RA   hr min sec : 07:41:46
+Dec deg min sec : -14:48:46
+Local Hour Angle: -9
+LST  hr min sec : 17:39:15
+Altitude        : -55
+Azimuth         : 297
+
+object Number :  10
+Bin number      : -1
+Name            : b'M 104'
+RA   hr min sec : 12:39:59
+Dec deg min sec : -11:37:59
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 5
+Azimuth         : 251
+
+object Number :  11
+Bin number      : -1
+Name            : b'NGC  2323'
+RA   hr min sec : 07:02:47
+Dec deg min sec : -08:20:47
+Local Hour Angle: -10
+LST  hr min sec : 17:39:15
+Altitude        : -57
+Azimuth         : 318
+
+object Number :  12
+Bin number      : -1
+Name            : b'NGC  2548'
+RA   hr min sec : 08:13:43
+Dec deg min sec : -05:45:43
+Local Hour Angle: -9
+LST  hr min sec : 17:39:15
+Altitude        : -43
+Azimuth         : 299
+
+object Number :  13
+Bin number      : -1
+Name            : b'M  43'
+RA   hr min sec : 05:35:31
+Dec deg min sec : -05:16:31
+Local Hour Angle: -12
+LST  hr min sec : 17:39:15
+Altitude        : -60
+Azimuth         : 1
+
+object Number :  14
+Bin number      : -1
+Name            : b'M  42'
+RA   hr min sec : 05:35:17
+Dec deg min sec : -05:23:17
+Local Hour Angle: -12
+LST  hr min sec : 17:39:15
+Altitude        : -60
+Azimuth         : 1
+
+object Number :  15
+Bin number      : -1
+Name            : b'M  77'
+RA   hr min sec : 02:42:40
+Dec deg min sec : -00:00:40
+Local Hour Angle: -14
+LST  hr min sec : 17:39:15
+Altitude        : -36
+Azimuth         : 59
+
+object Number :  16
+Bin number      : -1
+Name            : b'M  82'
+RA   hr min sec : 09:55:52
+Dec deg min sec : +69:40:52
+Local Hour Angle: -7
+LST  hr min sec : 17:39:15
+Altitude        : 24
+Azimuth         : 339
+
+object Number :  17
+Bin number      : -1
+Name            : b'M  81'
+RA   hr min sec : 09:55:33
+Dec deg min sec : +69:03:33
+Local Hour Angle: -7
+LST  hr min sec : 17:39:15
+Altitude        : 23
+Azimuth         : 339
+
+object Number :  18
+Bin number      : -1
+Name            : b'M 103'
+RA   hr min sec : 01:33:23
+Dec deg min sec : +60:39:23
+Local Hour Angle: -16
+LST  hr min sec : 17:39:15
+Altitude        : 17
+Azimuth         : 26
+
+object Number :  19
+Bin number      : -1
+Name            : b'M  76'
+RA   hr min sec : 01:42:19
+Dec deg min sec : +51:34:19
+Local Hour Angle: -15
+LST  hr min sec : 17:39:15
+Altitude        : 10
+Azimuth         : 32
+
+object Number :  20
+Bin number      : -1
+Name            : b'NGC  1039'
+RA   hr min sec : 02:42:05
+Dec deg min sec : +42:45:05
+Local Hour Angle: -14
+LST  hr min sec : 17:39:15
+Altitude        : -2
+Azimuth         : 30
+
+object Number :  21
+Bin number      : -1
+Name            : b'M 110'
+RA   hr min sec : 00:40:22
+Dec deg min sec : +41:41:22
+Local Hour Angle: -16
+LST  hr min sec : 17:39:15
+Altitude        : 12
+Azimuth         : 47
+
+object Number :  22
+Bin number      : -1
+Name            : b'M  31'
+RA   hr min sec : 00:42:44
+Dec deg min sec : +41:16:44
+Local Hour Angle: -16
+LST  hr min sec : 17:39:15
+Altitude        : 11
+Azimuth         : 47
+
+object Number :  23
+Bin number      : -1
+Name            : b'M  32'
+RA   hr min sec : 00:42:41
+Dec deg min sec : +40:51:41
+Local Hour Angle: -16
+LST  hr min sec : 17:39:15
+Altitude        : 11
+Azimuth         : 47
+
+object Number :  24
+Bin number      : -1
+Name            : b'M  38'
+RA   hr min sec : 05:28:43
+Dec deg min sec : +35:51:43
+Local Hour Angle: -12
+LST  hr min sec : 17:39:15
+Altitude        : -19
+Azimuth         : 1
+
+object Number :  25
+Bin number      : -1
+Name            : b'M  36'
+RA   hr min sec : 05:36:18
+Dec deg min sec : +34:08:18
+Local Hour Angle: -12
+LST  hr min sec : 17:39:15
+Altitude        : -21
+Azimuth         : 0
+
+object Number :  26
+Bin number      : -1
+Name            : b'M  37'
+RA   hr min sec : 05:52:18
+Dec deg min sec : +32:33:18
+Local Hour Angle: -11
+LST  hr min sec : 17:39:15
+Altitude        : -22
+Azimuth         : 356
+
+object Number :  27
+Bin number      : -1
+Name            : b'M  33'
+RA   hr min sec : 01:33:50
+Dec deg min sec : +30:39:50
+Local Hour Angle: -16
+LST  hr min sec : 17:39:15
+Altitude        : -2
+Azimuth         : 48
+
+object Number :  28
+Bin number      : -1
+Name            : b'Cl Melotte   22'
+RA   hr min sec : 03:47:00
+Dec deg min sec : +24:07:00
+Local Hour Angle: -13
+LST  hr min sec : 17:39:15
+Altitude        : -25
+Azimuth         : 28
+
+object Number :  29
+Bin number      : -1
+Name            : b'NGC  2168'
+RA   hr min sec : 06:08:54
+Dec deg min sec : +24:20:54
+Local Hour Angle: -11
+LST  hr min sec : 17:39:15
+Altitude        : -30
+Azimuth         : 351
+
+object Number :  30
+Bin number      : -1
+Name            : b'M   1'
+RA   hr min sec : 05:34:31
+Dec deg min sec : +22:00:31
+Local Hour Angle: -12
+LST  hr min sec : 17:39:15
+Altitude        : -33
+Azimuth         : 0
+
+object Number :  31
+Bin number      : -1
+Name            : b'NGC  2632'
+RA   hr min sec : 08:40:24
+Dec deg min sec : +19:40:24
+Local Hour Angle: -8
+LST  hr min sec : 17:39:15
+Altitude        : -20
+Azimuth         : 314
+
+object Number :  32
+Bin number      : -1
+Name            : b'M  85'
+RA   hr min sec : 12:25:24
+Dec deg min sec : +18:11:24
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 19
+Azimuth         : 278
+
+object Number :  33
+Bin number      : -1
+Name            : b'M 100'
+RA   hr min sec : 12:22:54
+Dec deg min sec : +15:49:54
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 17
+Azimuth         : 276
+
+object Number :  34
+Bin number      : -1
+Name            : b'M  74'
+RA   hr min sec : 01:36:41
+Dec deg min sec : +15:47:41
+Local Hour Angle: -16
+LST  hr min sec : 17:39:15
+Altitude        : -13
+Azimuth         : 59
+
+object Number :  35
+Bin number      : -1
+Name            : b'M  99'
+RA   hr min sec : 12:18:49
+Dec deg min sec : +14:24:49
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 16
+Azimuth         : 276
+
+object Number :  36
+Bin number      : -1
+Name            : b'M  98'
+RA   hr min sec : 12:13:48
+Dec deg min sec : +14:54:48
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 15
+Azimuth         : 277
+
+object Number :  37
+Bin number      : -1
+Name            : b'M  91'
+RA   hr min sec : 12:35:26
+Dec deg min sec : +14:29:26
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 19
+Azimuth         : 274
+
+object Number :  38
+Bin number      : -1
+Name            : b'M  88'
+RA   hr min sec : 12:31:59
+Dec deg min sec : +14:25:59
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 19
+Azimuth         : 274
+
+object Number :  39
+Bin number      : -1
+Name            : b'M  90'
+RA   hr min sec : 12:36:49
+Dec deg min sec : +13:09:49
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 19
+Azimuth         : 272
+
+object Number :  40
+Bin number      : -1
+Name            : b'M  65'
+RA   hr min sec : 11:18:55
+Dec deg min sec : +13:05:55
+Local Hour Angle: -6
+LST  hr min sec : 17:39:15
+Altitude        : 3
+Azimuth         : 283
+
+object Number :  41
+Bin number      : -1
+Name            : b'M 105'
+RA   hr min sec : 10:47:49
+Dec deg min sec : +12:34:49
+Local Hour Angle: -6
+LST  hr min sec : 17:39:15
+Altitude        : -2
+Azimuth         : 287
+
+object Number :  42
+Bin number      : -1
+Name            : b'M  89'
+RA   hr min sec : 12:35:39
+Dec deg min sec : +12:33:39
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 18
+Azimuth         : 272
+
+object Number :  43
+Bin number      : -1
+Name            : b'M  87'
+RA   hr min sec : 12:30:49
+Dec deg min sec : +12:23:49
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 17
+Azimuth         : 272
+
+object Number :  44
+Bin number      : -1
+Name            : b'M  86'
+RA   hr min sec : 12:26:11
+Dec deg min sec : +12:56:11
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 17
+Azimuth         : 273
+
+object Number :  45
+Bin number      : -1
+Name            : b'M  84'
+RA   hr min sec : 12:25:03
+Dec deg min sec : +12:53:03
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 16
+Azimuth         : 274
+
+object Number :  46
+Bin number      : -1
+Name            : b'M  66'
+RA   hr min sec : 11:20:15
+Dec deg min sec : +12:59:15
+Local Hour Angle: -6
+LST  hr min sec : 17:39:15
+Altitude        : 3
+Azimuth         : 283
+
+object Number :  47
+Bin number      : -1
+Name            : b'M  96'
+RA   hr min sec : 10:46:45
+Dec deg min sec : +11:49:45
+Local Hour Angle: -6
+LST  hr min sec : 17:39:15
+Altitude        : -3
+Azimuth         : 286
+
+object Number :  48
+Bin number      : -1
+Name            : b'M  95'
+RA   hr min sec : 10:43:57
+Dec deg min sec : +11:42:57
+Local Hour Angle: -6
+LST  hr min sec : 17:39:15
+Altitude        : -4
+Azimuth         : 287
+
+object Number :  49
+Bin number      : -1
+Name            : b'NGC  2682'
+RA   hr min sec : 08:51:18
+Dec deg min sec : +11:48:18
+Local Hour Angle: -8
+LST  hr min sec : 17:39:15
+Altitude        : -24
+Azimuth         : 306
+
+object Number :  50
+Bin number      : -1
+Name            : b'M  60'
+RA   hr min sec : 12:43:40
+Dec deg min sec : +11:33:40
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 19
+Azimuth         : 270
+
+object Number :  51
+Bin number      : -1
+Name            : b'M  59'
+RA   hr min sec : 12:42:02
+Dec deg min sec : +11:38:02
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 19
+Azimuth         : 270
+
+object Number :  52
+Bin number      : -1
+Name            : b'M  58'
+RA   hr min sec : 12:37:43
+Dec deg min sec : +11:49:43
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 18
+Azimuth         : 271
+
+object Number :  53
+Bin number      : -1
+Name            : b'M  49'
+RA   hr min sec : 12:29:46
+Dec deg min sec : +08:00:46
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 15
+Azimuth         : 269
+
+object Number :  54
+Bin number      : -1
+Name            : b'M  61'
+RA   hr min sec : 12:21:54
+Dec deg min sec : +04:28:54
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 11
+Azimuth         : 267
+
+object Number :  55
+Bin number      : -1
+Name            : b'M  78'
+RA   hr min sec : 05:46:45
+Dec deg min sec : +00:04:45
+Local Hour Angle: -11
+LST  hr min sec : 17:39:15
+Altitude        : -55
+Azimuth         : 356
+
+object Number :  56
+Bin number      : 2
+Name            : b'M 108'
+RA   hr min sec : 11:11:30
+Dec deg min sec : +55:40:30
+Local Hour Angle: -6
+LST  hr min sec : 17:39:15
+Altitude        : 24
+Azimuth         : 321
+
+object Number :  57
+Bin number      : 2
+Name            : b'M  97'
+RA   hr min sec : 11:14:47
+Dec deg min sec : +55:01:47
+Local Hour Angle: -6
+LST  hr min sec : 17:39:15
+Altitude        : 24
+Azimuth         : 320
+
+object Number :  58
+Bin number      : 3
+Name            : b'M  40'
+RA   hr min sec : 12:22:12
+Dec deg min sec : +58:04:12
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 34
+Azimuth         : 320
+
+object Number :  59
+Bin number      : 3
+Name            : b'M 109'
+RA   hr min sec : 11:57:35
+Dec deg min sec : +53:22:35
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 29
+Azimuth         : 316
+
+object Number :  60
+Bin number      : 3
+Name            : b'M 106'
+RA   hr min sec : 12:18:57
+Dec deg min sec : +47:18:57
+Local Hour Angle: -5
+LST  hr min sec : 17:39:15
+Altitude        : 31
+Azimuth         : 308
+
+object Number :  61
+Bin number      : 4
+Name            : b'M  53'
+RA   hr min sec : 13:12:55
+Dec deg min sec : +18:10:55
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 29
+Azimuth         : 272
+
+object Number :  62
+Bin number      : 4
+Name            : b'M  64'
+RA   hr min sec : 12:56:43
+Dec deg min sec : +21:40:43
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 27
+Azimuth         : 278
+
+object Number :  63
+Bin number      : 4
+Name            : b'M  94'
+RA   hr min sec : 12:50:53
+Dec deg min sec : +41:07:53
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 34
+Azimuth         : 299
+
+object Number :  64
+Bin number      : 4
+Name            : b'M  63'
+RA   hr min sec : 13:15:49
+Dec deg min sec : +42:01:49
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 39
+Azimuth         : 298
+
+object Number :  65
+Bin number      : 4
+Name            : b'M  51'
+RA   hr min sec : 13:29:52
+Dec deg min sec : +47:11:52
+Local Hour Angle: -4
+LST  hr min sec : 17:39:15
+Altitude        : 42
+Azimuth         : 304
+
+object Number :  66
+Bin number      : 5
+Name            : b'M 101'
+RA   hr min sec : 14:03:12
+Dec deg min sec : +54:20:12
+Local Hour Angle: -3
+LST  hr min sec : 17:39:15
+Altitude        : 48
+Azimuth         : 314
+
+object Number :  67
+Bin number      : 5
+Name            : b'M   3'
+RA   hr min sec : 13:42:11
+Dec deg min sec : +28:22:11
+Local Hour Angle: -3
+LST  hr min sec : 17:39:15
+Altitude        : 39
+Azimuth         : 279
+
+object Number :  68
+Bin number      : 6
+Name            : b'M   5'
+RA   hr min sec : 15:18:33
+Dec deg min sec : +02:04:33
+Local Hour Angle: -2
+LST  hr min sec : 17:39:15
+Altitude        : 43
+Azimuth         : 232
+
+object Number :  69
+Bin number      : 6
+Name            : b'M 102'
+RA   hr min sec : 15:06:29
+Dec deg min sec : +55:45:29
+Local Hour Angle: -2
+LST  hr min sec : 17:39:16
+Altitude        : 56
+Azimuth         : 320
+
+object Number :  70
+Bin number      : 7
+Name            : b'M   4'
+RA   hr min sec : 16:23:35
+Dec deg min sec : -26:31:35
+Local Hour Angle: -1
+LST  hr min sec : 17:39:16
+Altitude        : 26
+Azimuth         : 198
+
+object Number :  71
+Bin number      : 7
+Name            : b'M  80'
+RA   hr min sec : 16:17:02
+Dec deg min sec : -22:58:02
+Local Hour Angle: -1
+LST  hr min sec : 17:39:16
+Altitude        : 29
+Azimuth         : 201
+
+object Number :  72
+Bin number      : 7
+Name            : b'M 107'
+RA   hr min sec : 16:32:31
+Dec deg min sec : -13:03:31
+Local Hour Angle: -1
+LST  hr min sec : 17:39:16
+Altitude        : 39
+Azimuth         : 200
+
+object Number :  73
+Bin number      : 8
+Name            : b'M  13'
+RA   hr min sec : 16:41:41
+Dec deg min sec : +36:27:41
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 78
+Azimuth         : 281
+
+object Number :  74
+Bin number      : 8
+Name            : b'M  92'
+RA   hr min sec : 17:17:07
+Dec deg min sec : +43:08:07
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 80
+Azimuth         : 334
+
+object Number :  75
+Bin number      : 8
+Name            : b'M  12'
+RA   hr min sec : 16:47:14
+Dec deg min sec : -01:56:14
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 51
+Azimuth         : 200
+
+object Number :  76
+Bin number      : 8
+Name            : b'M  14'
+RA   hr min sec : 17:37:36
+Dec deg min sec : -03:14:36
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 51
+Azimuth         : 180
+
+object Number :  77
+Bin number      : 8
+Name            : b'M  10'
+RA   hr min sec : 16:57:09
+Dec deg min sec : -04:06:09
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 49
+Azimuth         : 195
+
+object Number :  78
+Bin number      : 8
+Name            : b'M  16'
+RA   hr min sec : 18:18:48
+Dec deg min sec : -13:48:48
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 40
+Azimuth         : 166
+
+object Number :  79
+Bin number      : 8
+Name            : b'NGC  6618'
+RA   hr min sec : 18:20:47
+Dec deg min sec : -16:10:47
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 38
+Azimuth         : 166
+
+object Number :  80
+Bin number      : 8
+Name            : b'M  18'
+RA   hr min sec : 18:19:58
+Dec deg min sec : -17:06:58
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 37
+Azimuth         : 167
+
+object Number :  81
+Bin number      : 8
+Name            : b'M  24'
+RA   hr min sec : 18:16:8
+Dec deg min sec : -18:33:8
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 35
+Azimuth         : 168
+
+object Number :  82
+Bin number      : 8
+Name            : b'M  23'
+RA   hr min sec : 17:57:04
+Dec deg min sec : -18:59:04
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 35
+Azimuth         : 174
+
+object Number :  83
+Bin number      : 8
+Name            : b'M   9'
+RA   hr min sec : 17:19:11
+Dec deg min sec : -18:30:11
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 36
+Azimuth         : 185
+
+object Number :  84
+Bin number      : 8
+Name            : b'IC 4725'
+RA   hr min sec : 18:31:47
+Dec deg min sec : -19:07:47
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 34
+Azimuth         : 164
+
+object Number :  85
+Bin number      : 8
+Name            : b'M  21'
+RA   hr min sec : 18:04:13
+Dec deg min sec : -22:29:13
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 32
+Azimuth         : 172
+
+object Number :  86
+Bin number      : 8
+Name            : b'M  20'
+RA   hr min sec : 18:02:42
+Dec deg min sec : -22:58:42
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 31
+Azimuth         : 173
+
+object Number :  87
+Bin number      : 8
+Name            : b'M  22'
+RA   hr min sec : 18:36:23
+Dec deg min sec : -23:54:23
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 29
+Azimuth         : 164
+
+object Number :  88
+Bin number      : 8
+Name            : b'M  28'
+RA   hr min sec : 18:24:32
+Dec deg min sec : -24:52:32
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 29
+Azimuth         : 167
+
+object Number :  89
+Bin number      : 8
+Name            : b'M   8'
+RA   hr min sec : 18:03:37
+Dec deg min sec : -24:23:37
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 30
+Azimuth         : 173
+
+object Number :  90
+Bin number      : 8
+Name            : b'M  19'
+RA   hr min sec : 17:02:37
+Dec deg min sec : -26:16:37
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 28
+Azimuth         : 189
+
+object Number :  91
+Bin number      : 8
+Name            : b'M  62'
+RA   hr min sec : 17:01:12
+Dec deg min sec : -30:06:12
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 24
+Azimuth         : 188
+
+object Number :  92
+Bin number      : 8
+Name            : b'M  69'
+RA   hr min sec : 18:31:23
+Dec deg min sec : -32:20:23
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 21
+Azimuth         : 167
+
+object Number :  93
+Bin number      : 8
+Name            : b'NGC  6405'
+RA   hr min sec : 17:40:20
+Dec deg min sec : -32:15:20
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 22
+Azimuth         : 179
+
+object Number :  94
+Bin number      : 8
+Name            : b'NGC  6475'
+RA   hr min sec : 17:53:51
+Dec deg min sec : -34:47:51
+Local Hour Angle: 0
+LST  hr min sec : 17:39:16
+Altitude        : 20
+Azimuth         : 176
+
+object Number :  95
+Bin number      : 9
+Name            : b'M  70'
+RA   hr min sec : 18:43:12
+Dec deg min sec : -32:17:12
+Local Hour Angle: 1
+LST  hr min sec : 17:39:16
+Altitude        : 21
+Azimuth         : 165
+
+object Number :  96
+Bin number      : 9
+Name            : b'M  54'
+RA   hr min sec : 18:55:03
+Dec deg min sec : -30:28:03
+Local Hour Angle: 1
+LST  hr min sec : 17:39:16
+Altitude        : 22
+Azimuth         : 162
+
+object Number :  97
+Bin number      : 9
+Name            : b'M  26'
+RA   hr min sec : 18:45:18
+Dec deg min sec : -09:23:18
+Local Hour Angle: 1
+LST  hr min sec : 17:39:16
+Altitude        : 43
+Azimuth         : 157
+
+object Number :  98
+Bin number      : 9
+Name            : b'NGC  6705'
+RA   hr min sec : 18:51:05
+Dec deg min sec : -06:16:05
+Local Hour Angle: 1
+LST  hr min sec : 17:39:16
+Altitude        : 45
+Azimuth         : 153
+
+object Number :  99
+Bin number      : 9
+Name            : b'M  57'
+RA   hr min sec : 18:53:35
+Dec deg min sec : +33:01:35
+Local Hour Angle: 1
+LST  hr min sec : 17:39:16
+Altitude        : 74
+Azimuth         : 91
+
+object Number :  100
+Bin number      : 9
+Name            : b'M  56'
+RA   hr min sec : 19:16:35
+Dec deg min sec : +30:11:35
+Local Hour Angle: 1
+LST  hr min sec : 17:39:16
+Altitude        : 68
+Azimuth         : 95
+
+object Number :  101
+Bin number      : 10
+Name            : b'M  71'
+RA   hr min sec : 19:53:46
+Dec deg min sec : +18:46:46
+Local Hour Angle: 2
+LST  hr min sec : 17:39:16
+Altitude        : 56
+Azimuth         : 109
+
+object Number :  102
+Bin number      : 10
+Name            : b'M  27'
+RA   hr min sec : 19:59:36
+Dec deg min sec : +22:43:36
+Local Hour Angle: 2
+LST  hr min sec : 17:39:16
+Altitude        : 57
+Azimuth         : 101
+
+object Number :  103
+Bin number      : 10
+Name            : b'M  29'
+RA   hr min sec : 20:23:56
+Dec deg min sec : +38:31:56
+Local Hour Angle: 2
+LST  hr min sec : 17:39:16
+Altitude        : 56
+Azimuth         : 71
+
+object Number :  104
+Bin number      : 10
+Name            : b'M  75'
+RA   hr min sec : 20:06:04
+Dec deg min sec : -21:55:04
+Local Hour Angle: 2
+LST  hr min sec : 17:39:16
+Altitude        : 23
+Azimuth         : 142
+
+object Number :  105
+Bin number      : 11
+Name            : b'M  73'
+RA   hr min sec : 20:59:0
+Dec deg min sec : -12:38:0
+Local Hour Angle: 3
+LST  hr min sec : 17:39:16
+Altitude        : 22
+Azimuth         : 125
+
+object Number :  106
+Bin number      : 11
+Name            : b'M  72'
+RA   hr min sec : 20:53:27
+Dec deg min sec : -12:32:27
+Local Hour Angle: 3
+LST  hr min sec : 17:39:16
+Altitude        : 23
+Azimuth         : 126
+
+object Number :  107
+Bin number      : 11
+Name            : b'M   2'
+RA   hr min sec : 21:33:27
+Dec deg min sec : -00:49:27
+Local Hour Angle: 3
+LST  hr min sec : 17:39:16
+Altitude        : 24
+Azimuth         : 109
+
+object Number :  108
+Bin number      : 11
+Name            : b'NGC  7092'
+RA   hr min sec : 21:31:48
+Dec deg min sec : +48:26:48
+Local Hour Angle: 3
+LST  hr min sec : 17:39:16
+Altitude        : 45
+Azimuth         : 53
+
+object Number :  109
+Bin number      : 11
+Name            : b'M  15'
+RA   hr min sec : 21:29:58
+Dec deg min sec : +12:10:58
+Local Hour Angle: 3
+LST  hr min sec : 17:39:16
+Altitude        : 33
+Azimuth         : 98
+
+object Number :  110
+Bin number      : 13
+Name            : b'M  52'
+RA   hr min sec : 23:24:48
+Dec deg min sec : +61:35:48
+Local Hour Angle: 5
+LST  hr min sec : 17:39:16
+Altitude        : 31
+Azimuth         : 33
+

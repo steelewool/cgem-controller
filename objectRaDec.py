@@ -1,7 +1,6 @@
 # The class ObjectRaDec, which is not a very description name is
 # intended to provide sorting of a list of objects for the 'best'
 # observing order.
-#from healpy.projaxes import AzimuthalAxes
 
 # Not sure where this from came from - uness LiClipse added it.
 
@@ -67,8 +66,16 @@ class ObjectRaDec:
     # assigned a bin.
     
     def bin (self):
-        # original I was using 70, but for experimenting will change to 65
-        if (float(self.dec.deg) > 65.0):
+        # This code is looking for objects with alititdes less than
+        # 20 degrees. Objects lower that than are not observable from
+        # my location.
+        if self.alt.deg < 20.0:
+            return -1
+        
+        # Using 60. If I go to 70 degrees for bin 1 I
+        # start losing objects.
+        
+        if (float(self.dec.deg) > 60.0):
             return 1
         else:
             localHrAngle = self.localHrAngle()
@@ -115,19 +122,22 @@ class ObjectRaDec:
         else:
             return not(self.bin < y.bin)
 
-# If the objects declination is > 70 degrees north then it goes in bin 1. The other 12 bins start
-# with the local angle of -90 degree going each by 15 degree increments until I get to +90 degree.
+# If the objects declination is > 70 degrees north then it goes in bin 1.
+# The other 12 bins start with the local angle of -90 degree going each by
+# 15 degree increments until I get to +90 degree.
 
 # Yet another questions, whey am I having to use getLst() instead of lst?
         
     def write(self):
-        #print '   Bin number      : ' + str(self.bin())
-        #print '   Name            : ' + self.name
-        #print '   RA   hr min sec : ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec)
-        #print '   Dec deg min sec : ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec)
-        #print '   Local Hour Angle: ' + str(self.localHrAngle())
-        #print '   LST  hr min sec : ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec)
-        print
+        print ('Bin number      : ' + str(self.bin()))
+        print ('Name            : ' + str(self.name))
+        print ('RA   hr min sec : ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec))
+        print ('Dec deg min sec : ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec))
+        print ('Local Hour Angle: ' + str(self.localHrAngle()))
+        print ('LST  hr min sec : ' + str(self.lst.hr)  + ':' + str(self.lst.min) + ':' + str(self.lst.sec))
+        print ('Altitude        : ' + str(int(self.alt.deg)))
+        print ('Azimuth         : ' + str(int(self.azi.deg)))
+        print ()
 
 # Using the paradigm supplied by Zach to be able to test this class
 

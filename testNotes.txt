@@ -1,3 +1,84 @@
+2/3/20
+
+Ouput from a run with the real hardware with the brakes all off.
+
+pi@raspberrypi4-1:~/git/cgem-controller $ python3 cgemObserveMessierObjects.py 
+Enter 1 for simulation 2 for hardware 2
+Done with spawnSimulator.SpawnSimulator, with argument:  False
+Invoke cgemInterface.CgemInterface()
+Done with cgemInterface.CgemInterface()
+WARNING: AstropyDeprecationWarning: astropy.extern.six will be removed in 4.0, use the six module directly if it is still needed [astropy.extern.six]
+Loop over all messier objects.
+First Messier object:  b'M  55'
+Bin number      : 1
+Name            : b'M  82'
+RA   hr min sec : 09:55:52
+Dec deg min sec : +69:40:52
+Local Hour Angle: -7
+LST  hr min sec : 17:32:31
+Altitude        : 24
+Azimuth         : 339
+
+  Name :  b'M  82'
+   alt :  24.833150102919145
+   azi :  339.39049108147816
+1 to observe, 2 to skip, 3 to exit : 1
+x:  1
+object RA  (hr:min:sec)  :  09 : 55 : 52
+object Dec (deg:min:sec) :  +69 : 40 : 46.93
+newRaHex  :  b'69EE8D00'
+newDecHex :  b'318CCD00'
+Invoking gotoCommandWithHP
+writeString :  b'r69EE8D00,318CCD00'
+Read after gotoCommand: b'#'
+In requestHighPrecisionRaDec
+raHex, decHex  b'69ECD500'   b'318D2600'
+telescopeRaDecCgem: [b'69ECD500', b'318D2600']
+Bin number      : 1
+Name            : b'M  81'
+RA   hr min sec : 09:55:33
+Dec deg min sec : +69:03:33
+Local Hour Angle: -7
+LST  hr min sec : 17:32:31
+Altitude        : 24
+Azimuth         : 338
+
+  Name :  b'M  81'
+   alt :  24.462764372112144
+   azi :  338.8502444994533
+1 to observe, 2 to skip, 3 to exit : 3
+x:  3
+Setting loopOverMessierObjects to : False
+Finished the list one time, loop again
+1 to loop again, 2 to exit : 2
+setting loopOverMessierObjects to:  False
+updateObjectTable
+Quitting, closing simulator, and serial interfaces.
+
+Followed by running testSerial against the actual hardware.
+
+pi@raspberrypi4-1:~/git/cgem-controller $ python3 testSerial.py 
+Enter 1 for simulation 2 for hardware 2
+Comm Working Flag :  True
+Aligment          :  True
+GotoInProgress    :  False
+RTC location      :  [34.82555555555556, 34, 49, 32, 0, 119.03166666666667, 119, 1, 54, 1]
+Time              :  [9, 29, 11, 2, 3, 2021, 8, False]
+response :  b'\x02#'
+response[0] :  2
+response[1] :  35
+Tracking mode     :  EQ North
+In requestHighPrecisionRaDec
+raHex, decHex  b'69D35800'   b'31981A00'
+telescopeRaDecCgem:  [b'69D35800', b'31981A00']
+RA  :  [9, 55, 16]
+Dec :  [69, 44, 30]
+In requestLowPrecisionRaDec
+raHex, decHex  b'69D3'   b'3198'
+telescopeRaDecCgem:  [b'69D3', b'3198']
+Quitting, closing simulator, and serial interfaces.
+
+
 1/29/21
 
 python3 testMotion.py 

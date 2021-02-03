@@ -56,7 +56,12 @@ class MessierObjectList:
         self.setLocalTime()
         
         # Grab the Simbad data base
-    
+        # Getting the following warning, which I'm not sure how to fix.
+
+# WARNING: AstropyDeprecationWarning: astropy.extern.six will be removed
+# in 4.0, use the six module directly if it is still needed
+# [astropy.extern.six]
+
         from astroquery.simbad import Simbad
 
         # This query will get all of the Messier objects. Note that the table
@@ -96,12 +101,14 @@ class MessierObjectList:
                 self.objectTable.append(newObject)
 
         # Sort the objects into a best fit for observing
-
+        # Invokes the function on line 141 which simply invokes the
+        # function objectTable.sort.
+        
         self.sort()
         
     def extractRaDec (self, ra, dec):
-        print ('ra from simbad query  : ', ra)
-        print ('dec from simbad query : ', dec)
+        # 2021 01 29 print ('ra from simbad query  : ', ra)
+        # 2021 01 29 print ('dec from simbad query : ', dec)
             
         # These substring operations have me concernedNeed to debug
         # to make things are working correctly.
@@ -131,7 +138,7 @@ class MessierObjectList:
 
     # Sorting is based upon local hour angle and the RA and Declination of
     # the object. Before sorting the LST, altitude, azimuth of the objects MUST
-    # be updated.
+    # be updated. The objectTable is defined in the file objectRaDec.py
     
     def sort(self):
         self.objectTable.sort()
@@ -164,15 +171,23 @@ if __name__ == '__main__':
     print (messierObjects.objectTable[0].name)
 
     print ('length: ', len(messierObjects.objectTable))
+
+    # write() function is defined in objectRaDec.py line 123.
+    # As of right now all of the print statements in the function
+    # have been commented out.
     
-    for i in range (len(messierObjects.objectTable)):
-        messierObjects.objectTable[i].write()
+#    for i in range (len(messierObjects.objectTable)):
+#        messierObjects.objectTable[i].write()
 
     messierObjects.updateLstOfObjectTable()
     messierObjects.updateAltAziOfObjectTable()
     messierObjects.sort()
 
     messierObjects.updateObjectTable()
-    
+
+    objectNumber = 0
     for i in range (len(messierObjects.objectTable)):
-        messierObjects.objectTable[i].write()
+        if messierObjects.objectTable[i].binNumber > 0:
+            objectNumber = objectNumber+1
+            print ('object Number : ', objectNumber)
+            messierObjects.objectTable[i].write()

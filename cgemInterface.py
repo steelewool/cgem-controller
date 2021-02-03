@@ -39,7 +39,6 @@ class CgemInterface:
                                  baudrate =         9600,
                                  timeout  = timeoutValue)
 
-        
         # Continuing with the software does not make a lot of sense if the comm
         # is not working. But, currently the software just charges ahead.
     
@@ -52,6 +51,7 @@ class CgemInterface:
         return self.ser.read(bytes)
     
     def echoCommand (self, testCharacter):
+        # print ('testCharacter : ', testCharacter)
         self.ser.write(b'Ka')
 
         # The mechanism of just using the raw ser.read command to read
@@ -61,6 +61,7 @@ class CgemInterface:
         # hashtag character (#) seems easy enough.
         
         response = self.serialRead(waitTime=3,bytes=2)
+        # print ('cgemI.echoCommand response : ', response)
         return response
 
     def commWorking(self):
@@ -68,7 +69,6 @@ class CgemInterface:
         if len(response) != 2:
             print ('incorrect length response')
             return 'Comm Failure ' + str(len(response))
-
         if (response != b'a#'):
             commWorkingFlag = False
         else:
@@ -104,7 +104,7 @@ class CgemInterface:
         response = self.serialRead(waitTime=4,bytes=9)
         if len(response) != 9:
             print ('incorrect length response')
-            return 'Comm Failure ' + str(len(response))
+            return 'Comm Failure in rtcGetLocation ' + str(len(response))
         latitude = float(response[0])+float(response[1])/60.0+float(response[2])/3600.0
         longitude = float(response[4])+float(response[5])/60.0+float(response[6])/3600.0
         if response[3] == '1':
@@ -120,7 +120,7 @@ class CgemInterface:
         response = self.serialRead(waitTime=3,bytes=9)
         if len(response) != 9:
             print ('Incorrect response length')
-            return 'Comm Failure ' + str(len(response))
+            return 'Comm Failure in getTime' + str(len(response))
 
         hour  = int(response[0])
         min   = int(response[1])
@@ -140,8 +140,12 @@ class CgemInterface:
         response = self.serialRead(waitTime=3,bytes=2)
         if len(response) != 2:
             print ('Incorrect response length')
-            return 'Comm Failure ' + str(len(response))
+            return 'Comm Failure in getTrackingMode' + str(len(response))
 
+        print ('response : ', response)
+        print ('response[0] : ', response[0])
+        print ('response[1] : ', response[1])
+        
         trackingMode = 'Undefined'
         if response[0] == 0:
             trackingMode = 'Off'
@@ -200,6 +204,9 @@ class CgemInterface:
             gotoInProgressCounter = gotoInProgressCounter - 1
             if (gotoInProgressCounter == 0):
                 gotoInProgressFlag = False
+        print ('gotoInProgress flag and counter : ', \
+               gotoInProgressFlag,                   \
+               gotoInProgressCounter)
                 
     def gotoCommandWithLP (self, ra, dec):
         print ('Not implemented')

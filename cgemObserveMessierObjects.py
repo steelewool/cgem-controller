@@ -3,6 +3,9 @@
 # I'm not using the alt/azi to determine if the object is above the horizon
 # and I should be.
 
+# Version working on the telescope
+# commit e51ecdc9a67699133f19de118f314c9fc5237605
+
 import spawnSimulator
 import convertRaDecToCgemUnits
 import cgemInterface
@@ -10,13 +13,16 @@ import messierObjectList
 
 if __name__ == '__main__':
 
-    # Hard wired for actual hardware
+    # Request input as to if simulation or using telescope hardware
     
-    simulate = False
-
+    if input("Enter 1 for simulation 2 for hardware ") == '1':
+        simulate = True
+    else:
+        simulate = False
+    
     # This will either spawn a shell program for setting up the
     # ports for a simulator or for debugging and talking to the
-    # telescope.
+    # telescope. The name is deceiving - but it required.
 
     sp = spawnSimulator.SpawnSimulator(simulate)
     print ('Done with spawnSimulator.SpawnSimulator, with argument: ', simulate)
@@ -111,6 +117,8 @@ if __name__ == '__main__':
 #                            decFromCgem = convertDec.fromCgem(args[1])
 #                            print ('RA  : ', raFromCgem)
 #                            print ('Dec : ', decFromCgem)
+                            print ('---------------------- DONE ------------------')
+                            print ()
                         elif x == 3:
                             loopOverMessierObjects = False
                             print ('Setting loopOverMessierObjects to :',
