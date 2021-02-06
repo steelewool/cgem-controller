@@ -35,8 +35,8 @@ class CgemInterface:
         # '/dev/ttyUSB0' which
         # was working to ./pty for the test of socat
         
-        self.ser = serial.Serial(port     =         port,
-                                 baudrate =         9600,
+        self.ser = serial.Serial(port     =         port, \
+                                 baudrate =         9600, \
                                  timeout  = timeoutValue)
 
         # Continuing with the software does not make a lot of sense if the comm

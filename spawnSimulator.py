@@ -54,9 +54,7 @@ class SpawnSimulator:
         os.kill(self.pid_modem, signal.SIGSTOP);
 
 if __name__ == '__main__':
-    #print ('invoke SpawnSimulator')
     sp = SpawnSimulator(True)
-    #print ('SpawnSimulator, sleep 5')
     time.sleep(5)
     sp.shutdown()
 

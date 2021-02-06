@@ -25,7 +25,6 @@ if __name__ == '__main__':
     # telescope. The name is deceiving - but it required.
 
     sp = spawnSimulator.SpawnSimulator(simulate)
-    print ('Done with spawnSimulator.SpawnSimulator, with argument: ', simulate)
     
     # The initializer for cgemInterface will open the serial port.
     # The default is ./pty1 which works with either the simulator
@@ -33,12 +32,8 @@ if __name__ == '__main__':
     # to real hardware will want to set port = '/dev/ttyUSB0'
     # or something simular.
 
-    print ('Invoke cgemInterface.CgemInterface()')
-    
     cgem       = cgemInterface.CgemInterface()
 
-    print ('Done with cgemInterface.CgemInterface()')
-    
     convertRa  = convertRaDecToCgemUnits.ConvertRa()
     convertDec = convertRaDecToCgemUnits.ConvertDec()
     
