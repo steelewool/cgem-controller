@@ -23,15 +23,15 @@ class MessierObjectList:
         # Set the latitude, longitude, and elevation of the
         # position of the observer.
 
-        self.observingPosition = EarthLocation(
-            lat    = ( 34.0 + 49.0/60.0 + 32.0/3600.0) * u.deg,
-            lon    =-(118.0 +  1.0/60.0 + 27.0*3600.0) * u.deg,
+        self.observingPosition = EarthLocation(                 \
+            lat    = ( 34.0 + 49.0/60.0 + 32.0/3600.0) * u.deg, \
+            lon    =-(118.0 +  1.0/60.0 + 27.0*3600.0) * u.deg, \
             height = (5000 * 0.3048)                   * u.m)
 
         # Get the current time
         
-        self.dateTime = astropy.time.Time(astropy.time.Time.now(),
-                                 scale='utc',
+        self.dateTime = astropy.time.Time(astropy.time.Time.now(), \
+                                 scale='utc',                      \
                                  location=self.observingPosition)
 
         self.meanLST = self.dateTime.sidereal_time('mean')
@@ -78,22 +78,25 @@ class MessierObjectList:
             self.tableDec = table[i]['DEC']
             self.extractRaDec (self.tableRa, self.tableDec)
             
-            skyCoord = SkyCoord (self.raHrMinSec + ' ' + self.decDegMinSec,
+            skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
+                                 self.decDegMinSec,      \
                                  frame='icrs')
 
-            self.altAzi = skyCoord.transform_to(AltAz(obstime=self.dateTime,
-                                                 location=self.observingPosition))
+            self.altAzi = skyCoord.transform_to(       \
+                AltAz(obstime=self.dateTime,           \
+                      location=self.observingPosition))
 
-            newObject = objectRaDec.ObjectRaDec(table[i]['MAIN_ID'],
-                                                self.tableRa,
-                                                self.tableDec,
-                                                Ra  (self.ra_hr, self.ra_min, self.ra_sec),
-                                                Dec (self.dec_deg, self.dec_min, self.dec_sec),
-                                                Lst (self.lst_hr,
-                                                     self.lst_min,
-                                                     self.lst_sec),
-                                                Alt (self.altAzi.alt.degree),
-                                                Azi (self.altAzi.az.degree))
+            newObject = objectRaDec.ObjectRaDec(                \
+                table[i]['MAIN_ID'],                            \
+                self.tableRa,                                   \
+                self.tableDec,                                  \
+                Ra  (self.ra_hr, self.ra_min, self.ra_sec),     \
+                Dec (self.dec_deg, self.dec_min, self.dec_sec), \
+                Lst (self.lst_hr,                               \
+                     self.lst_min,                              \
+                     self.lst_sec),                             \
+                Alt (self.altAzi.alt.degree),                   \
+                Azi (self.altAzi.az.degree))
 
             if (i == 0):
                 self.objectTable = [newObject]
@@ -130,11 +133,17 @@ class MessierObjectList:
         # Need to calculate the altitude and azimuth for each of the
         # objects here.
             
-        self.raHrMinSec   = self.ra_hr   + 'h' + self.ra_min  + 'm' + self.ra_sec  + 's'
+        self.raHrMinSec   = self.ra_hr   + 'h' + \
+                            self.ra_min  + 'm' + \
+                            self.ra_sec  + 's'
         if float(self.dec_sec) > 0:
-            self.decDegMinSec = self.dec_deg + 'd' + self.dec_min + 'm' + self.dec_sec + 's'
+            self.decDegMinSec = self.dec_deg + 'd' + \
+                                self.dec_min + 'm' + \
+                                self.dec_sec + 's'
         else:
-            self.decDegMinSec = self.dec_deg + 'd' + self.dec_min + 'm' + '00' + 's'
+            self.decDegMinSec = self.dec_deg + 'd' + \
+                                self.dec_min + 'm' + \
+                                '00' + 's'
 
     # Sorting is based upon local hour angle and the RA and Declination of
     # the object. Before sorting the LST, altitude, azimuth of the objects MUST
@@ -146,18 +155,24 @@ class MessierObjectList:
     def updateLstOfObjectTable(self):
         for i in range(len(self.objectTable)):
             self.setLocalTime()
-            self.objectTable[i].updateLst(Lst(self.lst_hr, self.lst_min, self.lst_sec))
+            self.objectTable[i].updateLst(
+                Lst(self.lst_hr,  \
+                    self.lst_min, \
+                    self.lst_sec))
 
     def updateAltAziOfObjectTable(self):
         for i in range(len(self.objectTable)):
-            self.extractRaDec(self.objectTable[i].tableRa, self.objectTable[i].tableDec)
+            self.extractRaDec(self.objectTable[i].tableRa, \
+                              self.objectTable[i].tableDec )
             
             skyCoord = SkyCoord (self.raHrMinSec + ' ' + self.decDegMinSec,
                                  frame='icrs')
 
-            self.altAzi = skyCoord.transform_to(AltAz(obstime=self.dateTime,
-                                                 location=self.observingPosition))
-            self.objectTable[i].updateAltAzi(self.altAzi.alt, self.altAzi.az);
+            self.altAzi = skyCoord.transform_to(       \
+                AltAz(obstime=self.dateTime,           \
+                      location=self.observingPosition))
+            self.objectTable[i].updateAltAzi(self.altAzi.alt, \
+                                             self.altAzi.az);
 
     def updateObjectTable (self):
         self.updateLstOfObjectTable()
