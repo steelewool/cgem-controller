@@ -67,7 +67,18 @@ class MessierObjectList:
         # This query will get all of the Messier objects. Note that the table
         # isn't modified - but instead I copy the data to the objectTable
         # list which does get sorted my observability.
-    
+
+        # All of the table* statements below worked without any
+        # errors when I was running Python3 in a terminal mode.
+        
+        tableMessier = Simbad.query_criteria(cat='M')
+        tableMGC     = Simbad.query_criteria('Vmag>12.0', cat='MGC')
+        tableIC      = Simbad.query_criteria('Vmag>12.0', cat='IC')
+        tableHIP     = Simbad.query_criteria('Vmag>12.0', cat='HIP')
+        try:
+            tableNGC     = Simbad.query_criteria('Vmag>12.0', cat='NGC')
+        except:
+            print ('Attempt to access NGC table failed.')
         table = Simbad.query_object ('M *', wildcard=True, verbose=False)
         
         # This loop goes through the table of messier objects obtained from

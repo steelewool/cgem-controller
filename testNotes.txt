@@ -1,4 +1,36 @@
-2/3/20
+2/9/21
+
+Here is a magnigude limiting search in Simbad:
+
+result = Simbad.query_criteria('Vmag>10', otype='SNR')
+
+The type of object specified was 'SNR' which I'm not sure what that is.
+
+The set of imports used for this were:
+
+import objectRaDec
+from   raDecLst import Ra, Dec, Lst, Alt, Azi
+import astropy.time
+from   astropy.time        import Time
+from   astropy             import units as u
+from   astropy.coordinates import EarthLocation
+from   astropy.coordinates import SkyCoord
+from   astropy.coordinates import AltAz
+from   datetime import date
+from astroquery.simbad import Simbad
+
+These also worked:
+
+result = Simbad.query_criteria('Vmag>8.0', otype='SNR')
+result = Simbad.query_criteria('Vmag>8.0', cat  ='M')
+result = Simbad.query_criteria(cat='M')
+
+Trying to get the NCG catalog and that is not working out very well.
+
+
+
+
+2/3/21
 
 Ouput from a run with the real hardware with the brakes all off.
 
