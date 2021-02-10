@@ -1,4 +1,5 @@
 
+
 import objectRaDec
 from   raDecLst import Ra, Dec, Lst, Alt, Azi
 import astropy.time
@@ -63,7 +64,8 @@ class MessierObjectList:
 # [astropy.extern.six]
 
         from astroquery.simbad import Simbad
-
+        import time
+        
         # This query will get all of the Messier objects. Note that the table
         # isn't modified - but instead I copy the data to the objectTable
         # list which does get sorted my observability.
@@ -73,6 +75,7 @@ class MessierObjectList:
 
         Simbad.ROW_LIMIT = 120
         try:
+            time.sleep(2)
             tableMessier   = Simbad.query_criteria(cat='M')
             tableMessierOk = True
             print ('Length of Messier table : ', len(tableMessier))
@@ -80,8 +83,9 @@ class MessierObjectList:
             tableMessierOk = False
             print ('tableMessier failed.')
         
-        Simbad.ROW_LIMIT = 5000
+        Simbad.ROW_LIMIT = 50
         try:
+            time.sleep(2)
             tableMGC     = Simbad.query_criteria('Vmag<12.0', \
                                                  cat='MGC')
             tableMgcOk   = True
@@ -90,7 +94,9 @@ class MessierObjectList:
             tableMgcOk   = False
             print ('tableMCG failed')
 
+        Simbad.ROW_LIMIT = 50
         try:
+            time.sleep(2)
             tableIC      = Simbad.query_criteria('Vmag<12.0', \
                                                  cat='IC')
             tableIcOk    = True
@@ -99,7 +105,9 @@ class MessierObjectList:
             tableIcOk    = False
             print ('tableIC failed')
 
+        Simbad.ROW_LIMIT = 50
         try:
+            time.sleep(2)
             tableHIP     = Simbad.query_criteria('Vmag<12.0', \
                                                  cat='HIP')
             tableHipOk   = True
@@ -108,9 +116,10 @@ class MessierObjectList:
             tableHipOk   = False
             print ('tableHIP failed')
             
-        Simbad.ROW_LIMIT = 1000
+        Simbad.ROW_LIMIT = 50
         try:
             # With a row limit of 5000 things crash with the NGC catalog
+            time.sleep(2)
             tableNGC         = Simbad.query_criteria('Vmag<12.0', \
                                                      cat='NGC')
             tableNgcOk = True
@@ -123,6 +132,7 @@ class MessierObjectList:
             Simbad.ROW_LIMIT /= 2
             try:
                 # With a row limit of 5000 things crash with the NGC catalog
+                time.sleep(2)
                 tableNGC         = Simbad.query_criteria('Vmag<12.0', \
                                                          cat='NGC')
                 tableNgcOk = True
@@ -131,9 +141,9 @@ class MessierObjectList:
                 tableNgcOk = False
                 print ('Second attempt to access NGC table failed.')
                 
-
-        Simbad.ROW_LIMIT = 10000
+        Simbad.ROW_LIMIT = 50
         try:
+            time.sleep(2)
             tableAll = Simbad.query_criteria('Vmag<12.0')
             tableAllOk = True
             print ('Length of All table : ', len(tableAll))
@@ -147,6 +157,7 @@ class MessierObjectList:
         if tableAllOk == False:
             Simbad.ROW_LIMIT /= 2
             try:
+                time.sleep(2)
                 tableAll = Simbad.query_criteria('Vmag<12.0')
                 tableAllOk = True
                 print ('Length of All table : ', len(tableAll))
@@ -154,9 +165,10 @@ class MessierObjectList:
                 tableAllOk = False
                 print ('Second attempt to access all catalogs failed.')
 
-        Simbad.ROW_LIMIT = 10000
+        Simbad.ROW_LIMIT = 50
         try:
             # With a limit of 10000 returned 5212 elements
+            time.sleep(2)
             tablePL   = Simbad.query_criteria(otype='PL')
             tablePlOk = True
             print ('Length of table PL : ', len(tablePL))
@@ -171,6 +183,7 @@ class MessierObjectList:
         if tableMessierOk:
             table = tableMessier
         else:
+            time.sleep(2)
             table = Simbad.query_object ('M *', wildcard=True, verbose=False)
             
         print ('Length of Messier objects table: ', len(table))
