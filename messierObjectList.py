@@ -70,16 +70,94 @@ class MessierObjectList:
 
         # All of the table* statements below worked without any
         # errors when I was running Python3 in a terminal mode.
-        
-        tableMessier = Simbad.query_criteria(cat='M')
-        tableMGC     = Simbad.query_criteria('Vmag>12.0', cat='MGC')
-        tableIC      = Simbad.query_criteria('Vmag>12.0', cat='IC')
-        tableHIP     = Simbad.query_criteria('Vmag>12.0', cat='HIP')
+
+        Simbad.ROW_LIMIT = 120
         try:
-            tableNGC     = Simbad.query_criteria('Vmag>12.0', cat='NGC')
+            tableMessier = Simbad.query_criteria(cat='M')
+            print ('Length of Messier table : ', len(tableMessier))
         except:
-            print ('Attempt to access NGC table failed.')
-        table = Simbad.query_object ('M *', wildcard=True, verbose=False)
+            print ('tableMessier failed.')
+        
+        Simbad.ROW_LIMIT = 5000
+        try:
+            tableMGC     = Simbad.query_criteria('Vmag<12.0', \
+                                                 cat='MGC')
+            print ('Length of MGC table : ', len(tableMGC))
+        except:
+            print ('tableMCG failed')
+
+        try:
+            tableIC      = Simbad.query_criteria('Vmag<12.0', \
+                                                 cat='IC')
+            print ('Length of IC table : ', len(tableIC))
+        except:
+            print ('tableIC failed')
+        
+        tableHIP     = Simbad.query_criteria('Vmag<12.0', \
+                                             cat='HIP')
+        print ('Length of HIP table : ', len(tableHIP))
+        
+        Simbad.ROW_LIMIT = 1000
+        try:
+            # With a row limit of 5000 things crash with the NGC catalog
+            tableNGC         = Simbad.query_criteria('Vmag<12.0', \
+                                                     cat='NGC')
+            tableNgcOk = True
+            print ('Length of NGC table : ', len(tableNGC))
+        except:
+            tableNgcOk = False
+            print ('First attempt to access NGC table failed.')
+
+        if tableNgcOk == False:
+            Simbad.ROW_LIMIT /= 2
+            try:
+                # With a row limit of 5000 things crash with the NGC catalog
+                tableNGC         = Simbad.query_criteria('Vmag<12.0', \
+                                                         cat='NGC')
+                tableNgcOk = True
+                print ('Length of NGC table : ', len(tableNGC))
+            except:
+                tableNgcOk = False
+                print ('Second attempt to access NGC table failed.')
+                
+        
+        Simbad.ROW_LIMIT = 10000
+        try:
+            tableAll = Simbad.query_criteria('Vmag<12.0')
+            tableAllOk = True
+            print ('Length of All table : ', len(tableAll))
+        except:
+            tableAllOk = False
+            print ('Attempt to access all catalogs failed.')
+
+        # If the first attempt failed then cut the row limit in
+        # half and try again.
+        
+        if tableAllOk == False:
+            Simbad.ROW_LIMIT /= 2
+            try:
+                tableAll = Simbad.query_criteria('Vmag<12.0')
+                tableAllOk = True
+                print ('Length of All table : ', len(tableAll))
+            except:
+                tableAllOk = False
+                print ('Second attempt to access all catalogs failed.')
+
+        Simbad.ROW_LIMIT = 10000
+        try:
+            # With a limit of 10000 returned 5212 elements
+            tablePL = Simbad.query_criteria(otype='PL')
+            print ('Length of table PL : ', len(tablePL))
+        except:
+            print ('tablePL is failing')
+
+
+        # Need to merge the tables and eliminate duplicate items.
+        # Or those with distances less than a few arc minutes.
+
+        table = tableMessier
+        # table = Simbad.query_object ('M *', wildcard=True, verbose=False)
+        print ('Length of Messier objects table: ', len(table))
         
         # This loop goes through the table of messier objects obtained from
         # the query above and moves the objects into the array objectTable.

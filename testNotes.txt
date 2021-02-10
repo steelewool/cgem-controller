@@ -27,6 +27,10 @@ result = Simbad.query_criteria(cat='M')
 
 Trying to get the NCG catalog and that is not working out very well.
 
+When accessing the NGC catalog I was getting timeouts. I started using
+the ROW_LIMIT to limit things.
+
+Simbad.ROW_LIMIT= 1000
 
 
 
