@@ -73,30 +73,41 @@ class MessierObjectList:
 
         Simbad.ROW_LIMIT = 120
         try:
-            tableMessier = Simbad.query_criteria(cat='M')
+            tableMessier   = Simbad.query_criteria(cat='M')
+            tableMessierOk = True
             print ('Length of Messier table : ', len(tableMessier))
         except:
+            tableMessierOk = False
             print ('tableMessier failed.')
         
         Simbad.ROW_LIMIT = 5000
         try:
             tableMGC     = Simbad.query_criteria('Vmag<12.0', \
                                                  cat='MGC')
+            tableMgcOk   = True
             print ('Length of MGC table : ', len(tableMGC))
         except:
+            tableMgcOk   = False
             print ('tableMCG failed')
 
         try:
             tableIC      = Simbad.query_criteria('Vmag<12.0', \
                                                  cat='IC')
+            tableIcOk    = True
             print ('Length of IC table : ', len(tableIC))
         except:
+            tableIcOk    = False
             print ('tableIC failed')
-        
-        tableHIP     = Simbad.query_criteria('Vmag<12.0', \
-                                             cat='HIP')
-        print ('Length of HIP table : ', len(tableHIP))
-        
+
+        try:
+            tableHIP     = Simbad.query_criteria('Vmag<12.0', \
+                                                 cat='HIP')
+            tableHipOk   = True
+            print ('Length of HIP table : ', len(tableHIP))
+        except:
+            tableHipOk   = False
+            print ('tableHIP failed')
+            
         Simbad.ROW_LIMIT = 1000
         try:
             # With a row limit of 5000 things crash with the NGC catalog
@@ -120,7 +131,7 @@ class MessierObjectList:
                 tableNgcOk = False
                 print ('Second attempt to access NGC table failed.')
                 
-        
+
         Simbad.ROW_LIMIT = 10000
         try:
             tableAll = Simbad.query_criteria('Vmag<12.0')
@@ -146,17 +157,22 @@ class MessierObjectList:
         Simbad.ROW_LIMIT = 10000
         try:
             # With a limit of 10000 returned 5212 elements
-            tablePL = Simbad.query_criteria(otype='PL')
+            tablePL   = Simbad.query_criteria(otype='PL')
+            tablePlOk = True
             print ('Length of table PL : ', len(tablePL))
         except:
+            tablePlOk = False
             print ('tablePL is failing')
 
 
         # Need to merge the tables and eliminate duplicate items.
         # Or those with distances less than a few arc minutes.
 
-        table = tableMessier
-        # table = Simbad.query_object ('M *', wildcard=True, verbose=False)
+        if tableMessierOk:
+            table = tableMessier
+        else:
+            table = Simbad.query_object ('M *', wildcard=True, verbose=False)
+            
         print ('Length of Messier objects table: ', len(table))
         
         # This loop goes through the table of messier objects obtained from
