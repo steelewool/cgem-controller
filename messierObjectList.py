@@ -1,5 +1,4 @@
 
-
 import objectRaDec
 from   raDecLst import Ra, Dec, Lst, Alt, Azi
 import astropy.time
@@ -83,10 +82,10 @@ class MessierObjectList:
             tableMessierOk = False
             print ('tableMessier failed.')
         
-        Simbad.ROW_LIMIT = 50
+        Simbad.ROW_LIMIT = 200
         try:
             time.sleep(2)
-            tableMGC     = Simbad.query_criteria('Vmag<12.0', \
+            tableMGC     = Simbad.query_criteria('Vmag<11.0', \
                                                  cat='MGC')
             tableMgcOk   = True
             print ('Length of MGC table : ', len(tableMGC))
@@ -94,36 +93,26 @@ class MessierObjectList:
             tableMgcOk   = False
             print ('tableMCG failed')
 
-        Simbad.ROW_LIMIT = 50
+
+        Simbad.ROW_LIMIT = 200
         try:
             time.sleep(2)
-            tableIC      = Simbad.query_criteria('Vmag<12.0', \
-                                                 cat='IC')
-            tableIcOk    = True
+            tableIC     = Simbad.query_criteria('Vmag<9.0', \
+                                                 cat='ic')
+            tableIcOk   = True
             print ('Length of IC table : ', len(tableIC))
         except:
-            tableIcOk    = False
+            tableIcOk   = False
             print ('tableIC failed')
-
-        Simbad.ROW_LIMIT = 50
-        try:
-            time.sleep(2)
-            tableHIP     = Simbad.query_criteria('Vmag<12.0', \
-                                                 cat='HIP')
-            tableHipOk   = True
-            print ('Length of HIP table : ', len(tableHIP))
-        except:
-            tableHipOk   = False
-            print ('tableHIP failed')
             
-        Simbad.ROW_LIMIT = 50
+        Simbad.ROW_LIMIT = 1000
         try:
             # With a row limit of 5000 things crash with the NGC catalog
             time.sleep(2)
-            tableNGC         = Simbad.query_criteria('Vmag<12.0', \
+            tableNgc         = Simbad.query_criteria('Vmag<7.0', \
                                                      cat='NGC')
             tableNgcOk = True
-            print ('Length of NGC table : ', len(tableNGC))
+            print ('Length of NGC table : ', len(tableNgc))
         except:
             tableNgcOk = False
             print ('First attempt to access NGC table failed.')
@@ -133,18 +122,18 @@ class MessierObjectList:
             try:
                 # With a row limit of 5000 things crash with the NGC catalog
                 time.sleep(2)
-                tableNGC         = Simbad.query_criteria('Vmag<12.0', \
+                tableNgc         = Simbad.query_criteria('Vmag<7.0', \
                                                          cat='NGC')
                 tableNgcOk = True
-                print ('Length of NGC table : ', len(tableNGC))
+                print ('Length of NGC table : ', len(tableNgc))
             except:
                 tableNgcOk = False
                 print ('Second attempt to access NGC table failed.')
                 
-        Simbad.ROW_LIMIT = 50
+        Simbad.ROW_LIMIT = 100
         try:
             time.sleep(2)
-            tableAll = Simbad.query_criteria('Vmag<12.0')
+            tableAll = Simbad.query_criteria('Vmag<9.0')
             tableAllOk = True
             print ('Length of All table : ', len(tableAll))
         except:
@@ -158,14 +147,15 @@ class MessierObjectList:
             Simbad.ROW_LIMIT /= 2
             try:
                 time.sleep(2)
-                tableAll = Simbad.query_criteria('Vmag<12.0')
+                tableAll = Simbad.query_criteria('Vmag<9.0')
                 tableAllOk = True
                 print ('Length of All table : ', len(tableAll))
             except:
                 tableAllOk = False
                 print ('Second attempt to access all catalogs failed.')
 
-        Simbad.ROW_LIMIT = 50
+        # Looking for Planetary Nebulas
+        Simbad.ROW_LIMIT = 100
         try:
             # With a limit of 10000 returned 5212 elements
             time.sleep(2)
@@ -176,10 +166,55 @@ class MessierObjectList:
             tablePlOk = False
             print ('tablePL is failing')
 
+        # Looking for Galaxies
+        Simbad.ROW_LIMIT = 100
+        try:
+            # With a limit of 10000 returned 5212 elements
+            time.sleep(2)
+            tableG   = Simbad.query_criteria('Vmag<9.5', otype='G')
+            tableGOk = True
+            print ('Length of table G : ', len(tableG))
+        except:
+            tableGOk = False
+            print ('tableG is failing')
+
+        # Looking for Globular Clusters
+        Simbad.ROW_LIMIT = 100
+        try:
+            time.sleep(2)
+            tableGlb   = Simbad.query_criteria(otype='glb')
+            tableGlbOk = True
+            print ('Length of table Glb : ', len(tableGlb))
+        except:
+            tableGlbOk = False
+            print ('tableGlb is failing')
+
+        # Looking for Open Cluster
+        Simbad.ROW_LIMIT = 200
+        try:
+            time.sleep(2)
+            tableOpc   = Simbad.query_criteria('Vmag<8.0', otype='opc')
+            tableOpcOk = True
+            print ('Length of table Opc : ', len(tableOpc))
+        except:
+            tableOpcOk = False
+            print ('tableOpc is failing')
 
         # Need to merge the tables and eliminate duplicate items.
         # Or those with distances less than a few arc minutes.
 
+        # When merging use the following priority order for which names are
+        # kept:
+        # Messier
+        # NGC
+        # PL
+        # G
+        # Glb
+        # OpC
+        # IC
+        # MGC
+        # All table, which in the end may not be useful
+        
         if tableMessierOk:
             table = tableMessier
         else:
@@ -221,6 +256,35 @@ class MessierObjectList:
             else:
                 self.objectTable.append(newObject)
 
+        # Add to the end of the object table the NGC objects
+
+        if tableNgcOk:
+            for i in range(len(tableNgc)):
+                self.tableRa  = tableNgc[i]['RA']
+                self.tableDec = tableNgc[i]['DEC']
+                self.extractRaDec (self.tableRa, self.tableDec)
+                skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
+                                     self.decDegMinSec,      \
+                                     frame='icrs')
+                
+                self.altAzi = skyCoord.transform_to(       \
+                    AltAz(obstime=self.dateTime,           \
+                          location=self.observingPosition))
+
+                newObject = objectRaDec.ObjectRaDec(                \
+                    tableNgc[i]['MAIN_ID'],                         \
+                    self.tableRa,                                   \
+                    self.tableDec,                                  \
+                    Ra  (self.ra_hr, self.ra_min, self.ra_sec),     \
+                    Dec (self.dec_deg, self.dec_min, self.dec_sec), \
+                    Lst (self.lst_hr,                               \
+                         self.lst_min,                              \
+                         self.lst_sec),                             \
+                    Alt (self.altAzi.alt.degree),                   \
+                    Azi (self.altAzi.az.degree))
+
+                self.objectTable.append(newObject)
+                
         # Sort the objects into a best fit for observing
         # Invokes the function on line 141 which simply invokes the
         # function objectTable.sort.
