@@ -9,7 +9,7 @@ from   astropy.coordinates import SkyCoord
 from   astropy.coordinates import AltAz
 from   datetime import date
 
-class MessierObjectList:
+class SimbadObjectLists:
     
     # Initialzation logic to create the the sorted list
 
@@ -82,13 +82,146 @@ class MessierObjectList:
             tableMessierOk = False
             print ('tableMessier failed.')
         
+        Simbad.ROW_LIMIT = 200
+        try:
+            time.sleep(2)
+            tableMGC     = Simbad.query_criteria('Vmag<11.0', \
+                                                 cat='MGC')
+            tableMgcOk   = True
+            print ('Length of MGC table     : ', len(tableMGC))
+        except:
+            tableMgcOk   = False
+            print ('tableMCG failed')
+
+
+        Simbad.ROW_LIMIT = 200
+        try:
+            time.sleep(2)
+            tableIC     = Simbad.query_criteria('Vmag<9.0', \
+                                                 cat='ic')
+            tableIcOk   = True
+            print ('Length of IC table      : ', len(tableIC))
+        except:
+            tableIcOk   = False
+            print ('tableIC failed')
+            
+        Simbad.ROW_LIMIT = 1000
+        try:
+            # With a row limit of 5000 things crash with the NGC catalog
+            time.sleep(2)
+            tableNgc         = Simbad.query_criteria('Vmag<7.0', \
+                                                     cat='NGC')
+            tableNgcOk = True
+            print ('Length of NGC table     : ', len(tableNgc))
+        except:
+            tableNgcOk = False
+            print ('First attempt to access NGC table failed.')
+
+        if tableNgcOk == False:
+            Simbad.ROW_LIMIT /= 2
+            try:
+                # With a row limit of 5000 things crash with the NGC catalog
+                time.sleep(2)
+                tableNgc         = Simbad.query_criteria('Vmag<7.0', \
+                                                         cat='NGC')
+                tableNgcOk = True
+                print ('Length of NGC table : ', len(tableNgc))
+            except:
+                tableNgcOk = False
+                print ('Second attempt to access NGC table failed.')
+                
+        Simbad.ROW_LIMIT = 100
+        try:
+            time.sleep(2)
+            tableAll = Simbad.query_criteria('Vmag<9.0')
+            tableAllOk = True
+            print ('Length of All table     : ', len(tableAll))
+        except:
+            tableAllOk = False
+            print ('Attempt to access all catalogs failed.')
+
+        # If the first attempt failed then cut the row limit in
+        # half and try again.
+        
+        if tableAllOk == False:
+            Simbad.ROW_LIMIT /= 2
+            try:
+                time.sleep(2)
+                tableAll = Simbad.query_criteria('Vmag<9.0')
+                tableAllOk = True
+                print ('Length of All table     : ', len(tableAll))
+            except:
+                tableAllOk = False
+                print ('Second attempt to access all catalogs failed.')
+
+        # Looking for Planetary Nebulas
+        Simbad.ROW_LIMIT = 100
+        try:
+            # With a limit of 10000 returned 5212 elements
+            time.sleep(2)
+            tablePL   = Simbad.query_criteria(otype='PL')
+            tablePlOk = True
+            print ('Length of table PL      : ', len(tablePL))
+        except:
+            tablePlOk = False
+            print ('tablePL is failing')
+
+        # Looking for Galaxies
+        Simbad.ROW_LIMIT = 100
+        try:
+            # With a limit of 10000 returned 5212 elements
+            time.sleep(2)
+            tableG   = Simbad.query_criteria('Vmag<9.5', otype='G')
+            tableGOk = True
+            print ('Length of table G       : ', len(tableG))
+        except:
+            tableGOk = False
+            print ('tableG is failing')
+
+        # Looking for Globular Clusters
+        Simbad.ROW_LIMIT = 100
+        try:
+            time.sleep(2)
+            tableGlb   = Simbad.query_criteria(otype='glb')
+            tableGlbOk = True
+            print ('Length of table Glb     : ', len(tableGlb))
+        except:
+            tableGlbOk = False
+            print ('tableGlb is failing')
+
+        # Looking for Open Cluster
+        Simbad.ROW_LIMIT = 200
+        try:
+            time.sleep(2)
+            tableOpc   = Simbad.query_criteria('Vmag<8.0', otype='opc')
+            tableOpcOk = True
+            print ('Length of table Opc     : ', len(tableOpc))
+        except:
+            tableOpcOk = False
+            print ('tableOpc is failing')
+
+        # Need to merge the tables and eliminate duplicate items.
+        # Or those with distances less than a few arc minutes.
+
+        # When merging use the following priority order for which names are
+        # kept:
+        # Messier
+        # NGC
+        # PL
+        # G
+        # Glb
+        # OpC
+        # IC
+        # MGC
+        # All table, which in the end may not be useful
+        
         if tableMessierOk:
             table = tableMessier
         else:
             time.sleep(2)
             table = Simbad.query_object ('M *', wildcard=True, verbose=False)
             
-        print ('Length of Messier objects table: ', len(table))
+        print ('Length of Messier table: ', len(table))
         
         # This loop goes through the table of messier objects obtained from
         # the query above and moves the objects into the array objectTable.
@@ -122,6 +255,36 @@ class MessierObjectList:
             if (i == 0):
                 self.objectTable = [newObject]
             else:
+                self.objectTable.append(newObject)
+
+        # Add to the end of the object table the NGC objects
+
+        if tableNgcOk:
+            for i in range(len(tableNgc)):
+                self.tableRa  = tableNgc[i]['RA']
+                self.tableDec = tableNgc[i]['DEC']
+                self.extractRaDec (self.tableRa, self.tableDec)
+                skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
+                                     self.decDegMinSec,      \
+                                     frame='icrs')
+                
+                self.altAzi = skyCoord.transform_to(       \
+                    AltAz(obstime=self.dateTime,           \
+                          location=self.observingPosition))
+
+                newObject = objectRaDec.ObjectRaDec(                \
+                    tableNgc[i]['MAIN_ID'],                         \
+                    'NGC',                                          \
+                    self.tableRa,                                   \
+                    self.tableDec,                                  \
+                    Ra  (self.ra_hr, self.ra_min, self.ra_sec),     \
+                    Dec (self.dec_deg, self.dec_min, self.dec_sec), \
+                    Lst (self.lst_hr,                               \
+                         self.lst_min,                              \
+                         self.lst_sec),                             \
+                    Alt (self.altAzi.alt.degree),                   \
+                    Azi (self.altAzi.az.degree))
+
                 self.objectTable.append(newObject)
                 
         # Sort the objects into a best fit for observing
@@ -202,24 +365,28 @@ class MessierObjectList:
         
 if __name__ == '__main__':
 
-    messierObjects = MessierObjectList()
+    simbadObjects = SimbadObjectLists()
+
+    print (simbadObjects.objectTable[0].name)
+
+    print ('length: ', len(simbadObjects.objectTable))
 
     # write() function is defined in objectRaDec.py line 123.
     # As of right now all of the print statements in the function
     # have been commented out.
     
-#    for i in range (len(messierObjects.objectTable)):
-#        messierObjects.objectTable[i].write()
+#    for i in range (len(simbadObjects.objectTable)):
+#        simbadObjects.objectTable[i].write()
 
-    messierObjects.updateLstOfObjectTable()
-    messierObjects.updateAltAziOfObjectTable()
-    messierObjects.sort()
+    simbadObjects.updateLstOfObjectTable()
+    simbadObjects.updateAltAziOfObjectTable()
+    simbadObjects.sort()
 
-    messierObjects.updateObjectTable()
+    simbadObjects.updateObjectTable()
 
     objectNumber = 0
-    for i in range (len(messierObjects.objectTable)):
-        if messierObjects.objectTable[i].binNumber > 0:
+    for i in range (len(simbadObjects.objectTable)):
+        if simbadObjects.objectTable[i].binNumber > 0:
             objectNumber = objectNumber+1
             print ('object Number : ', objectNumber)
-            messierObjects.objectTable[i].write()
+            simbadObjects.objectTable[i].write()

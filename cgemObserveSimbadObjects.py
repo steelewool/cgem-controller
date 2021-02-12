@@ -9,7 +9,7 @@
 import spawnSimulator
 import convertRaDecToCgemUnits
 import cgemInterface
-import messierObjectList
+import simbadObjectLists
 
 if __name__ == '__main__':
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     # As of 10/21/18 I was adding the altitude and azimuth of each
     # object in the list.
 
-    messierList = messierObjectList.MessierObjectList()
+    simbadLists = simbadObjectLists.SimbadObjectLists()
 
     print ('Loop over all messier objects.')
     
@@ -52,30 +52,30 @@ if __name__ == '__main__':
     while loopOverAllMessierObjects:
         
         # Print the fist object in the list for debugging.    
-        print ('First Messier object: ', messierList.objectTable[0].name)
+        print ('First Messier object: ', simbadLists.objectTable[0].name)
 
         loopOverMessierObjects = True
         index        = 0
         objectNumber = 1
         while (loopOverMessierObjects):
             x = 0
-            if index == len(messierList.objectTable):
+            if index == len(simbadLists.objectTable):
                 loopOverMessierObjects = False
             else:
-                if messierList.objectTable[index].bin() > 0:
+                if simbadLists.objectTable[index].bin() > 0:
                                 
-                    alt = messierList.objectTable[index].alt.deg
+                    alt = simbadLists.objectTable[index].alt.deg
 
                     if alt > 20.0:
-                        messierList.objectTable[index].write()
-                        azi = messierList.objectTable[index].azi.deg
+                        simbadLists.objectTable[index].write()
+                        azi = simbadLists.objectTable[index].azi.deg
 
                         print ('Object Number : ', objectNumber)
                         objectNumber += 1
-                        print ('  Name : ', messierList.objectTable[index].name)
-                        print ('   alt : ', alt)
-                        print ('   azi : ', azi)
-                        print
+#                        print ('  Name : ', simbadLists.objectTable[index].name#)
+#                        print ('   alt : ', alt)
+#                        print ('   azi : ', azi)
+#                        print
 
                         # Grab the input value and attempt to convert it to
                         # an integer
@@ -83,20 +83,28 @@ if __name__ == '__main__':
                         x = int(input('1 to observe, 2 to skip, 3 to exit : '))
                         if x == 1:
                         
-                            objectRa = messierList.objectTable[index].ra
-                            objectDec = messierList.objectTable[index].dec
+                            objectRa = simbadLists.objectTable[index].ra
+                            objectDec = simbadLists.objectTable[index].dec
 
-                            print ('object RA  (hr:min:sec)  : ', objectRa.hr,   ':', objectRa.min,  ':', objectRa.sec)
-                            print ('object Dec (deg:min:sec) : ', objectDec.deg, ':', objectDec.min, ':', objectDec.sec)
+                            print ('object RA  (hr:min:sec)  : ', \
+                                   objectRa.hr,   ':',            \
+                                   objectRa.min,  ':',            \
+                                   objectRa.sec)
+                            print ('object Dec (deg:min:sec) : ', \
+                                   objectDec.deg, ':',            \
+                                   objectDec.min, ':',            \
+                                   objectDec.sec)
 
-                            newRa = convertRaDecToCgemUnits.ConvertRa(float(objectRa.hr),
-                                                                      float(objectRa.min),
-                                                                      float(objectRa.sec)).toCgem()
+                            newRa = convertRaDecToCgemUnits.ConvertRa \
+                                (float(objectRa.hr),                  \
+                                 float(objectRa.min),                 \
+                                 float(objectRa.sec)).toCgem()
         
                     
-                            newDec = convertRaDecToCgemUnits.ConvertDec(float(objectDec.deg),
-                                                                        float(objectDec.min),
-                                                                        float(objectDec.sec)).toCgem()
+                            newDec = convertRaDecToCgemUnits.ConvertDec \
+                                (float(objectDec.deg), \
+                                 float(objectDec.min), \
+                                 float(objectDec.sec)).toCgem()
 
                             newRaHex  = newRa.encode('utf-8')
                             newDecHex = newDec.encode('utf-8')
@@ -107,14 +115,12 @@ if __name__ == '__main__':
                             print ('Invoking gotoCommandWithHP')
                             cgem.gotoCommandWithHP (newRaHex, newDecHex)
 
-                            telescopeRaDecCgem = cgem.requestHighPrecisionRaDec()
+                            telescopeRaDecCgem = \
+                                cgem.requestHighPrecisionRaDec()
                             print ('telescopeRaDecCgem:', telescopeRaDecCgem)
-#                            args = telescopeRaDecCgem.split(',',2)
-#                            raFromCgem = convertRa.fromCgem(args[0])
-#                            decFromCgem = convertDec.fromCgem(args[1])
-#                            print ('RA  : ', raFromCgem)
-#                            print ('Dec : ', decFromCgem)
-                            print ('---------------------- DONE ------------------')
+                            
+                            print \
+                            ('---------------------- DONE ------------------')
                             print ()
                         elif x == 3:
                             loopOverMessierObjects = False
@@ -134,7 +140,7 @@ if __name__ == '__main__':
             
         print ('updateObjectTable')
         
-        messierList.updateObjectTable()
+        simbadLists.updateObjectTable()
 
     # Done - shut down and clean up
 

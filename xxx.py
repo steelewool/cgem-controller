@@ -133,7 +133,7 @@ class ObjectRaDec:
     def write(self):
         print ('Bin number      : ' + str(self.bin()))
         print ('Name            : ' + str(self.name))
-        print ('Catalog name    : ' + str(self.catName))
+        print ('Catalog Name    : ' + str(self.catName))
         print ('RA   hr min sec : ' + str(self.ra.hr)   + ':' + str(self.ra.min)  + ':' + str(self.ra.sec))
         print ('Dec deg min sec : ' + str(self.dec.deg) + ':' + str(self.dec.min) + ':' + str(self.ra.sec))
         print ('Local Hour Angle: ' + str(self.localHrAngle()))
