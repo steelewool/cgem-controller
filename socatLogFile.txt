@@ -1,11 +1,11 @@
-2021/02/11 22:05:59 socat[2833] N PTY is /dev/pts/5
-2021/02/11 22:05:59 socat[2833] N PTY is /dev/pts/6
+2021/02/14 07:44:12 socat[2662] N PTY is /dev/pts/7
+2021/02/14 07:44:12 socat[2662] N PTY is /dev/pts/8
   FD  type	device	inode	mode	links	uid	gid	rdev	size	blksize	blocks	atime				mtime				ctime				cloexec	flags	sigown	sigio
-   5: chrdev	0,5	88	020666	1	0	5	5,2	0	4096	0	Thu Feb 11 22:05:57 2021	Thu Feb 11 22:05:57 2021	Thu Feb 11 20:33:53 2021	1	x008002	0	0	/dev/ptmx 	IFLAGS=00000000 OFLAGS=00000004 CFLAGS=000000bd LFLAGS=00000a30 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^A cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: OUT,
-   7: chrdev	0,5	88	020666	1	0	5	5,2	0	4096	0	Thu Feb 11 22:05:57 2021	Thu Feb 11 22:05:57 2021	Thu Feb 11 20:33:53 2021	1	x008002	0	0	/dev/ptmx 	IFLAGS=00000000 OFLAGS=00000004 CFLAGS=000000bd LFLAGS=00000a30 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^A cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: OUT,
-2021/02/11 22:05:59 socat[2833] N starting data transfer loop with FDs [5,5] and [7,7]
-> 2021/02/11 22:11:15.063274  length=1 from=0 to=0
-q2021/02/11 22:11:15 socat[2833] N socat_signal(): handling signal 1
-2021/02/11 22:11:15 socat[2833] N exiting on signal 1
-2021/02/11 22:11:15 socat[2833] N socat_signal(): finishing signal 1
-2021/02/11 22:11:15 socat[2833] N exit(129)
+   5: chrdev	0,5	88	020666	1	0	5	5,2	0	4096	0	Sun Feb 14 07:44:09 2021	Sun Feb 14 07:44:09 2021	Sun Feb 14 07:13:34 2021	1	x008002	0	0	/dev/ptmx 	IFLAGS=00000000 OFLAGS=00000004 CFLAGS=000000bd LFLAGS=00000a30 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^A cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: OUT,
+   7: chrdev	0,5	88	020666	1	0	5	5,2	0	4096	0	Sun Feb 14 07:44:09 2021	Sun Feb 14 07:44:09 2021	Sun Feb 14 07:13:34 2021	1	x008002	0	0	/dev/ptmx 	IFLAGS=00000000 OFLAGS=00000004 CFLAGS=000000bd LFLAGS=00000a30 cc[0]=^C cc[1]=^\ cc[2]=x7F cc[3]=^U cc[4]=^D cc[5]=^@ cc[6]=^A cc[7]=^@ cc[8]=^Q cc[9]=^S cc[10]=^Z cc[11]=^@ cc[12]=^R cc[13]=^O cc[14]=^W cc[15]=^V cc[16]=^@ cc[17]=^@ cc[18]=^@ cc[19]=^@ cc[20]=^@ cc[21]=^@ cc[22]=^@ cc[23]=^@ cc[24]=^@ cc[25]=^@ cc[26]=^@ cc[27]=^@ cc[28]=^@ cc[29]=^@ cc[30]=^@ cc[31]=^@poll: OUT,
+2021/02/14 07:44:12 socat[2662] N starting data transfer loop with FDs [5,5] and [7,7]
+> 2021/02/14 07:44:48.110658  length=1 from=0 to=0
+q2021/02/14 07:44:48 socat[2662] N socat_signal(): handling signal 1
+2021/02/14 07:44:48 socat[2662] N exiting on signal 1
+2021/02/14 07:44:48 socat[2662] N socat_signal(): finishing signal 1
+2021/02/14 07:44:48 socat[2662] N exit(129)

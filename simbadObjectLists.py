@@ -51,6 +51,35 @@ class SimbadObjectLists:
         self.lst_min = int(str(self.meanLST)[self.positionH+1:self.positionM])
         self.lst_sec = int(str(self.meanLST)[self.positionM+1:self.positionM+3])
 
+    def addToEndOfTable (self, flag, tableNew, catalogName):
+        if flag:
+            for i in range(len(tableNew)):
+                self.tableRa  = tableNew[i]['RA']
+                self.tableDec = tableNew[i]['DEC']
+                self.extractRaDec (self.tableRa, self.tableDec)
+                skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
+                                     self.decDegMinSec,      \
+                                     frame='icrs')
+                
+                self.altAzi = skyCoord.transform_to(       \
+                    AltAz(obstime=self.dateTime,           \
+                          location=self.observingPosition))
+
+                newObject = objectRaDec.ObjectRaDec(                \
+                    tableNew[i]['MAIN_ID'],                         \
+                    catalogName,                                          \
+                    self.tableRa,                                   \
+                    self.tableDec,                                  \
+                    Ra  (self.ra_hr, self.ra_min, self.ra_sec),     \
+                    Dec (self.dec_deg, self.dec_min, self.dec_sec), \
+                    Lst (self.lst_hr,                               \
+                         self.lst_min,                              \
+                         self.lst_sec),                             \
+                    Alt (self.altAzi.alt.degree),                   \
+                    Azi (self.altAzi.az.degree))
+
+                self.objectTable.append(newObject)
+    
     def __init__(self):
 
         self.setLocalTime()
@@ -82,34 +111,34 @@ class SimbadObjectLists:
             tableMessierOk = False
             print ('tableMessier failed.')
         
-        Simbad.ROW_LIMIT = 200
+        Simbad.ROW_LIMIT = 100
         try:
             time.sleep(2)
-            tableMGC     = Simbad.query_criteria('Vmag<11.0', \
+            tableMgc     = Simbad.query_criteria('Vmag<10.5', \
                                                  cat='MGC')
             tableMgcOk   = True
-            print ('Length of MGC table     : ', len(tableMGC))
+            print ('Length of MGC table     : ', len(tableMgc))
         except:
             tableMgcOk   = False
-            print ('tableMCG failed')
+            print ('tableMcg failed')
 
 
         Simbad.ROW_LIMIT = 200
         try:
             time.sleep(2)
-            tableIC     = Simbad.query_criteria('Vmag<9.0', \
+            tableIc     = Simbad.query_criteria('Vmag<9.0', \
                                                  cat='ic')
             tableIcOk   = True
-            print ('Length of IC table      : ', len(tableIC))
+            print ('Length of IC table      : ', len(tableIc))
         except:
             tableIcOk   = False
             print ('tableIC failed')
             
-        Simbad.ROW_LIMIT = 1000
+        Simbad.ROW_LIMIT = 200
         try:
             # With a row limit of 5000 things crash with the NGC catalog
             time.sleep(2)
-            tableNgc         = Simbad.query_criteria('Vmag<7.0', \
+            tableNgc         = Simbad.query_criteria('Vmag<6.0', \
                                                      cat='NGC')
             tableNgcOk = True
             print ('Length of NGC table     : ', len(tableNgc))
@@ -122,7 +151,7 @@ class SimbadObjectLists:
             try:
                 # With a row limit of 5000 things crash with the NGC catalog
                 time.sleep(2)
-                tableNgc         = Simbad.query_criteria('Vmag<7.0', \
+                tableNgc         = Simbad.query_criteria('Vmag<5.0', \
                                                          cat='NGC')
                 tableNgcOk = True
                 print ('Length of NGC table : ', len(tableNgc))
@@ -133,7 +162,7 @@ class SimbadObjectLists:
         Simbad.ROW_LIMIT = 100
         try:
             time.sleep(2)
-            tableAll = Simbad.query_criteria('Vmag<9.0')
+            tableAll = Simbad.query_criteria('Vmag<6.0')
             tableAllOk = True
             print ('Length of All table     : ', len(tableAll))
         except:
@@ -147,7 +176,7 @@ class SimbadObjectLists:
             Simbad.ROW_LIMIT /= 2
             try:
                 time.sleep(2)
-                tableAll = Simbad.query_criteria('Vmag<9.0')
+                tableAll = Simbad.query_criteria('Vmag<5.0')
                 tableAllOk = True
                 print ('Length of All table     : ', len(tableAll))
             except:
@@ -171,7 +200,7 @@ class SimbadObjectLists:
         try:
             # With a limit of 10000 returned 5212 elements
             time.sleep(2)
-            tableG   = Simbad.query_criteria('Vmag<9.5', otype='G')
+            tableG   = Simbad.query_criteria('Vmag<9.0', otype='G')
             tableGOk = True
             print ('Length of table G       : ', len(tableG))
         except:
@@ -190,10 +219,10 @@ class SimbadObjectLists:
             print ('tableGlb is failing')
 
         # Looking for Open Cluster
-        Simbad.ROW_LIMIT = 200
+        Simbad.ROW_LIMIT = 100
         try:
             time.sleep(2)
-            tableOpc   = Simbad.query_criteria('Vmag<8.0', otype='opc')
+            tableOpc   = Simbad.query_criteria('Vmag<6.5', otype='opc')
             tableOpcOk = True
             print ('Length of table Opc     : ', len(tableOpc))
         except:
@@ -221,7 +250,7 @@ class SimbadObjectLists:
             time.sleep(2)
             table = Simbad.query_object ('M *', wildcard=True, verbose=False)
             
-        print ('Length of Messier table: ', len(table))
+        print ('Length of Messier table : ', len(table))
         
         # This loop goes through the table of messier objects obtained from
         # the query above and moves the objects into the array objectTable.
@@ -259,34 +288,15 @@ class SimbadObjectLists:
 
         # Add to the end of the object table the NGC objects
 
-        if tableNgcOk:
-            for i in range(len(tableNgc)):
-                self.tableRa  = tableNgc[i]['RA']
-                self.tableDec = tableNgc[i]['DEC']
-                self.extractRaDec (self.tableRa, self.tableDec)
-                skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
-                                     self.decDegMinSec,      \
-                                     frame='icrs')
-                
-                self.altAzi = skyCoord.transform_to(       \
-                    AltAz(obstime=self.dateTime,           \
-                          location=self.observingPosition))
+        self.addToEndOfTable (tableNgcOk, tableNgc, 'NGC')
+        self.addToEndOfTable (tableMgcOk, tableMgc, 'MGC')
+#        self.addToEndOfTable (tableIcOk,  tableIc,  'IC')
+        self.addToEndOfTable (tableAllOk, tableAll, 'ALL')
+#        self.addToEndOfTable (tablePlOk,  tablePl,  'PL')
+#        self.addToEndOfTable (tableGOk,   tableG,   'G')
+        self.addToEndOfTable (tableGlbOk, tableGlb, 'GLB')
+        self.addToEndOfTable (tableOpcOk, tableOpc, 'OPC')
 
-                newObject = objectRaDec.ObjectRaDec(                \
-                    tableNgc[i]['MAIN_ID'],                         \
-                    'NGC',                                          \
-                    self.tableRa,                                   \
-                    self.tableDec,                                  \
-                    Ra  (self.ra_hr, self.ra_min, self.ra_sec),     \
-                    Dec (self.dec_deg, self.dec_min, self.dec_sec), \
-                    Lst (self.lst_hr,                               \
-                         self.lst_min,                              \
-                         self.lst_sec),                             \
-                    Alt (self.altAzi.alt.degree),                   \
-                    Azi (self.altAzi.az.degree))
-
-                self.objectTable.append(newObject)
-                
         # Sort the objects into a best fit for observing
         # Invokes the function on line 141 which simply invokes the
         # function objectTable.sort.
@@ -316,10 +326,20 @@ class SimbadObjectLists:
                 
         # Need to calculate the altitude and azimuth for each of the
         # objects here.
-            
-        self.raHrMinSec   = self.ra_hr   + 'h' + \
-                            self.ra_min  + 'm' + \
-                            self.ra_sec  + 's'
+
+        # This was failing for the IC table (tableIC) objects. Their
+        # format may be different,
+
+        try:
+            self.raHrMinSec   = self.ra_hr   + 'h' + \
+                                self.ra_min  + 'm' + \
+                                self.ra_sec  + 's'
+        except:
+            print ('Try block saw an error')
+            print ('self.ra_hr  : ', self.ra_hr)
+            print ('self.ra_min : ', self.ra_min)
+            print ('self.ra_sec : ', self.ra_sec)
+
         if float(self.dec_sec) > 0:
             self.decDegMinSec = self.dec_deg + 'd' + \
                                 self.dec_min + 'm' + \
