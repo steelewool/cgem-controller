@@ -131,6 +131,7 @@ class ObjectRaDec:
 # Yet another questions, whey am I having to use getLst() instead of lst?
         
     def write(self):
+        print ()
         print ('Bin number      : ' + str(self.bin()))
         print ('Name            : ' + str(self.name))
         print ('Catalog name    : ' + str(self.catName))

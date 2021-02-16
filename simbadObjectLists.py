@@ -17,6 +17,10 @@ class SimbadObjectLists:
 
     def setLocalTime(self):
 
+        print ('*********************')
+        print ('INVOKING setLocalTime')
+        print ('*********************')
+        
         # Hard wired to Frazier Park. Need to add lat/lon/height as an
         # argument to the class.
 
@@ -34,9 +38,9 @@ class SimbadObjectLists:
                                  scale='utc',                      \
                                  location=self.observingPosition)
 
+        print ('dateTime : ', self.dateTime)
+        
         self.meanLST = self.dateTime.sidereal_time('mean')
-
-        #print ('meanLST : ', self.meanLST)
 
         # Use the 'h' and 'm' to extract the hour, minute, and second
         # from the meanLST
@@ -54,34 +58,73 @@ class SimbadObjectLists:
     def addToEndOfTable (self, flag, tableNew, catalogName):
         if flag:
             for i in range(len(tableNew)):
-                self.tableRa  = tableNew[i]['RA']
-                self.tableDec = tableNew[i]['DEC']
-                self.extractRaDec (self.tableRa, self.tableDec)
-                skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
-                                     self.decDegMinSec,      \
-                                     frame='icrs')
+                if ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  81'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  82'))        | \
+                   ((catalogName == 'ALL') & (tableNew[i]['MAIN_ID'] == 'NGC  7686'))    | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'NGC  2169'))    | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'NGC  1980'))    | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'NGC  1981'))    | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'NGC  2281'))    | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'NGC  7686'))    | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'NGC  7092'))    | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'M  31'))        | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'M  32'))        | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'M  33'))        | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'M  37'))        | \
+                   ((catalogName == 'NGC') & (tableNew[i]['MAIN_ID'] == 'M  41'))        | \
+                   ((catalogName == 'IC')  & (tableNew[i]['MAIN_ID'] == 'IC 2391   80')) | \
+                   ((catalogName == 'OPC') & (tableNew[i]['MAIN_ID'] == 'M  36'))        | \
+                   ((catalogName == 'OPC') & (tableNew[i]['MAIN_ID'] == 'M  37'))        | \
+                   ((catalogName == 'OPC') & (tableNew[i]['MAIN_ID'] == 'M  38'))        | \
+                   ((catalogName == 'OPC') & (tableNew[i]['MAIN_ID'] == 'M  41'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  31'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  33'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  51'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  63'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  77'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  94'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M 101'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M 106'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M 110'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'AM 0311-513')):
+                    pass
+                else:
+                    self.tableRa  = tableNew[i]['RA']
+                    self.tableDec = tableNew[i]['DEC']
+
+                    try:
+                        self.extractRaDec (self.tableRa, self.tableDec)
+                    except:
+                        print ('in addToEndOfTable extractRaDec failed with i : ', i)
+                        print ('name                                          : ',
+                               tableNew[i]['MAIN_ID'])
+                        print ('catalogName                                   : ',
+                               catalogName)
+                    
+                    skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
+                                         self.decDegMinSec,      \
+                                         frame='icrs')
                 
-                self.altAzi = skyCoord.transform_to(       \
-                    AltAz(obstime=self.dateTime,           \
-                          location=self.observingPosition))
+                    self.altAzi = skyCoord.transform_to(\
+                                                        AltAz(obstime=self.dateTime,
+                                                              location=self.observingPosition))
 
-                newObject = objectRaDec.ObjectRaDec(                \
-                    tableNew[i]['MAIN_ID'],                         \
-                    catalogName,                                          \
-                    self.tableRa,                                   \
-                    self.tableDec,                                  \
-                    Ra  (self.ra_hr, self.ra_min, self.ra_sec),     \
-                    Dec (self.dec_deg, self.dec_min, self.dec_sec), \
-                    Lst (self.lst_hr,                               \
-                         self.lst_min,                              \
-                         self.lst_sec),                             \
-                    Alt (self.altAzi.alt.degree),                   \
-                    Azi (self.altAzi.az.degree))
+                    newObject = objectRaDec.ObjectRaDec(\
+                                                        tableNew[i]['MAIN_ID'],
+                                                        catalogName,
+                                                        self.tableRa,
+                                                        self.tableDec,
+                                                        Ra  (self.ra_hr, self.ra_min, self.ra_sec),
+                                                        Dec (self.dec_deg, self.dec_min, self.dec_sec),
+                                                        Lst (self.lst_hr,
+                                                             self.lst_min,
+                                                             self.lst_sec),
+                                                        Alt (self.altAzi.alt.degree),
+                                                        Azi (self.altAzi.az.degree))
 
-                self.objectTable.append(newObject)
+                    self.objectTable.append(newObject)
     
     def __init__(self):
-
         self.setLocalTime()
         
         # Grab the Simbad data base
@@ -188,9 +231,9 @@ class SimbadObjectLists:
         try:
             # With a limit of 10000 returned 5212 elements
             time.sleep(2)
-            tablePL   = Simbad.query_criteria(otype='PL')
+            tablePl   = Simbad.query_criteria(otype='PL')
             tablePlOk = True
-            print ('Length of table PL      : ', len(tablePL))
+            print ('Length of table PL      : ', len(tablePl))
         except:
             tablePlOk = False
             print ('tablePL is failing')
@@ -258,8 +301,13 @@ class SimbadObjectLists:
         for i in range(len(table)):
             self.tableRa  = table[i]['RA']
             self.tableDec = table[i]['DEC']
-            self.extractRaDec (self.tableRa, self.tableDec)
-            
+
+            try:
+                self.extractRaDec (self.tableRa, self.tableDec)
+            except:
+                print ('in __init__ extracRaDec failed, i: ', i)
+                print ('name                             : ', table[i]['MAIN_ID'])
+                
             skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
                                  self.decDegMinSec,      \
                                  frame='icrs')
@@ -290,10 +338,10 @@ class SimbadObjectLists:
 
         self.addToEndOfTable (tableNgcOk, tableNgc, 'NGC')
         self.addToEndOfTable (tableMgcOk, tableMgc, 'MGC')
-#        self.addToEndOfTable (tableIcOk,  tableIc,  'IC')
+        self.addToEndOfTable (tableIcOk,  tableIc,  'IC')
         self.addToEndOfTable (tableAllOk, tableAll, 'ALL')
-#        self.addToEndOfTable (tablePlOk,  tablePl,  'PL')
-#        self.addToEndOfTable (tableGOk,   tableG,   'G')
+        self.addToEndOfTable (tablePlOk,  tablePl,  'PL')
+        self.addToEndOfTable (tableGOk,   tableG,   'G')
         self.addToEndOfTable (tableGlbOk, tableGlb, 'GLB')
         self.addToEndOfTable (tableOpcOk, tableOpc, 'OPC')
 
@@ -330,15 +378,9 @@ class SimbadObjectLists:
         # This was failing for the IC table (tableIC) objects. Their
         # format may be different,
 
-        try:
-            self.raHrMinSec   = self.ra_hr   + 'h' + \
-                                self.ra_min  + 'm' + \
-                                self.ra_sec  + 's'
-        except:
-            print ('Try block saw an error')
-            print ('self.ra_hr  : ', self.ra_hr)
-            print ('self.ra_min : ', self.ra_min)
-            print ('self.ra_sec : ', self.ra_sec)
+        self.raHrMinSec   = self.ra_hr   + 'h' + \
+                            self.ra_min  + 'm' + \
+                            self.ra_sec  + 's'
 
         if float(self.dec_sec) > 0:
             self.decDegMinSec = self.dec_deg + 'd' + \
@@ -357,8 +399,8 @@ class SimbadObjectLists:
         self.objectTable.sort()
 
     def updateLstOfObjectTable(self):
+        self.setLocalTime()
         for i in range(len(self.objectTable)):
-            self.setLocalTime()
             self.objectTable[i].updateLst(
                 Lst(self.lst_hr,  \
                     self.lst_min, \
@@ -366,9 +408,16 @@ class SimbadObjectLists:
 
     def updateAltAziOfObjectTable(self):
         for i in range(len(self.objectTable)):
-            self.extractRaDec(self.objectTable[i].tableRa, \
-                              self.objectTable[i].tableDec )
-            
+            try:
+                self.extractRaDec(self.objectTable[i].tableRa, \
+                                  self.objectTable[i].tableDec )
+            except:
+                print ('in updateAltAziOfObjectTable extractRaDec failed on item, i : ', i)
+                print ('object name                                                 : ',
+                       self.objectTable[i].name)
+                print ('catalog name                                                : ',
+                       self.objectTable[i].catName)
+                
             skyCoord = SkyCoord (self.raHrMinSec + ' ' + self.decDegMinSec,
                                  frame='icrs')
 

@@ -50,10 +50,6 @@ if __name__ == '__main__':
     
     loopOverAllMessierObjects = True
     while loopOverAllMessierObjects:
-        
-        # Print the fist object in the list for debugging.    
-        print ('First Messier object: ', simbadLists.objectTable[0].name)
-
         loopOverMessierObjects = True
         index        = 0
         objectNumber = 1
@@ -72,10 +68,6 @@ if __name__ == '__main__':
 
                         print ('Object Number : ', objectNumber)
                         objectNumber += 1
-#                        print ('  Name : ', simbadLists.objectTable[index].name#)
-#                        print ('   alt : ', alt)
-#                        print ('   azi : ', azi)
-#                        print
 
                         # Grab the input value and attempt to convert it to
                         # an integer
@@ -83,7 +75,7 @@ if __name__ == '__main__':
                         x = int(input('1 to observe, 2 to skip, 3 to exit : '))
                         if x == 1:
                         
-                            objectRa = simbadLists.objectTable[index].ra
+                            objectRa  = simbadLists.objectTable[index].ra
                             objectDec = simbadLists.objectTable[index].dec
 
                             print ('object RA  (hr:min:sec)  : ', \
