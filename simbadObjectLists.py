@@ -82,6 +82,8 @@ class SimbadObjectLists:
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  51'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  63'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  77'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  81'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  82'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  94'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M 101'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M 106'))        | \
@@ -94,35 +96,38 @@ class SimbadObjectLists:
 
                     try:
                         self.extractRaDec (self.tableRa, self.tableDec)
+                        itemOk = True
                     except:
                         print ('in addToEndOfTable extractRaDec failed with i : ', i)
                         print ('name                                          : ',
                                tableNew[i]['MAIN_ID'])
                         print ('catalogName                                   : ',
                                catalogName)
-                    
-                    skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
-                                         self.decDegMinSec,      \
-                                         frame='icrs')
+                        itemOk = False
+
+                    if itemOk:
+                        skyCoord = SkyCoord (self.raHrMinSec + ' ' + \
+                                             self.decDegMinSec,      \
+                                             frame='icrs')
                 
-                    self.altAzi = skyCoord.transform_to(\
-                                                        AltAz(obstime=self.dateTime,
-                                                              location=self.observingPosition))
+                        self.altAzi = skyCoord.transform_to(\
+                                                            AltAz(obstime=self.dateTime,
+                                                                  location=self.observingPosition))
 
-                    newObject = objectRaDec.ObjectRaDec(\
-                                                        tableNew[i]['MAIN_ID'],
-                                                        catalogName,
-                                                        self.tableRa,
-                                                        self.tableDec,
-                                                        Ra  (self.ra_hr, self.ra_min, self.ra_sec),
-                                                        Dec (self.dec_deg, self.dec_min, self.dec_sec),
-                                                        Lst (self.lst_hr,
-                                                             self.lst_min,
-                                                             self.lst_sec),
-                                                        Alt (self.altAzi.alt.degree),
-                                                        Azi (self.altAzi.az.degree))
+                        newObject = objectRaDec.ObjectRaDec(\
+                                                            tableNew[i]['MAIN_ID'],
+                                                            catalogName,
+                                                            self.tableRa,
+                                                            self.tableDec,
+                                                            Ra  (self.ra_hr, self.ra_min, self.ra_sec),
+                                                            Dec (self.dec_deg, self.dec_min, self.dec_sec),
+                                                            Lst (self.lst_hr,
+                                                                 self.lst_min,
+                                                                 self.lst_sec),
+                                                            Alt (self.altAzi.alt.degree),
+                                                            Azi (self.altAzi.az.degree))
 
-                    self.objectTable.append(newObject)
+                        self.objectTable.append(newObject)
     
     def __init__(self):
         self.setLocalTime()
@@ -293,8 +298,6 @@ class SimbadObjectLists:
             time.sleep(2)
             table = Simbad.query_object ('M *', wildcard=True, verbose=False)
             
-        print ('Length of Messier table : ', len(table))
-        
         # This loop goes through the table of messier objects obtained from
         # the query above and moves the objects into the array objectTable.
         

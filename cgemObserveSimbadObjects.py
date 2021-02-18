@@ -63,10 +63,11 @@ if __name__ == '__main__':
                     alt = simbadLists.objectTable[index].alt.deg
 
                     if alt > 20.0:
+                        print ()
+                        print ('Object Number : ', objectNumber)
                         simbadLists.objectTable[index].write()
                         azi = simbadLists.objectTable[index].azi.deg
 
-                        print ('Object Number : ', objectNumber)
                         objectNumber += 1
 
                         # Grab the input value and attempt to convert it to
