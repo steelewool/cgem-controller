@@ -78,6 +78,7 @@ class SimbadObjectLists:
                    ((catalogName == 'OPC') & (tableNew[i]['MAIN_ID'] == 'M  38'))        | \
                    ((catalogName == 'OPC') & (tableNew[i]['MAIN_ID'] == 'M  41'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  31'))        | \
+                   ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  32'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  33'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  51'))        | \
                    ((catalogName == 'G')   & (tableNew[i]['MAIN_ID'] == 'M  63'))        | \
