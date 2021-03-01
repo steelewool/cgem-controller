@@ -45,25 +45,25 @@ if __name__ == '__main__':
     # object in the list.
 
     simbadLists = simbadObjectLists.SimbadObjectLists()
-
-    print ('Loop over all messier objects.')
+    print ('Number of objects in simbadLists : ', len(simbadLists.objectTable))
+    print
+    print ('Loop over all visible objects.')
     
-    loopOverAllMessierObjects = True
-    while loopOverAllMessierObjects:
-        loopOverMessierObjects = True
+    loopOverAllSimbadObjects = True
+    while loopOverAllSimbadObjects:
+        loopOverSimbadObjects = True
         index        = 0
         objectNumber = 1
-        while (loopOverMessierObjects):
+        while (loopOverSimbadObjects):
             x = 0
             if index == len(simbadLists.objectTable):
-                loopOverMessierObjects = False
+                loopOverSimbadObjects = False
             else:
                 if simbadLists.objectTable[index].bin() > 0:
                                 
                     alt = simbadLists.objectTable[index].alt.deg
 
                     if alt > 20.0:
-                        print ()
                         print ('Object Number : ', objectNumber)
                         simbadLists.objectTable[index].write()
                         azi = simbadLists.objectTable[index].azi.deg
@@ -105,7 +105,6 @@ if __name__ == '__main__':
                             print ('newRaHex  : ', newRaHex)
                             print ('newDecHex : ', newDecHex)
                             
-                            print ('Invoking gotoCommandWithHP')
                             cgem.gotoCommandWithHP (newRaHex, newDecHex)
 
                             telescopeRaDecCgem = \
@@ -116,9 +115,9 @@ if __name__ == '__main__':
                             ('---------------------- DONE ------------------')
                             print ()
                         elif x == 3:
-                            loopOverMessierObjects = False
-                            print ('Setting loopOverMessierObjects to :',
-                                   loopOverMessierObjects)
+                            loopOverSimbadObjects = False
+                            print ('Setting loopOverSimbadObjects to :',
+                                   loopOverSimbadObjects)
             index += 1
 
         print ('Finished the list one time, loop again')
@@ -127,9 +126,9 @@ if __name__ == '__main__':
         
         y = int(input('1 to loop again, 2 to exit : '))
         if y == 2:
-            loopOverAllMessierObjects = False
-            print ('setting loopOverMessierObjects to: ',
-                   loopOverMessierObjects)
+            loopOverAllSimbadObjects = False
+            print ('setting loopOverSimbadObjects to: ',
+                   loopOverSimbadObjects)
             
         print ('updateObjectTable')
         

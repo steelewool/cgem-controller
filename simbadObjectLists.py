@@ -17,10 +17,6 @@ class SimbadObjectLists:
 
     def setLocalTime(self):
 
-        print ('*********************')
-        print ('INVOKING setLocalTime')
-        print ('*********************')
-        
         # Hard wired to Frazier Park. Need to add lat/lon/height as an
         # argument to the class.
 
@@ -38,8 +34,6 @@ class SimbadObjectLists:
                                  scale='utc',                      \
                                  location=self.observingPosition)
 
-        print ('dateTime : ', self.dateTime)
-        
         self.meanLST = self.dateTime.sidereal_time('mean')
 
         # Use the 'h' and 'm' to extract the hour, minute, and second
@@ -356,12 +350,6 @@ class SimbadObjectLists:
         self.sort()
         
     def extractRaDec (self, ra, dec):
-        # 2021 01 29 print ('ra from simbad query  : ', ra)
-        # 2021 01 29 print ('dec from simbad query : ', dec)
-            
-        # These substring operations have me concernedNeed to debug
-        # to make things are working correctly.
-            
         # This works correctly because the objects from simbad query
         # come in a very fixed format.
             

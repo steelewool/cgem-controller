@@ -70,12 +70,7 @@ if __name__ == '__main__':
                         messierList.objectTable[index].write()
                         azi = messierList.objectTable[index].azi.deg
 
-                        print ('Object Number : ', objectNumber)
                         objectNumber += 1
-                        print ('  Name : ', messierList.objectTable[index].name)
-                        print ('   alt : ', alt)
-                        print ('   azi : ', azi)
-                        print
 
                         # Grab the input value and attempt to convert it to
                         # an integer
